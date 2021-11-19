@@ -1,5 +1,6 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="container text-start">
+    <h1>About</h1>
+    <p>To be defined...</p>
   </div>
 </template>
