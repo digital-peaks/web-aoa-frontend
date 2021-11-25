@@ -1,7 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
+import InputView from "../features/input/InputView.vue";
 
 const routes = [
+  {
+    path: "/input",
+    name: "Input",
+    component: InputView,
+  },
   {
     path: "/",
     name: "Jobs",
