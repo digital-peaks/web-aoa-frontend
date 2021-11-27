@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile.production
+          file: ./Dockerfile
           tags: |
             nschnierer/digital-peaks-web-aoa-frontend:latest
           push: ${{ github.ref == 'refs/heads/main' }}

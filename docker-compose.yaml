@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  frontend:
+    image: nschnierer/digital-peaks-web-aoa-frontend:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: base
+    command: ["serve"]
+    environment:
+      - NODE_ENV=dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src:ro
+      - ./public:/app/public:ro
