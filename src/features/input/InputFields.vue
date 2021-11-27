@@ -11,8 +11,6 @@
   Samples: <input v-model="samples" placeholder="samples" /><br />
   Area of Interest: <input v-model="aoi" placeholder="Area of Interest" /><br />
 
-
-
   <!-- File Upload Fields-->
   <br /><br />
   File Upload for GeoJSON Data: <br /><br />
@@ -35,10 +33,20 @@
     />
     <br />
   </label>
-  <button v-on:click="submitFile()">Submit</button>
+  <button v-on:click="submitFile()">Submit File</button>
+  <button v-on:click="calculateAOI()">Calculate Area of Interest</button>
+
+  <!--Leaflet -->
+<l-map style="height: 300px" :zoom="zoom" :center="center">
+    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+    <l-marker :lat-lng="markerLatLng"></l-marker>
+  </l-map>
+  
 </template>
 
 <script>
+
+
 export default {
   name: "InputFields",
   props: {
