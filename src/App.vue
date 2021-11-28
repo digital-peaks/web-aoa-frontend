@@ -1,5 +1,5 @@
 <template>
-  <header class="p-3 mb-3 border-bottom">
+  <header class="p-3 border-bottom">
     <div class="container">
       <div
         class="
@@ -35,6 +35,9 @@
           <router-link to="/" class="nav-link px-2 link-dark">Jobs</router-link>
           <router-link to="/about" class="nav-link px-2 link-dark"
             >About</router-link
+          >
+          <router-link to="/input" class="nav-link px-2 link-dark"
+            >Change Values</router-link
           >
         </ul>
 
@@ -90,24 +93,17 @@ export default {
 </script>
 
 <style>
+html,
+body {
+  height: 100%;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
