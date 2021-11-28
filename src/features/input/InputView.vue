@@ -48,17 +48,27 @@
         </div>
       </div>
     </div>
-    <div class="bg-success map-column">Map</div>
+    <div class="bg-light map-column" id="map-container"></div>
   </div>
 </template>
 
 <script>
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
 export default {
   name: "InputView",
   data: () => ({
     aoiFile: undefined,
   }),
   methods: {
+    setupLeafletMap: function () {
+      const map = L.map("map-container").setView([51.966, 7.633], 10);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+    },
     selectAOIFile() {
       this.$refs.aoiInput.click();
     },
@@ -67,6 +77,9 @@ export default {
       console.log(file);
       this.$data.aoiFile = file;
     },
+  },
+  mounted() {
+    this.setupLeafletMap();
   },
 };
 </script>
