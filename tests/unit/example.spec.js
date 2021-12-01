@@ -1,11 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
-import LogoIcon from "@/components/LogoIcon.vue";
+import HelloWorld from "@/components/HelloWorld.vue";
 
-describe("LogoIcon.vue", () => {
-  it("renders LogoIcon", () => {
-    const wrapper = shallowMount(LogoIcon, {
-      props: { width: "200" },
+describe("HelloWorld.vue", () => {
+  it("renders props.msg when passed", () => {
+    const msg = "new message";
+    const wrapper = shallowMount(HelloWorld, {
+      propsData: { msg },
     });
-    expect(wrapper).toBeDefined();
+    expect(wrapper.text()).toMatch(msg);
   });
 });

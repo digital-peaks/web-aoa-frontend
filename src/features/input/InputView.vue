@@ -42,44 +42,42 @@
             Area of Interest hochladen (*.json)
           </button>
         </div>
+        <button type="button" @click="changeLeaflet" class="btn btn-secondary">
+          Change Leaflet
+        </button>
         <div class="d-flex justify-content-end">
           <button type="button" class="btn btn-light">Abbrechen</button>
           <button type="button" class="btn btn-primary ms-2">Erstellen</button>
         </div>
       </div>
     </div>
-    <div class="bg-light map-column" id="map-container"></div>
+    <div class="bg-light map-column" id="map-container">
+      <l-map style="width: 100%; height: 450px" :zoom="zoom" :center="center">
+        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-marker :lat-lng="markerLatLng"></l-marker>
+      </l-map>
+    </div>
   </div>
 </template>
 
 <script>
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 
 export default {
   name: "InputView",
   data: () => ({
     aoiFile: undefined,
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    zoom: 15,
+    center: [51.505, -0.159],
+    markerLatLng: [51.504, -0.159],
   }),
-  methods: {
-    setupLeafletMap: function () {
-      const map = L.map("map-container").setView([51.966, 7.633], 10);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-    },
-    selectAOIFile() {
-      this.$refs.aoiInput.click();
-    },
-    onChangeAOIInput(event) {
-      const [file] = event.target.files;
-      console.log(file);
-      this.$data.aoiFile = file;
-    },
-  },
-  mounted() {
-    this.setupLeafletMap();
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
   },
 };
 </script>
@@ -103,6 +101,7 @@ export default {
   }
   .map-column {
     flex: 1;
+    position: relative;
     min-height: auto;
     height: 100%;
   }

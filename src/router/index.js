@@ -1,6 +1,9 @@
-import { createRouter, createWebHistory } from "vue-router";
+import Vue from "vue";
+import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
+
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -24,8 +27,9 @@ const routes = [
   },
 ];
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+const router = new VueRouter({
+  mode: "history",
+  base: process.env.BASE_URL,
   routes,
 });
 
