@@ -65,6 +65,7 @@ export default {
     tileLayer: null,
     drawControl: null,
     rectangleLayer: null,
+    drawnItem: null,
     aoiJson: {
       type: "Feature",
       geometry: {
@@ -99,12 +100,15 @@ export default {
     this.initMap();
     this.$nextTick(() => {
       this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
+
       const drawControl = new window.L.Control.Draw({
         position: "topleft",
         draw: {
           polyline: false,
           polygon: false,
-          rectangle: true,
+          rectangle: {
+            showArea: true,
+          },
           circle: false,
           marker: false,
           circlemarker: false,
@@ -115,18 +119,24 @@ export default {
           edit: false,
         },
       });
+
       this.map.addControl(drawControl);
+
       this.map.on(window.L.Draw.Event.CREATED, (e) => {
+        if (this.drawnItem != null)
+          this.rectangleLayer.removeLayer(this.drawnItem);
         // const type = e.layerType;
-        const layer = e.layer;
+        this.drawnItem = e.layer;
         for (var i = 0; i < 4; ++i) {
           this.aoiJson.geometry.coordinates[i] = [
-            layer._latlngs[0][i].lat,
-            layer._latlngs[0][i].lng,
+            this.drawnItem._latlngs[0][i].lat,
+            this.drawnItem._latlngs[0][i].lng,
           ];
         }
         // Do whatever else you need to. (save to db, add to map etc)
-        this.map.addLayer(layer);
+        // this.map.addLayer(layer);
+        this.rectangleLayer.addLayer(this.drawnItem);
+        console.log(this.aoiJson.geometry);
       });
     });
   },
@@ -157,7 +167,7 @@ export default {
   }
   .map-column {
     flex: 1;
-    min-height: auto;
+    min-height: 500px;
     height: 100%;
   }
 }
