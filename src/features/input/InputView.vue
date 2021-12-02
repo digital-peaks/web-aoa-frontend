@@ -42,9 +42,6 @@
             Area of Interest hochladen (*.json)
           </button>
         </div>
-        <button type="button" @click="changeLeaflet" class="btn btn-secondary">
-          Change Leaflet
-        </button>
         <div class="d-flex justify-content-end">
           <button type="button" class="btn btn-light">Abbrechen</button>
           <button type="button" class="btn btn-primary ms-2">Erstellen</button>
@@ -52,7 +49,13 @@
       </div>
     </div>
     <div class="bg-light map-column" id="map-container">
-      <l-map style="width: 100%; height: 450px" :zoom="zoom" :center="center">
+      <l-map
+        ref="map"
+        style="width: 100%; height: 450px"
+        :zoom="zoom"
+        :center="center"
+      >
+        <!--<l-draw-toolbar position="topleft" />-->
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         <l-marker :lat-lng="markerLatLng"></l-marker>
       </l-map>
@@ -62,10 +65,17 @@
 
 <script>
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
+//import LDrawToolbar from "vue2-leaflet-draw-toolbar";
+//import LDraw from "leaflet-draw";
+import "leaflet-draw/dist/leaflet.draw.css";
 
 export default {
   name: "InputView",
   data: () => ({
+    map: null,
+    drawControl: null,
+    rectangleLayer: null,
     aoiFile: undefined,
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     attribution:
@@ -75,9 +85,53 @@ export default {
     markerLatLng: [51.966, 7.633],
   }),
   components: {
+    //LDrawToolbar,
     LMap,
     LTileLayer,
     LMarker,
+  },
+  mounted() {
+    this.$nextTick(() => {
+      // eslint-disable-next-line
+      this.map = this.$refs.map.mapObject;
+
+      this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
+
+      this.drawControl = new window.L.Control.Draw({
+        position: "topleft",
+        draw: {
+          polyline: false,
+          polygon: false,
+          rectangle: true,
+          circle: false,
+          marker: false,
+          circlemarker: false,
+        } /*
+        edit: {
+          featureGroup: this.rectangleLayer,
+          remove: true,
+          edit: false,
+        },*/,
+      });
+    });
+
+    this.map.addControl(this.drawControl);
+
+    this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
+    this.map.on(window.L.Draw.Event.CREATED, (e) => {
+      const layer = e.layer;
+
+      this.rectangleLayer.addLayer(layer);
+    });
+  },
+  methods: {
+    selectAOIFile() {
+      this.aoiInput.click();
+    },
+    onChangeAOIInput(event) {
+      const [file] = event.target.files;
+      this.aoiFile = file;
+    },
   },
 };
 </script>

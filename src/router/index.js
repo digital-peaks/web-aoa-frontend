@@ -1,9 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
-import InputView from "../features/input/InputView.vue";
+import InputView from "../features/input/InputView2.vue";
 import OutputView from "../features/output/OutputView.vue";
-
 
 Vue.use(VueRouter);
 
@@ -31,7 +30,7 @@ const routes = [
     path: "/output",
     name: "Output",
     component: OutputView,
-  }
+  },
 ];
 
 const router = new VueRouter({

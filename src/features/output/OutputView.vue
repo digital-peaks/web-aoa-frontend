@@ -9,6 +9,7 @@
 
 <script>
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
 
 export default {
   name: "Output",
