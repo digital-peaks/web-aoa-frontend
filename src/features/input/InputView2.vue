@@ -1,244 +1,165 @@
 <template>
-  <div
-    style="
-      width: 100%;
-      height: 100%;
-      background-color: #eee;
-      position: relative;
-    "
-  >
-    <v-map
-      ref="map"
-      :zoom="zoom"
-      :center="center"
-      :options="{ zoomControl: false }"
-      attribution="© Проект А"
-    >
-      <v-tilelayer :url="url" :attribution="attribution"></v-tilelayer>
-      <v-geo-json
-        v-for="(gj, idx) in geojson"
-        :geojson="gj.geometry"
-        :key="idx"
-        :options="options(gj)"
+  <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
+    <div class="form-column">
+      <div class="m-3">
+        <h3>Job erstellen</h3>
+
+        <div class="form-floating mt-3 mb-3">
+          <input type="text" class="form-control" id="name" placeholder="Jo" />
+          <label for="name" class="form-label">Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <select
+            id="algorithm"
+            class="form-select"
+            style="width: auto; min-width: 200px"
+            aria-label="Algorithmus auswählen"
+          >
+            <option selected>Random Forest</option>
+            <option>Weitere...</option>
+          </select>
+          <label for="algorithm" class="form-label">Algorithmus</label>
+        </div>
+
+        <div class="mb-3">
+          <!-- Hide input file and trigger it via the button -->
+          <input
+            type="file"
+            ref="aoiInput"
+            @change="onChangeAOIInput"
+            accept="application/JSON"
+            class="d-none"
+          />
+          <div v-if="aoiFile">
+            {{ aoiFile.name }}
+          </div>
+          <button
+            type="button"
+            @click="selectAOIFile"
+            class="btn btn-secondary"
+          >
+            Area of Interest hochladen (*.json)
+          </button>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-light">Abbrechen</button>
+          <button type="button" class="btn btn-primary ms-2">Erstellen</button>
+        </div>
+      </div>
+    </div>
+    <div class="bg-light map-column" id="map-container">
+      <l-map
+        ref="map"
+        style="width: 100%; height: 450px"
+        :zoom="zoom"
+        :center="center"
       >
-        <v-popup
-          :content="gotoTunnelCard"
-          :options="{ autoClose: false, closeOnClick: false }"
-        ></v-popup>
-      </v-geo-json>
-    </v-map>
+        <!--<l-draw-toolbar position="topleft" />-->
+        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-marker :lat-lng="markerLatLng"></l-marker>
+      </l-map>
+    </div>
   </div>
 </template>
 
 <script>
-import Vue2Leaflet from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
+//import LDrawToolbar from "vue2-leaflet-draw-toolbar";
 import "leaflet-draw";
+import "leaflet-draw/dist/leaflet.draw.css";
 
 export default {
   name: "InputView",
+  data: () => ({
+    map: null,
+    drawControl: null,
+    rectangleLayer: null,
+    aoiFile: undefined,
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    zoom: 10,
+    center: [51.966, 7.633],
+    markerLatLng: [51.966, 7.633],
+  }),
   components: {
-    "v-map": Vue2Leaflet.LMap,
-    "v-tilelayer": Vue2Leaflet.LTileLayer,
-    "v-marker": Vue2Leaflet.LMarker,
-    "v-geo-json": Vue2Leaflet.LGeoJson,
-    "v-popup": Vue2Leaflet.Popup,
+    //LDrawToolbar,
+    LMap,
+    LTileLayer,
+    LMarker,
   },
-
   mounted() {
     this.$nextTick(() => {
-      const map = this.$refs.map.mapObject;
+      // eslint-disable-next-line
+      this.map = this.$refs.map.mapObject;
 
       this.drawControl = new window.L.Control.Draw({
-        position: "topright",
+        position: "topleft",
         draw: {
-          polyline: {
-            allowIntersection: false,
-            showArea: true,
-          },
+          polyline: false,
           polygon: false,
-          rectangle: false,
+          rectangle: true,
           circle: false,
+          marker: false,
+          circlemarker: false,
+        } /*
+        edit: {
+          featureGroup: this.rectangleLayer,
+          remove: true,
+          edit: false,
+        },*/,
+        options: {
+          drawControl: false,
         },
-      });
-
-      window.L.DrawToolbar.include({
-        getModeHandlers(_map) {
-          return [
-            {
-              enabled: true,
-              handler: new window.L.Draw.Polyline(_map),
-              title: "Добавить тоннель",
-            },
-          ];
-        },
-      });
-
-      this.drawControl.setDrawingOptions({
-        // new lines will have different color
-        polyline: {
-          shapeOptions: {
-            color: "#ff0a1e",
-          },
-        },
-      });
-
-      map.addControl(this.drawControl);
-
-      this.editableLayers = new window.L.FeatureGroup().addTo(map);
-      const control = this.drawControl._container.querySelector(
-        ".leaflet-draw-toolbar"
-      );
-
-      /* Commit drawn tunnel */
-      let link = document.createElement("a");
-      link.className = "leaflet-draw-draw-OK_ICON";
-      link.style.display = "none";
-      link.onclick = () => {
-        this.$store.dispatch("tunnelEdit", this.newTunnel);
-        this.$emit("tunnelAdd");
-      };
-      this.okBtn = control.appendChild(link);
-
-      /* Remove drawn tunnel */
-      link = document.createElement("a");
-      link.className = "leaflet-draw-draw-NOK_ICON";
-      link.style.display = "none";
-      link.onclick = () => {
-        this.okBtn.style.display = "none";
-        this.nokBtn.style.display = "none";
-        this.layers.forEach((l) => this.editableLayers.removeLayer(l));
-        this.newTunnel = {
-          geometry: {
-            coordinates: [],
-          },
-        };
-      };
-      this.nokBtn = control.appendChild(link);
-
-      map.on(window.L.Draw.Event.CREATED, (e) => {
-        const layer = e.layer;
-        const coords = layer._latlngs.map((objCoordinates) => [
-          objCoordinates.lng,
-          objCoordinates.lat,
-        ]);
-
-        this.newTunnel.geometry.coordinates.push(coords);
-        this.newTunnel.categoryDate = 0;
-        this.editableLayers.addLayer(layer);
-        this.layers.push(layer);
-        this.okBtn.style.display = "block";
-        this.nokBtn.style.display = "block";
       });
     });
-  },
 
-  data() {
-    return {
-      zoom: 13,
-      editableLayers: null,
-      drawControl: null,
-      layers: [],
-      okBtn: null,
-      cancelBtn: null,
-      newTunnel: {
-        geometry: {
-          type: "MultiLineString",
-          coordinates: [],
-        },
-      },
-      center: [55.75583, 37.61778],
-      // url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-      url: "http://10.101.20.207/api/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: window.L.latLng(47.41322, -1.219482),
-      popupRoot: null,
-      tunnel: null,
-      tName: 0,
-    };
-  },
+    this.map.addControl(this.drawControl);
+    this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
 
-  computed: {
-    geojson() {
-      return this.$store.state.TunnelsCategories.tunnels;
-    },
-  },
+    this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
+    this.map.on(window.L.Draw.Event.CREATED, (e) => {
+      const layer = e.layer;
 
+      this.rectangleLayer.addLayer(layer);
+    });
+  },
   methods: {
-    gotoTunnelCard(tunnel) {
-      this.$store.dispatch("tunnelEdit", tunnel);
-      this.$emit("tunnelCommonInfo");
+    selectAOIFile() {
+      this.aoiInput.click();
     },
-
-    renderPopup(tunnel) {
-      const popupRoot = document.createElement("div");
-      popupRoot.setAttribute("id", "leafroot-id");
-      const el = document.createElement("button");
-
-      const imgId = (function (id) {
-        switch (id) {
-          case 1:
-            return 165;
-          case 2:
-            return 67;
-          case 3:
-            return 166;
-          case 53:
-            return 169;
-          case 54:
-            return 170;
-          case 12:
-            return 97;
-          default:
-            return 1;
-        }
-      })(tunnel.id);
-
-      popupRoot.innerHTML =
-        '<h5 style="font-weight:bold">' +
-        tunnel.name +
-        "</h5>" +
-        '<img class="popup-img" src="imgs/' +
-        imgId +
-        '_3.png"/>' +
-        '<div class="popup-text">Категория: ' +
-        tunnel.category +
-        "</div>" +
-        '<div class="popup-text">Дата установки: ' +
-        tunnel.categoryDate +
-        "</div>" +
-        '<div class="popup-text">Название дороги: ' +
-        tunnel.roadName +
-        "</div>" +
-        '<div class="popup-text length">Длина дороги: ' +
-        tunnel.length +
-        "</div>";
-
-      el.innerHTML = "Перейти к рассчёту";
-      el.classList = "btn notice-btn btn-secondary";
-      el.onclick = this.gotoTunnelCard.bind(this, tunnel);
-      popupRoot.appendChild(el);
-
-      return popupRoot;
-    },
-    onEachFeatureFunction(tunnel) {
-      return (feature, layer) => {
-        const popup = this.renderPopup(tunnel);
-        layer.bindTooltip(
-          '<div style="font-weight:bold;">' + tunnel.name + "</div>",
-          { permanent: false, sticky: true }
-        );
-        layer.bindPopup(popup, { permanent: false, sticky: true });
-      };
-    },
-
-    options(tunnel) {
-      return {
-        onEachFeature: this.onEachFeatureFunction.call(this, tunnel),
-      };
+    onChangeAOIInput(event) {
+      const [file] = event.target.files;
+      this.aoiFile = file;
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form-column {
+  flex: auto;
+}
+.map-column {
+  flex: auto;
+  min-height: 350px;
+  height: 50%;
+}
+@media (min-width: 992px) {
+  .form-column {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    min-height: 0;
+  }
+  .map-column {
+    flex: 1;
+    position: relative;
+    min-height: auto;
+    height: 100%;
+  }
+}
+</style>

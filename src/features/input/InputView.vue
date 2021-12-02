@@ -48,56 +48,58 @@
         </div>
       </div>
     </div>
-    <div class="bg-light map-column" id="map-container">
-      <l-map
-        ref="map"
-        style="width: 100%; height: 450px"
-        :zoom="zoom"
-        :center="center"
-      >
-        <!--<l-draw-toolbar position="topleft" />-->
-        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <l-marker :lat-lng="markerLatLng"></l-marker>
-      </l-map>
-    </div>
+    <div class="bg-light map-column" id="map-container"></div>
   </div>
 </template>
 
 <script>
-import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
-//import LDrawToolbar from "vue2-leaflet-draw-toolbar";
-//import LDraw from "leaflet-draw";
+import L from "leaflet";
+import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
-
 export default {
   name: "InputView",
   data: () => ({
     map: null,
+    aoiFile: undefined,
+    tileLayer: null,
     drawControl: null,
     rectangleLayer: null,
-    aoiFile: undefined,
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution:
-      '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    zoom: 10,
-    center: [51.966, 7.633],
-    markerLatLng: [51.966, 7.633],
+    aoiJson: {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [],
+      },
+      properties: {
+        name: "AOI",
+      },
+    },
   }),
-  components: {
-    //LDrawToolbar,
-    LMap,
-    LTileLayer,
-    LMarker,
+  methods: {
+    initMap: function () {
+      this.map = L.map("map-container").setView([51.966, 7.633], 10);
+      this.tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      ).addTo(this.map);
+    },
+    selectAOIFile() {
+      this.aoiInput.click();
+    },
+    onChangeAOIInput(event) {
+      const [file] = event.target.files;
+      this.aoiFile = file;
+    },
   },
   mounted() {
+    this.initMap();
     this.$nextTick(() => {
-      // eslint-disable-next-line
-      this.map = this.$refs.map.mapObject;
-
       this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
-
-      this.drawControl = new window.L.Control.Draw({
+      const drawControl = new window.L.Control.Draw({
         position: "topleft",
         draw: {
           polyline: false,
@@ -106,32 +108,32 @@ export default {
           circle: false,
           marker: false,
           circlemarker: false,
-        } /*
+        },
         edit: {
           featureGroup: this.rectangleLayer,
           remove: true,
           edit: false,
-        },*/,
+        },
+      });
+      this.map.addControl(drawControl);
+      this.map.on(window.L.Draw.Event.CREATED, (e) => {
+        // const type = e.layerType;
+        const layer = e.layer;
+        for (var i = 0; i < 4; ++i) {
+          this.aoiJson.geometry.coordinates[i] = [
+            layer._latlngs[0][i].lat,
+            layer._latlngs[0][i].lng,
+          ];
+        }
+        // Do whatever else you need to. (save to db, add to map etc)
+        this.map.addLayer(layer);
       });
     });
-
-    this.map.addControl(this.drawControl);
-
-    this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
-    this.map.on(window.L.Draw.Event.CREATED, (e) => {
-      const layer = e.layer;
-
-      this.rectangleLayer.addLayer(layer);
-    });
   },
-  methods: {
-    selectAOIFile() {
-      this.aoiInput.click();
-    },
-    onChangeAOIInput(event) {
-      const [file] = event.target.files;
-      this.aoiFile = file;
-    },
+  beforeUnmount() {
+    if (this.map) {
+      this.map.remove();
+    }
   },
 };
 </script>
@@ -155,7 +157,6 @@ export default {
   }
   .map-column {
     flex: 1;
-    position: relative;
     min-height: auto;
     height: 100%;
   }
