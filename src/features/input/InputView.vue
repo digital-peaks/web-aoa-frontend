@@ -108,6 +108,8 @@ export default {
           polygon: false,
           rectangle: {
             showArea: true,
+            metric: true, // SHOULD BE ADDED BUT DOESNT WORK
+            imperial: true,
           },
           circle: false,
           marker: false,
@@ -123,20 +125,29 @@ export default {
       this.map.addControl(drawControl);
 
       this.map.on(window.L.Draw.Event.CREATED, (e) => {
-        if (this.drawnItem != null)
+        if (this.drawnItem != null) {
+          // In case a drawn item on the map already exists, it gets removed and the aoiJson attribute gets overwritten. The result is, that only one aoi can be entered
           this.rectangleLayer.removeLayer(this.drawnItem);
+        }
         // const type = e.layerType;
         this.drawnItem = e.layer;
-        for (var i = 0; i < 4; ++i) {
-          this.aoiJson.geometry.coordinates[i] = [
-            this.drawnItem._latlngs[0][i].lat,
-            this.drawnItem._latlngs[0][i].lng,
-          ];
+        var aoiSize = window.L.GeometryUtil.geodesicArea(
+          this.drawnItem.getLatLngs()
+        ); // This variable contains the szie of the entered aoi in m2.
+        console.log(aoiSize);
+        if (aoiSize <= 3000) {
+          // DOENST WORK SO FAR
+          for (var i = 0; i < 4; ++i) {
+            this.aoiJson.geometry.coordinates[i] = [
+              this.drawnItem._latlngs[0][i].lat,
+              this.drawnItem._latlngs[0][i].lng,
+            ];
+          }
+          // Do whatever else you need to. (save to db, add to map etc)
+          this.rectangleLayer.addLayer(this.drawnItem);
+        } else {
+          console.log("The area has to be smaller than 3 km^2!");
         }
-        // Do whatever else you need to. (save to db, add to map etc)
-        // this.map.addLayer(layer);
-        this.rectangleLayer.addLayer(this.drawnItem);
-        console.log(this.aoiJson.geometry);
       });
     });
   },
