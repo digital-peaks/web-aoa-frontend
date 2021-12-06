@@ -17,6 +17,7 @@
     "leaflet": "^1.7.1",
     "leaflet-draw": "^1.0.4",
     "leaflet-geometryutil": "^0.10.0",
+    "leaflet-geotiff-2": "^1.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue2-leaflet": "^2.7.1",

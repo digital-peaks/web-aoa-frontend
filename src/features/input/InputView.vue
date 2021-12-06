@@ -170,6 +170,7 @@ export default {
               this.drawnItem._latlngs[0][i].lng,
             ];
           }
+          console.log(this.aoiJson);
           // Do whatever else you need to. (save to db, add to map etc)
           this.rectangleLayer.addLayer(this.drawnItem);
         } else {
