@@ -53,7 +53,7 @@ export default {
         this.map
       );
 
-      console.log(this.geotiffLayer);
+      console.log("geotifflayer: " + this.geotiffLayer);
     },
     testFunction: function () {
       document
@@ -63,6 +63,7 @@ export default {
           console.log("file:", file);
 
           var reader = new FileReader();
+          console.log(reader);
           reader.readAsArrayBuffer(file);
           reader.onloadend = function () {
             var arrayBuffer = reader.result;
@@ -93,7 +94,8 @@ export default {
   },
   mounted() {
     this.initMap();
-    this.addTiff();
+    //this.addTiff();
+    this.testFunction();
 
     /*var lay = window.L.leafletGeotiff(
       this.geoTiffUsrl,
