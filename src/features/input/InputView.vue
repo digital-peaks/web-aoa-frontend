@@ -26,8 +26,9 @@
           <!-- Hide input file and trigger it via the button -->
           <input
             type="file"
-            ref="aoiInput"
-            @change="onChangeAOIInput"
+            ref="aoiInputJson"
+            @
+            v-on:change="onChangeAOIInputJson()"
             accept="application/JSON"
             class="d-none"
           />
@@ -36,10 +37,27 @@
           </div>
           <button
             type="button"
-            @click="selectAOIFile"
+            v-on:click="selectAOIFileJson()"
             class="btn btn-secondary"
           >
             Area of Interest hochladen (*.json)
+          </button>
+          <input
+            type="file"
+            ref="aoiInputGpkg"
+            @change="loadGeoPackage"
+            accept="application/geopackage+sqlite3"
+            class="d-none"
+          />
+          <div v-if="aoiFile">
+            {{ aoiFile.name }}
+          </div>
+          <button
+            type="button"
+            @click="loadGeoPackage"
+            class="btn btn-secondary"
+          >
+            Area of Interest hochladen (*.gpkg)
           </button>
         </div>
         <div class="d-flex justify-content-end">
@@ -88,12 +106,22 @@ export default {
         }
       ).addTo(this.map);
     },
-    selectAOIFile() {
-      this.aoiInput.click();
+    selectAOIFileJson() {
+      this.aoiInputJson.click();
     },
-    onChangeAOIInput(event) {
+    onChangeAOIInputJson(event) {
+      //onChangeAOIInputJson() {
+      //const [file] = event.target.files;
+      var file = event.target.files[0];
+      this.aoiFile = file;
+    },
+    selectAOIFileGpkg() {
+      this.aoiInputGpkg.click();
+    },
+    loadGeoPackage(event) {
       const [file] = event.target.files;
       this.aoiFile = file;
+      console.log(this.aoiFile);
     },
   },
   mounted() {
@@ -108,8 +136,7 @@ export default {
           polygon: false,
           rectangle: {
             showArea: true,
-            metric: true, // SHOULD BE ADDED BUT DOESNT WORK
-            imperial: true,
+            metric: ["km"], // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
           },
           circle: false,
           marker: false,
@@ -146,7 +173,7 @@ export default {
           // Do whatever else you need to. (save to db, add to map etc)
           this.rectangleLayer.addLayer(this.drawnItem);
         } else {
-          console.log("The area has to be smaller than 3 km^2!");
+          console.log("The area has to be smaller than 300 km^2!");
         }
       });
     });

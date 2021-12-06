@@ -1,45 +1,67 @@
 <template>
-  <div class="bg-light map-column" id="map-container">
-    <l-map style="width: 100%; height: 450px" :zoom="zoom" :center="center">
-      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-marker :lat-lng="markerLatLng"></l-marker>
-    </l-map>
+  <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
+    <div class="bg-light map-column" id="map-container"></div>
   </div>
 </template>
 
 <script>
-import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+//import "geotiff/src/geotiff.js"; // Only EPSG:4326 is supported!!!
+//import "plotty/dist/plotty.js";
+import "georaster";
+import "georaster-layer-for-leaflet";
 
 export default {
   name: "Output",
   data: () => ({
-    aoiFile: undefined,
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution:
-      '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    zoom: 10,
-    center: [51.966, 7.633],
-    markerLatLng: [51.966, 7.633],
+    map: null,
+    tileLayer: null,
+    geoTiffUrl: "../../../geotiff_test/aoa_aoa.tif",
   }),
-  components: {
-    LMap,
-    LTileLayer,
-    LMarker,
+  methods: {
+    initMap: function () {
+      this.map = L.map("map-container").setView([51.966, 7.633], 10);
+      this.tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      ).addTo(this.map);
+    },
+  },
+  mounted() {
+    this.initMap();
+    fetch(this.geoTiffUrl)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => {
+        parse_georaster(arrayBuffer).then((georaster) => {
+          // var parse_georaster = require("georaster");
+          console.log("georaster:", georaster);
+        });
+      });
+  },
+  beforeUnmount() {
+    if (this.map) {
+      this.map.remove();
+    }
   },
 };
 </script>
 <style scoped>
 .map-column {
   flex: auto;
-  min-height: 350px;
+  min-height: 500px;
   height: 50%;
 }
 @media (min-width: 992px) {
+  /* WHY THIS WONT BE RECOGNIZED? */
   .map-column {
     flex: 1;
-    position: relative;
-    min-height: auto;
+    /*position: relative;*/
+    min-height: 500;
     height: 100%;
   }
 }
