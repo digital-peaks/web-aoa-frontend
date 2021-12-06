@@ -9,7 +9,7 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-//import "geotiff/src/geotiff.js"; // Only EPSG:4326 is supported!!!
+import "geotiff"; // Only EPSG:4326 is supported!!!
 //import "plotty/dist/plotty.js";
 //import "georaster";
 //import "georaster-layer-for-leaflet";
@@ -42,39 +42,53 @@ export default {
         }
       ).addTo(this.map);
     },
-    addTiff: function () {
-      this.options = {
-        renderer: L.LeafletGeotiff.plotty(),
-        useWorker: false,
-        bounds: [],
-      };
+    testFunction2: async function () {
+      L.leafletGeotiff(this.geoTiffUrl, {
+        band: 0,
+        displayMin: 0,
+        displayMax: 360,
+        name: "Wind direction",
+        //colorScale: 'rainbow',
+        //clampLow: false,
+        //clampHigh: true,
+        vector: true,
+        arrowSize: 20,
+      }).addTo(this.map);
 
-      this.geotiffLayer = L.leafletGeotiff(this.geoTiffUrl, this.options).addTo(
-        this.map
-      );
+      /*const response = await fetch(this.geoTiffUrl);
+      console.log(response);
+      const arrayBuffer = await response.arrayBuffer();
+      console.log("buffer:", arrayBuffer);
 
-      console.log("geotifflayer: " + this.geotiffLayer);
+      const tiff = await fromArrayBuffer(arrayBuffer);
+      console.log(tiff);*/
+      /*const georaster = await parseGeoraster(arrayBuffer);
+      console.log("georaster:", georaster);
+
+      let layer = new GeoRasterLayer({
+        georaster: georaster,
+        opacity: 0.7,
+        resolution: 256,
+      });
+      console.log("layer:", layer);
+      layer.addTo(this.map);
+
+      this.map.fitBounds(layer.getBounds());*/
     },
     testFunction: function (event) {
-      debugger;
+      // debugger;
       const file = event.target.files[0];
       console.log("file:", file);
 
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.readAsArrayBuffer(file);
       reader.onloadend = async () => {
-        var arrayBuffer = reader.result;
+        const arrayBuffer = reader.result;
+        console.log("buffer: ", arrayBuffer);
         const georaster = await parseGeoraster(arrayBuffer);
         console.log("georaster:", georaster);
-        /*
-                GeoRasterLayer is an extension of GridLayer,
-                which means can use GridLayer options like opacity.
 
-                Just make sure to include the georaster option!
-
-                http://leafletjs.com/reference-1.2.0.html#gridlayer
-            */
-        var layer = new GeoRasterLayer({
+        let layer = new GeoRasterLayer({
           georaster: georaster,
           opacity: 0.7,
           resolution: 256,
@@ -83,13 +97,13 @@ export default {
         layer.addTo(this.map);
 
         this.map.fitBounds(layer.getBounds());
-        document.getElementById("overlay").style.display = "none";
+        // document.getElementById("overlay").style.display = "none";
       };
     },
   },
   mounted() {
     this.initMap();
-    //this.addTiff();
+    this.testFunction2();
 
     /*var lay = window.L.leafletGeotiff(
       this.geoTiffUsrl,
