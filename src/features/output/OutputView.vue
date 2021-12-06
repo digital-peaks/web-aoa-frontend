@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
     <div class="bg-light map-column" id="map-container"></div>
-    <input type="file" id="fileInput" />
+    <input type="file" @change="testFunction" />
   </div>
 </template>
 
@@ -55,21 +55,18 @@ export default {
 
       console.log("geotifflayer: " + this.geotiffLayer);
     },
-    testFunction: function () {
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", function (event) {
-          var file = event.target.files[0];
-          console.log("file:", file);
+    testFunction: function (event) {
+      debugger;
+      const file = event.target.files[0];
+      console.log("file:", file);
 
-          var reader = new FileReader();
-          console.log(reader);
-          reader.readAsArrayBuffer(file);
-          reader.onloadend = function () {
-            var arrayBuffer = reader.result;
-            parseGeoraster(arrayBuffer).then((georaster) => {
-              console.log("georaster:", georaster);
-              /*
+      var reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = async () => {
+        var arrayBuffer = reader.result;
+        const georaster = await parseGeoraster(arrayBuffer);
+        console.log("georaster:", georaster);
+        /*
                 GeoRasterLayer is an extension of GridLayer,
                 which means can use GridLayer options like opacity.
 
@@ -77,25 +74,22 @@ export default {
 
                 http://leafletjs.com/reference-1.2.0.html#gridlayer
             */
-              var layer = new GeoRasterLayer({
-                georaster: georaster,
-                opacity: 0.7,
-                resolution: 256,
-              });
-              console.log("layer:", layer);
-              layer.addTo(this.map);
-
-              this.map.fitBounds(layer.getBounds());
-              document.getElementById("overlay").style.display = "none";
-            });
-          };
+        var layer = new GeoRasterLayer({
+          georaster: georaster,
+          opacity: 0.7,
+          resolution: 256,
         });
+        console.log("layer:", layer);
+        layer.addTo(this.map);
+
+        this.map.fitBounds(layer.getBounds());
+        document.getElementById("overlay").style.display = "none";
+      };
     },
   },
   mounted() {
     this.initMap();
     //this.addTiff();
-    this.testFunction();
 
     /*var lay = window.L.leafletGeotiff(
       this.geoTiffUsrl,

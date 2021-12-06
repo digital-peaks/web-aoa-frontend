@@ -56,7 +56,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
+    "rules": {
+      "no-debugger": "off"
+    },
     "overrides": [
       {
         "files": [
