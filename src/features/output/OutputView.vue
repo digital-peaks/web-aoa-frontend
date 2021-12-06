@@ -11,7 +11,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "geotiff"; // Only EPSG:4326 is supported!!!
 //import "plotty/dist/plotty.js";
-//import "georaster";
+import "georaster";
 //import "georaster-layer-for-leaflet";
 import "leaflet-geotiff-2/dist/leaflet-geotiff.js";
 import "leaflet-geotiff-2/dist/leaflet-geotiff-rgb";
@@ -43,19 +43,28 @@ export default {
       ).addTo(this.map);
     },
     testFunction2: async function () {
-      L.leafletGeotiff(this.geoTiffUrl, {
-        band: 0,
-        displayMin: 0,
-        displayMax: 360,
-        name: "Wind direction",
-        //colorScale: 'rainbow',
-        //clampLow: false,
-        //clampHigh: true,
-        vector: true,
-        arrowSize: 20,
-      }).addTo(this.map);
+      const response = await fetch(this.geoTiffUrl);
+      console.log(await response.arrayBuffer());
+      /*
+        .then((response) => response.arrayBuffer())
+        .then((arrayBuffer) => {
+          parseGeoraster(arrayBuffer).then((georaster) => {
+            consol.log("georaster. " + "ABS");
+          });
+        });
+      console.log("res: " + res);
 
-      /*const response = await fetch(this.geoTiffUrl);
+      fetch(this.geoTiffUrl)
+        .then((response) => response.arrayBuffer())
+        .then((arrayBuffer) => {
+          parseGeoraster(arrayBuffer).then((georaster) => {
+            // var parse_georaster = require("georaster");
+            //console.log(response);
+            console.log("georaster:", georaster);
+          });
+        });
+
+      const response = await fetch(this.geoTiffUrl);
       console.log(response);
       const arrayBuffer = await response.arrayBuffer();
       console.log("buffer:", arrayBuffer);
@@ -104,42 +113,6 @@ export default {
   mounted() {
     this.initMap();
     this.testFunction2();
-
-    /*var lay = window.L.leafletGeotiff(
-      this.geoTiffUsrl,
-      window.L.LeafletGeotiff.plotty()
-    ).addTo(this.map);
-    console.log(lay);*/
-
-    /*var file = this.geoTiffUrl;
-    console.log("file: ", file);
-    var reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onloadend = function () {
-      var arrayBuffer = reader.result;
-      parseGeoraster(arrayBuffer).then((georaster) => {
-        console.log("georaster: ", georaster);
-      });
-    };*/
-
-    /*var res = fetch(this.geoTiffUrl)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => {
-        parseGeoraster(arrayBuffer).then((georaster) => {
-          consol.log("georaster. " + "ABS");
-        });
-      });
-    console.log("res: " + res);
-
-    fetch(this.geoTiffUrl)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => {
-        parseGeoraster(arrayBuffer).then((georaster) => {
-          // var parse_georaster = require("georaster");
-          //console.log(response);
-          console.log("georaster:", georaster);
-        });
-      });*/
   },
   beforeUnmount() {
     if (this.map) {
