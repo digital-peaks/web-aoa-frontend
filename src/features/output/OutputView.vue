@@ -8,8 +8,12 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+<<<<<<< Updated upstream
 import "leaflet/dist/leaflet.css";
 import "geotiff"; // Only EPSG:4326 is supported!!!
+=======
+//import "geotiff/src/geotiff.js"; // Only EPSG:4326 is supported!!!
+>>>>>>> Stashed changes
 //import "plotty/dist/plotty.js";
 import "georaster";
 //import "georaster-layer-for-leaflet";
@@ -118,6 +122,7 @@ export default {
 
       this.map.fitBounds(layer.getBounds());*/
     },
+<<<<<<< Updated upstream
     testFunction: function (event) {
       // debugger;
       const file = event.target.files[0];
@@ -135,6 +140,47 @@ export default {
           georaster: georaster,
           opacity: 0.7,
           resolution: 256,
+=======
+    testFunction: function () {
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", function (event) {
+          var file = event.target.files[0];
+          console.log("file:", file);
+
+          this.geotiffLayer = new window.L.FeatureGroup().addTo(this.map); ////
+
+          var reader = new FileReader();
+          console.log(reader);
+          reader.readAsArrayBuffer(file);
+          reader.onloadend = function () {
+            var arrayBuffer = reader.result;
+            parseGeoraster(arrayBuffer).then((georaster) => {
+              console.log("georaster:", georaster);
+              /*
+                GeoRasterLayer is an extension of GridLayer,
+                which means can use GridLayer options like opacity.
+
+                Just make sure to include the georaster option!
+
+                http://leafletjs.com/reference-1.2.0.html#gridlayer
+            */
+              var layer = new GeoRasterLayer({
+                georaster: georaster,
+                opacity: 0.7,
+                resolution: 256,
+              });
+              console.log("layer:", layer);
+              console.log("geotifflayer before: " + this.geotiffLayer);
+              this.geotiffLayer.addLayer(this.geotiffLayer);
+              console.log("geotifflayer after: " + this.geotiffLayer);
+              //layer.addTo(this.map);
+
+              this.map.fitBounds(layer.getBounds());
+              document.getElementById("overlay").style.display = "none";
+            });
+          };
+>>>>>>> Stashed changes
         });
         console.log("layer:", layer);
         layer.addTo(this.map);
