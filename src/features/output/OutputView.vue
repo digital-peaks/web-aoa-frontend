@@ -18,6 +18,8 @@ import "leaflet-geotiff-2/dist/leaflet-geotiff-rgb";
 import "leaflet-geotiff-2/dist/leaflet-geotiff-vector-arrows";
 import "leaflet-geotiff-2/dist/leaflet-geotiff-plotty";
 
+import test from "geotiffs_test/aoa_aoa.tif";
+
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
@@ -30,8 +32,19 @@ export default {
     options: null,
     geotiffLayer: null,
   }),
+  chainWebpack: (config) => {
+    config.module
+      .rule("raw")
+      .test(/\.tif$/)
+      .use("raw-loader")
+      .loader("raw-loader")
+      .end();
+  },
   methods: {
     parseGeoraster,
+    getGeoTiff() {
+      console.log({ test });
+    },
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
@@ -43,8 +56,29 @@ export default {
       ).addTo(this.map);
     },
     testFunction2: async function () {
+      var txt = "";
+      var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.status == 200 && xmlhttp.readyState == 4) {
+          txt = xmlhttp.responseText;
+        }
+      };
+      xmlhttp.open("GET", "\test.txt", true);
+      xmlhttp.send();
+
+      console.log(txt);
+
+      /*
+
       const response = await fetch(this.geoTiffUrl);
-      console.log(await response.arrayBuffer());
+      const blobber = response.blob();
+      console.log(blobber);
+      debugger;
+      const arrayBuffer = await response.arrayBuffer();
+      console.log(arrayBuffer);
+      const parsedGeoraster = await parseGeoraster(arrayBuffer);
+      console.log(parsedGeoraster);*/
       /*
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => {
