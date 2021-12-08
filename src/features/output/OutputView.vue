@@ -27,7 +27,9 @@ export default {
   data: () => ({
     map: null,
     tileLayer: null,
-    geoTiffUrl: "../geotiff_test/aoa_aoa.tif",
+    // In most cases it's just "/aoa_example.tif"
+    // See: https://cli.vuejs.org/config/#baseurl
+    geoTiffUrl: `${process.env.BASE_URL}aoa_example.tif`,
     options: null,
     //geotiffLayer: null,
   }),
@@ -44,8 +46,17 @@ export default {
     },
     testFunction2: async function () {
       const response = await fetch(this.geoTiffUrl);
+
+      // Make sure you get what you expect!
+      // Should be a "image/tiff"
+      console.log("Content-Type:", response.headers.get("Content-Type"));
+
       const arrayBuffer = await response.arrayBuffer();
       console.log(arrayBuffer);
+
+      // NOTE:
+      // Place your comments compactly and of course in english over the relevant.
+      // This example is easier to read. Am I right? :D
       const parsed = await parseGeoraster(arrayBuffer); // Hier schlägt es fehl. Das was als arrayBuffer gespeichert ist, kann nicht geparsed werden... Ich dachte allerdings, dass auf diesem Wege das gleich erzielt würde, wie beim aktiven Upload (siehe testFunction() und Ausgabe auf der Console von arrayBuffer). Verstehst du, warum das nicht klappt?
       console.log(parsed);
       /*
