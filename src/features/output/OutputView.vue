@@ -6,11 +6,12 @@
 </template>
 
 <script>
-// Import that are required for the following functionalities
+ // Import that are required for the following functionalities
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "georaster";
+
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
@@ -27,6 +28,7 @@ export default {
   }),
   methods: {
     // This method initializes the map
+
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
@@ -57,6 +59,7 @@ export default {
       layer.addTo(this.map);
       this.map.fitBounds(layer.getBounds());
     },
+
   },
   mounted() {
     this.initMap();
