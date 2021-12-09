@@ -6,6 +6,7 @@
 </template>
 
 <script>
+// Import that are required for the following functionalities
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -20,11 +21,12 @@ export default {
     tileLayer: null,
     // In most cases it's just "/aoa_example.tif"
     // See: https://cli.vuejs.org/config/#baseurl
-    //geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`, // Here you have to link the .tif-folder given from the r-script
+    // Here you have to link the .tif-folder given from the r-script
+    // The results from the calculations have to be sotred in the public-path
     geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
-    options: null,
   }),
   methods: {
+    // This method initializes the map
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
@@ -35,29 +37,23 @@ export default {
         }
       ).addTo(this.map);
     },
+    // This function needs the input of the geoTiffUrl variable to take a tf and visualize it on the map
     showTif1Band: async function () {
-      console.log(this.geoTiffUrl);
-
       const response = await fetch(this.geoTiffUrl);
-
       // Make sure you get what you expect!
       // Should be an "image/tiff"
-      console.log("Content-Type:", response.headers.get("Content-Type"));
+      // console.log("Content-Type:", response.headers.get("Content-Type"));
 
+      // These steps have to be done to read the image
       const arrayBuffer = await response.arrayBuffer();
-      console.log(arrayBuffer);
-
       const georaster = await parseGeoraster(arrayBuffer);
-      console.log(georaster);
-      console.log(georaster.numberOfRasters);
 
+      // Now a new layer gets initialized:
       let layer = new GeoRasterLayer({
         georaster: georaster,
         opacity: 1,
         resolution: 256,
       });
-      console.log("layer:", layer);
-      console.log(layer.numBands);
       layer.addTo(this.map);
       this.map.fitBounds(layer.getBounds());
     },
