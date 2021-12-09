@@ -1,6 +1,10 @@
-import { createRouter, createWebHistory } from "vue-router";
+import Vue from "vue";
+import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
+import OutputView from "../features/output/OutputView.vue";
+
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -22,10 +26,16 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../features/about/AboutView.vue"),
   },
+  {
+    path: "/output",
+    name: "Output",
+    component: OutputView,
+  },
 ];
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+const router = new VueRouter({
+  mode: "history",
+  base: process.env.BASE_URL,
   routes,
 });
 

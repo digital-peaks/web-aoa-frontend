@@ -26,8 +26,9 @@
           <!-- Hide input file and trigger it via the button -->
           <input
             type="file"
-            ref="aoiInput"
-            @change="onChangeAOIInput"
+            ref="aoiInputJson"
+            @
+            v-on:change="onChangeAOIInputJson()"
             accept="application/JSON"
             class="d-none"
           />
@@ -36,10 +37,27 @@
           </div>
           <button
             type="button"
-            @click="selectAOIFile"
+            v-on:click="selectAOIFileJson()"
             class="btn btn-secondary"
           >
             Area of Interest hochladen (*.json)
+          </button>
+          <input
+            type="file"
+            ref="aoiInputGpkg"
+            @change="loadGeoPackage"
+            accept="application/geopackage+sqlite3"
+            class="d-none"
+          />
+          <div v-if="aoiFile">
+            {{ aoiFile.name }}
+          </div>
+          <button
+            type="button"
+            @click="loadGeoPackage"
+            class="btn btn-secondary"
+          >
+            Area of Interest hochladen (*.gpkg)
           </button>
         </div>
         <div class="d-flex justify-content-end">
@@ -55,31 +73,116 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
+import "leaflet-draw";
+import "leaflet-draw/dist/leaflet.draw.css";
 export default {
   name: "InputView",
   data: () => ({
+    map: null,
     aoiFile: undefined,
+    tileLayer: null,
+    drawControl: null,
+    rectangleLayer: null,
+    drawnItem: null,
+    aoiJson: {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [],
+      },
+      properties: {
+        name: "AOI",
+      },
+    },
   }),
   methods: {
-    setupLeafletMap: function () {
-      const map = L.map("map-container").setView([51.966, 7.633], 10);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+    initMap: function () {
+      this.map = L.map("map-container").setView([51.966, 7.633], 10);
+      this.tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      ).addTo(this.map);
     },
-    selectAOIFile() {
-      this.$refs.aoiInput.click();
+    selectAOIFileJson() {
+      this.aoiInputJson.click();
     },
-    onChangeAOIInput(event) {
+    onChangeAOIInputJson(event) {
+      //onChangeAOIInputJson() {
+      //const [file] = event.target.files;
+      var file = event.target.files[0];
+      this.aoiFile = file;
+    },
+    selectAOIFileGpkg() {
+      this.aoiInputGpkg.click();
+    },
+    loadGeoPackage(event) {
       const [file] = event.target.files;
-      console.log(file);
-      this.$data.aoiFile = file;
+      this.aoiFile = file;
+      console.log(this.aoiFile);
     },
   },
   mounted() {
-    this.setupLeafletMap();
+    this.initMap();
+    this.$nextTick(() => {
+      this.rectangleLayer = new window.L.FeatureGroup().addTo(this.map);
+
+      const drawControl = new window.L.Control.Draw({
+        position: "topleft",
+        draw: {
+          polyline: false,
+          polygon: false,
+          rectangle: {
+            showArea: true,
+            metric: ["km"], // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
+          },
+          circle: false,
+          marker: false,
+          circlemarker: false,
+        },
+        edit: {
+          featureGroup: this.rectangleLayer,
+          remove: true,
+          edit: false,
+        },
+      });
+
+      this.map.addControl(drawControl);
+
+      this.map.on(window.L.Draw.Event.CREATED, (e) => {
+        if (this.drawnItem != null) {
+          // In case a drawn item on the map already exists, it gets removed and the aoiJson attribute gets overwritten. The result is, that only one aoi can be entered
+          this.rectangleLayer.removeLayer(this.drawnItem);
+        }
+        // const type = e.layerType;
+        this.drawnItem = e.layer;
+        var aoiSize = window.L.GeometryUtil.geodesicArea(
+          this.drawnItem.getLatLngs()
+        ); // This variable contains the szie of the entered aoi in m2.
+        console.log(aoiSize);
+        if (aoiSize <= 3000) {
+          // DOENST WORK SO FAR
+          for (var i = 0; i < 4; ++i) {
+            this.aoiJson.geometry.coordinates[i] = [
+              this.drawnItem._latlngs[0][i].lat,
+              this.drawnItem._latlngs[0][i].lng,
+            ];
+          }
+          console.log(this.aoiJson);
+          // Do whatever else you need to. (save to db, add to map etc)
+          this.rectangleLayer.addLayer(this.drawnItem);
+        } else {
+          console.log("The area has to be smaller than 300 km^2!");
+        }
+      });
+    });
+  },
+  beforeUnmount() {
+    if (this.map) {
+      this.map.remove();
+    }
   },
 };
 </script>
@@ -103,7 +206,7 @@ export default {
   }
   .map-column {
     flex: 1;
-    min-height: auto;
+    min-height: 500px;
     height: 100%;
   }
 }
