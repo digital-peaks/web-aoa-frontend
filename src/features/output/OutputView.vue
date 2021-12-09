@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
     <div class="bg-light map-column" id="map-container"></div>
-    <input type="file" @change="testFunction" />
+    <input type="file" @change="showTif1BandOnLoad" />
   </div>
 </template>
 
@@ -29,8 +29,8 @@ export default {
     tileLayer: null,
     // In most cases it's just "/aoa_example.tif"
     // See: https://cli.vuejs.org/config/#baseurl
-    geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/test_training_image_2020-01-01.tif`, // Here you have to link the .tif-folder given from the r-script
-    //geoTiffUrl: `aoa_di.tif`,
+    //geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/test_training_image_2020-01-01.tif`, // Here you have to link the .tif-folder given from the r-script
+    geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
     options: null,
   }),
   methods: {
@@ -44,7 +44,7 @@ export default {
         }
       ).addTo(this.map);
     },
-    testFunction2: async function () {
+    showTif1Band: async function () {
       console.log(this.geoTiffUrl);
 
       const response = await fetch(this.geoTiffUrl);
@@ -58,6 +58,7 @@ export default {
 
       const georaster = await parseGeoraster(arrayBuffer);
       console.log(georaster);
+      console.log(georaster.numberOfRasters);
 
       let layer = new GeoRasterLayer({
         georaster: georaster,
@@ -65,10 +66,11 @@ export default {
         resolution: 256,
       });
       console.log("layer:", layer);
+      console.log(layer.numBands);
       layer.addTo(this.map);
       this.map.fitBounds(layer.getBounds());
     },
-    testFunction: function (event) {
+    showTif1BandOnLoad: function (event) {
       // Function no longer required
       // debugger;
       const file = event.target.files[0];
@@ -95,7 +97,7 @@ export default {
   },
   mounted() {
     this.initMap();
-    this.testFunction2();
+    this.showTif1Band();
   },
   beforeUnmount() {
     if (this.map) {
