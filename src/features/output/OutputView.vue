@@ -29,9 +29,9 @@ export default {
     tileLayer: null,
     // In most cases it's just "/aoa_example.tif"
     // See: https://cli.vuejs.org/config/#baseurl
-    geoTiffUrl: `${process.env.BASE_URL}aoa_example.tif`,
+    geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/test_training_image_2020-01-01.tif`, // Here you have to link the .tif-folder given from the r-script
+    //geoTiffUrl: `aoa_di.tif`,
     options: null,
-    //geotiffLayer: null,
   }),
   methods: {
     initMap: function () {
@@ -45,44 +45,31 @@ export default {
       ).addTo(this.map);
     },
     testFunction2: async function () {
+      console.log(this.geoTiffUrl);
+
       const response = await fetch(this.geoTiffUrl);
 
       // Make sure you get what you expect!
-      // Should be a "image/tiff"
+      // Should be an "image/tiff"
       console.log("Content-Type:", response.headers.get("Content-Type"));
 
       const arrayBuffer = await response.arrayBuffer();
       console.log(arrayBuffer);
 
-      // NOTE:
-      // Place your comments compactly and of course in english over the relevant.
-      // This example is easier to read. Am I right? :D
-      const parsed = await parseGeoraster(arrayBuffer); // Hier schlägt es fehl. Das was als arrayBuffer gespeichert ist, kann nicht geparsed werden... Ich dachte allerdings, dass auf diesem Wege das gleich erzielt würde, wie beim aktiven Upload (siehe testFunction() und Ausgabe auf der Console von arrayBuffer). Verstehst du, warum das nicht klappt?
-      console.log(parsed);
-      /*
-        .then((response) => response.arrayBuffer())
-        .then((arrayBuffer) => {
-          parseGeoraster(arrayBuffer).then((georaster) => {
-            consol.log("georaster. " + "ABS");
-          });
-        });
-      console.log("res: " + res);
-      fetch(this.geoTiffUrl)
-        .then((response) => response.arrayBuffer())
-        .then((arrayBuffer) => {
-          parseGeoraster(arrayBuffer).then((georaster) => {
-            // var parse_georaster = require("georaster");
-            //console.log(response);
-            console.log("georaster:", georaster);
-          });
-        });
-      const response = await fetch(this.geoTiffUrl);
-      const response = await fetch(this.geoTiffUrl);
-      console.log(response);
-      const arrayBuffer = await response.arrayBuffer();
-      console.log("buffer:", arrayBuffer);*/
+      const georaster = await parseGeoraster(arrayBuffer);
+      console.log(georaster);
+
+      let layer = new GeoRasterLayer({
+        georaster: georaster,
+        opacity: 1,
+        resolution: 256,
+      });
+      console.log("layer:", layer);
+      layer.addTo(this.map);
+      this.map.fitBounds(layer.getBounds());
     },
     testFunction: function (event) {
+      // Function no longer required
       // debugger;
       const file = event.target.files[0];
       console.log("file:", file);
@@ -95,15 +82,6 @@ export default {
         console.log("buffer: ", arrayBuffer);
         const georaster = await parseGeoraster(arrayBuffer);
         console.log("georaster:", georaster);
-
-        /*
-              GeoRasterLayer is an extension of GridLayer,
-              which means can use GridLayer options like opacity.
-
-              Just make sure to include the georaster option!
-
-              http://leafletjs.com/reference-1.2.0.html#gridlayer
-            */
         var layer = new GeoRasterLayer({
           georaster: georaster,
           opacity: 0.7,
@@ -112,9 +90,7 @@ export default {
         console.log("layer:", layer);
         layer.addTo(this.map);
         this.map.fitBounds(layer.getBounds());
-        //document.getElementById("overlay").style.display = "none";
       };
-      // document.getElementById("overlay").style.display = "none";
     },
   },
   mounted() {
