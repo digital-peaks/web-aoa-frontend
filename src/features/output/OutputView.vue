@@ -1,23 +1,16 @@
 <template>
   <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
+    <div class="form-column"></div>
     <div class="bg-light map-column" id="map-container"></div>
-    <input type="file" @change="showTif1BandOnLoad" />
   </div>
 </template>
 
 <script>
+ // Import that are required for the following functionalities
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "geotiff"; // Only EPSG:4326 is supported!!!
-
-//import "plotty/dist/plotty.js";
 import "georaster";
-//import "georaster-layer-for-leaflet";
-import "leaflet-geotiff-2/dist/leaflet-geotiff.js";
-import "leaflet-geotiff-2/dist/leaflet-geotiff-rgb";
-import "leaflet-geotiff-2/dist/leaflet-geotiff-vector-arrows";
-import "leaflet-geotiff-2/dist/leaflet-geotiff-plotty";
 
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
@@ -29,11 +22,13 @@ export default {
     tileLayer: null,
     // In most cases it's just "/aoa_example.tif"
     // See: https://cli.vuejs.org/config/#baseurl
-    //geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/test_training_image_2020-01-01.tif`, // Here you have to link the .tif-folder given from the r-script
+    // Here you have to link the .tif-folder given from the r-script
+    // The results from the calculations have to be sotred in the public-path
     geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
-    options: null,
   }),
   methods: {
+    // This method initializes the map
+
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
@@ -44,56 +39,27 @@ export default {
         }
       ).addTo(this.map);
     },
+    // This function needs the input of the geoTiffUrl variable to take a tf and visualize it on the map
     showTif1Band: async function () {
-      console.log(this.geoTiffUrl);
-
       const response = await fetch(this.geoTiffUrl);
-
       // Make sure you get what you expect!
       // Should be an "image/tiff"
-      console.log("Content-Type:", response.headers.get("Content-Type"));
+      // console.log("Content-Type:", response.headers.get("Content-Type"));
 
+      // These steps have to be done to read the image
       const arrayBuffer = await response.arrayBuffer();
-      console.log(arrayBuffer);
-
       const georaster = await parseGeoraster(arrayBuffer);
-      console.log(georaster);
-      console.log(georaster.numberOfRasters);
 
+      // Now a new layer gets initialized:
       let layer = new GeoRasterLayer({
         georaster: georaster,
         opacity: 1,
         resolution: 256,
       });
-      console.log("layer:", layer);
-      console.log(layer.numBands);
       layer.addTo(this.map);
       this.map.fitBounds(layer.getBounds());
     },
-    showTif1BandOnLoad: function (event) {
-      // Function no longer required
-      // debugger;
-      const file = event.target.files[0];
-      console.log("file:", file);
 
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      console.log(reader);
-      reader.onloadend = async () => {
-        const arrayBuffer = reader.result;
-        console.log("buffer: ", arrayBuffer);
-        const georaster = await parseGeoraster(arrayBuffer);
-        console.log("georaster:", georaster);
-        var layer = new GeoRasterLayer({
-          georaster: georaster,
-          opacity: 0.7,
-          resolution: 256,
-        });
-        console.log("layer:", layer);
-        layer.addTo(this.map);
-        this.map.fitBounds(layer.getBounds());
-      };
-    },
   },
   mounted() {
     this.initMap();
@@ -107,6 +73,9 @@ export default {
 };
 </script>
 <style scoped>
+.form-column {
+  flex: auto;
+}
 .map-column {
   flex: auto;
   min-height: 500px;
@@ -114,6 +83,13 @@ export default {
 }
 @media (min-width: 992px) {
   /* WHY THIS WONT BE RECOGNIZED? */
+  .form-column {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    min-height: 0;
+  }
   .map-column {
     flex: 1;
     /*position: relative;*/
