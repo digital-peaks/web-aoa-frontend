@@ -6,8 +6,116 @@
       <div class="container">
         <div class="row">
           <div class="col-lg">
-            <div class="card hidden" style="margin: 50px 0">
-              <div class="card-header hidden">Checkbox Animation</div>
+            <div>
+              <table class="control">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th class="title" scope="col">Ein-/Ausblenden</th>
+                    <th class="title" scope="col">Download</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Area of Interest</td>
+                    <td class="check">
+                      <label class="checkbox">
+                        <input
+                          class="checkbox"
+                          type="checkbox"
+                          id="aoi"
+                          v-on:click="switchLayer('aoi')"
+                        />
+                        <span class="default"></span>
+                      </label>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Dissimilarity Index</td>
+                    <td class="check">
+                      <label class="checkbox">
+                        <input
+                          class="checkbox"
+                          type="checkbox"
+                          id="di"
+                          v-on:click="switchLayer('di')"
+                        />
+                        <span class="default"></span>
+                      </label>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Klassifikation</td>
+                    <td class="check">
+                      <label class="checkbox">
+                        <input
+                          class="checkbox"
+                          type="checkbox"
+                          id="pred"
+                          v-on:click="switchLayer('pred')"
+                        />
+                        <span class="default"></span>
+                      </label>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Area of Applicability</td>
+                    <td class="check">
+                      <label class="checkbox">
+                        <input
+                          class="checkbox"
+                          type="checkbox"
+                          id="aoa"
+                          v-on:click="switchLayer('aoa')"
+                        />
+                        <span class="default"></span>
+                      </label>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Trainingsgebiete</td>
+                    <td class="check">
+                      <label class="checkbox">
+                        <input
+                          class="checkbox"
+                          type="checkbox"
+                          id="train"
+                          v-on:click="switchLayer('train')"
+                        />
+                        <span class="default"></span>
+                      </label>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Empfohlene Orte zum Sammeln von<br />weiteren
+                      Trainigsgebieten
+                    </td>
+                    <td class="check">
+                      <label class="checkbox">
+                        <input
+                          class="checkbox"
+                          type="checkbox"
+                          id="samplePoints"
+                          v-on:click="switchLayer('samplePoints')"
+                        />
+                        <span class="default"></span>
+                      </label>
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+
+                <tbody></tbody>
+              </table>
+            </div>
+            <!--<div class="card" style="margin: 50px 0">
+              <div class="card-header"></div>
 
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
@@ -83,7 +191,7 @@
                   </label>
                 </li>
               </ul>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
@@ -216,37 +324,23 @@ export default {
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
       const georasterPred = await parseGeoraster(arrayBufferPred);
 
-      /*this.aoiLayer = new GeoRasterLayer({
-        georaster: georasterAoi,
-        opacity: 1,
-        resolution: 256,
-      });
-      this.aoiLayer.addTo(this.map);
-      this.map.fitBounds(this.aoiLayer.getBounds());*/
-
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
         opacity: 1,
         resolution: 256,
       });
-      //this.diLayer.addTo(this.map);
-      //this.map.fitBounds(this.diLayer.getBounds());
 
       this.aoaLayer = new GeoRasterLayer({
         georaster: georasterAoa,
         opacity: 1,
         resolution: 256,
       });
-      //this.aoaLayer.addTo(this.map);
-      //this.map.fitBounds(this.aoaLayer.getBounds());
 
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
         opacity: 1,
         resolution: 256,
       });
-      //this.predLayer.addTo(this.map);
-      //this.map.fitBounds(this.predLayer.getBounds());
     },
   },
   mounted() {
@@ -275,6 +369,20 @@ export default {
     width: 10px;
   }
 }
+td {
+  height: 50px;
+}
+th.title {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  width: 30px;
+  height: 100px;
+}
+.check {
+  text-align: right;
+  vertical-align: right;
+}
 .checkbox {
   background-color: #fff;
   display: inline-block;
@@ -283,7 +391,7 @@ export default {
   width: 28px;
   border-radius: 4px;
   border: 1px solid #ccc;
-  float: right;
+  /*float: middle;*/
 }
 .checkbox span {
   display: block;
@@ -291,6 +399,7 @@ export default {
   position: relative;
   width: 28px;
   padding: 0;
+  text-align: center;
 }
 .checkbox span:after {
   -moz-transform: scaleX(-1) rotate(135deg);
