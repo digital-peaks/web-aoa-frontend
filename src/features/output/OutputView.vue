@@ -29,7 +29,11 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td></td>
+                    <td class="download_button">
+                      <a>
+                        <img src="download_icon.png" />
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td>Dissimilarity Index</td>
@@ -44,7 +48,11 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td></td>
+                    <td class="download_button">
+                      <a>
+                        <img src="download_icon.png" />
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td>Klassifikation</td>
@@ -59,7 +67,11 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td></td>
+                    <td class="download_button">
+                      <a>
+                        <img src="download_icon.png" />
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td>Area of Applicability</td>
@@ -74,7 +86,11 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td></td>
+                    <td class="download_button">
+                      <a>
+                        <img src="download_icon.png" />
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td>Trainingsgebiete</td>
@@ -89,7 +105,11 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td></td>
+                    <td class="download_button">
+                      <a>
+                        <img src="download_icon.png" />
+                      </a>
+                    </td>
                   </tr>
                   <tr>
                     <td>
@@ -107,7 +127,11 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td></td>
+                    <td class="download_button">
+                      <a>
+                        <img src="download_icon.png" />
+                      </a>
+                    </td>
                   </tr>
                 </tbody>
 
@@ -377,9 +401,14 @@ th.title {
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   width: 30px;
-  height: 100px;
+  height: 120px;
 }
 .check {
+  text-align: right;
+  vertical-align: right;
+}
+.download-button {
+  /* Doesnt work */
   text-align: right;
   vertical-align: right;
 }
