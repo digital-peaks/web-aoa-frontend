@@ -1,7 +1,56 @@
 <template>
   <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
     <div class="bg-light map-column" id="map-container"></div>
-    <input type="file" @change="showTif1BandOnLoad" />
+
+    <div class="form-column">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg">
+            <div class="card hidden" style="margin: 50px 0">
+              <div class="card-header hidden">Checkbox Animation</div>
+
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  Area of Interest
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="default"></span>
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  Klassifikation
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="default"></span>
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  Area of Applicability
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="default"></span>
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  Trainingsgebiete
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="default"></span>
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  Empfohlene Orte zum Sammeln von<br />weiteren Trainigsgebieten
+                  <label class="checkbox">
+                    <input type="checkbox" />
+                    <span class="default"></span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,9 +78,15 @@ export default {
     tileLayer: null,
     // In most cases it's just "/aoa_example.tif"
     // See: https://cli.vuejs.org/config/#baseurl
-    //geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/test_training_image_2020-01-01.tif`, // Here you have to link the .tif-folder given from the r-script
-    geoTiffUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
-    options: null,
+    // Here you have to link the .tif-folder given from the r-script
+    //aoiUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
+    aoiLayer: null,
+    diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
+    diLayer: null,
+    aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
+    aoaLayer: null,
+    predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
+    predLayer: null,
   }),
   methods: {
     initMap: function () {
@@ -45,54 +100,62 @@ export default {
       ).addTo(this.map);
     },
     showTif1Band: async function () {
-      console.log(this.geoTiffUrl);
-
-      const response = await fetch(this.geoTiffUrl);
+      //const responseAoi = await fetch(this.aoiUrl);
+      const responseDi = await fetch(this.diUrl);
+      const responseAoa = await fetch(this.aoaUrl);
+      const responsePred = await fetch(this.predUrl);
 
       // Make sure you get what you expect!
       // Should be an "image/tiff"
-      console.log("Content-Type:", response.headers.get("Content-Type"));
+      //console.log("Content-Type Aoi:", responseAoi.headers.get("Content-Type"));
+      console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
+      console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
+      console.log(
+        "Content-Type Pred:",
+        responsePred.headers.get("Content-Type")
+      );
 
-      const arrayBuffer = await response.arrayBuffer();
-      console.log(arrayBuffer);
+      //const arrayBufferAoi = await responseAoi.arrayBuffer();
+      const arrayBufferDi = await responseDi.arrayBuffer();
+      const arrayBufferAoa = await responseAoa.arrayBuffer();
+      const arrayBufferPred = await responsePred.arrayBuffer();
 
-      const georaster = await parseGeoraster(arrayBuffer);
-      console.log(georaster);
-      console.log(georaster.numberOfRasters);
+      //const georasterAoi = await parseGeoraster(arrayBufferAoi);
+      const georasterDi = await parseGeoraster(arrayBufferDi);
+      const georasterAoa = await parseGeoraster(arrayBufferAoa);
+      const georasterPred = await parseGeoraster(arrayBufferPred);
 
-      let layer = new GeoRasterLayer({
-        georaster: georaster,
+      /*this.aoiLayer = new GeoRasterLayer({
+        georaster: georasterAoi,
         opacity: 1,
         resolution: 256,
       });
-      console.log("layer:", layer);
-      console.log(layer.numBands);
-      layer.addTo(this.map);
-      this.map.fitBounds(layer.getBounds());
-    },
-    showTif1BandOnLoad: function (event) {
-      // Function no longer required
-      // debugger;
-      const file = event.target.files[0];
-      console.log("file:", file);
+      this.aoiLayer.addTo(this.map);
+      this.map.fitBounds(this.aoiLayer.getBounds());*/
 
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      console.log(reader);
-      reader.onloadend = async () => {
-        const arrayBuffer = reader.result;
-        console.log("buffer: ", arrayBuffer);
-        const georaster = await parseGeoraster(arrayBuffer);
-        console.log("georaster:", georaster);
-        var layer = new GeoRasterLayer({
-          georaster: georaster,
-          opacity: 0.7,
-          resolution: 256,
-        });
-        console.log("layer:", layer);
-        layer.addTo(this.map);
-        this.map.fitBounds(layer.getBounds());
-      };
+      this.diLayer = new GeoRasterLayer({
+        georaster: georasterDi,
+        opacity: 1,
+        resolution: 256,
+      });
+      this.diLayer.addTo(this.map);
+      this.map.fitBounds(this.diLayer.getBounds());
+
+      this.aoaLayer = new GeoRasterLayer({
+        georaster: georasterAoa,
+        opacity: 1,
+        resolution: 256,
+      });
+      this.aoaLayer.addTo(this.map);
+      this.map.fitBounds(this.aoaLayer.getBounds());
+
+      this.predLayer = new GeoRasterLayer({
+        georaster: georasterPred,
+        opacity: 1,
+        resolution: 256,
+      });
+      this.predLayer.addTo(this.map);
+      this.map.fitBounds(this.predLayer.getBounds());
     },
   },
   mounted() {
@@ -107,13 +170,89 @@ export default {
 };
 </script>
 <style scoped>
+@keyframes check {
+  0% {
+    height: 0;
+    width: 0;
+  }
+  25% {
+    height: 0;
+    width: 10px;
+  }
+  50% {
+    height: 20px;
+    width: 10px;
+  }
+}
+.checkbox {
+  background-color: #fff;
+  display: inline-block;
+  height: 28px;
+  margin: 0 0.25em;
+  width: 28px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  float: right;
+}
+.checkbox span {
+  display: block;
+  height: 28px;
+  position: relative;
+  width: 28px;
+  padding: 0;
+}
+.checkbox span:after {
+  -moz-transform: scaleX(-1) rotate(135deg);
+  -ms-transform: scaleX(-1) rotate(135deg);
+  -webkit-transform: scaleX(-1) rotate(135deg);
+  transform: scaleX(-1) rotate(135deg);
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+  border-right: 4px solid #fff;
+  border-top: 4px solid #fff;
+  content: "";
+  display: block;
+  height: 20px;
+  left: 3px;
+  position: absolute;
+  top: 15px;
+  width: 10px;
+}
+.checkbox span:hover:after {
+  border-color: #999;
+}
+.checkbox input {
+  display: none;
+}
+.checkbox input:checked + span:after {
+  -webkit-animation: check 0.8s;
+  -moz-animation: check 0.8s;
+  -o-animation: check 0.8s;
+  animation: check 0.8s;
+  border-color: #555;
+}
+.checkbox input:checked + .default:after {
+  border-color: #444;
+}
+
+.form-column {
+  flex: auto;
+}
 .map-column {
   flex: auto;
   min-height: 500px;
   height: 50%;
 }
 @media (min-width: 992px) {
-  /* WHY THIS WONT BE RECOGNIZED? */
+  .form-column {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    min-height: 0;
+  }
   .map-column {
     flex: 1;
     /*position: relative;*/
