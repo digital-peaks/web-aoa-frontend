@@ -147,9 +147,20 @@ export default {
       });
     },
     uncheckTheOtherCheckboxes: function (current) {
-      console.log(current);
+      const allCheckboxes = [
+        "aoi",
+        "di",
+        "pred",
+        "aoa",
+        "train",
+        "samplePoints",
+      ];
+      for (var i = 0; i < allCheckboxes.length; ++i)
+        if (allCheckboxes[i] != current)
+          document.getElementById(allCheckboxes[i]).checked = false;
     },
     switchLayer: function (id) {
+      this.uncheckTheOtherCheckboxes(id);
       this.clearMap();
       let layer;
       let checked = document.getElementById(id).checked;
