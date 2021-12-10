@@ -13,35 +13,72 @@
                 <li class="list-group-item">
                   Area of Interest
                   <label class="checkbox">
-                    <input type="checkbox" />
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      id="aoi"
+                      v-on:click="switchLayer('aoi')"
+                    />
+                    <span class="default"></span>
+                  </label>
+                </li>
+                <li class="list-group-item">
+                  Dissimilarity Index
+                  <label class="checkbox">
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      id="di"
+                      v-on:click="switchLayer('di')"
+                    />
                     <span class="default"></span>
                   </label>
                 </li>
                 <li class="list-group-item">
                   Klassifikation
                   <label class="checkbox">
-                    <input type="checkbox" />
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      id="pred"
+                      v-on:click="switchLayer('pred')"
+                    />
                     <span class="default"></span>
                   </label>
                 </li>
                 <li class="list-group-item">
                   Area of Applicability
                   <label class="checkbox">
-                    <input type="checkbox" />
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      id="aoa"
+                      v-on:click="switchLayer('aoa')"
+                    />
                     <span class="default"></span>
                   </label>
                 </li>
                 <li class="list-group-item">
                   Trainingsgebiete
                   <label class="checkbox">
-                    <input type="checkbox" />
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      id="train"
+                      v-on:click="switchLayer('train')"
+                    />
                     <span class="default"></span>
                   </label>
                 </li>
                 <li class="list-group-item">
                   Empfohlene Orte zum Sammeln von<br />weiteren Trainigsgebieten
                   <label class="checkbox">
-                    <input type="checkbox" />
+                    <input
+                      class="checkbox"
+                      type="checkbox"
+                      id="samplePoints"
+                      v-on:click="switchLayer('samplePoints')"
+                    />
                     <span class="default"></span>
                   </label>
                 </li>
@@ -58,15 +95,6 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "geotiff"; // Only EPSG:4326 is supported!!!
-
-//import "plotty/dist/plotty.js";
-import "georaster";
-//import "georaster-layer-for-leaflet";
-import "leaflet-geotiff-2/dist/leaflet-geotiff.js";
-import "leaflet-geotiff-2/dist/leaflet-geotiff-rgb";
-import "leaflet-geotiff-2/dist/leaflet-geotiff-vector-arrows";
-import "leaflet-geotiff-2/dist/leaflet-geotiff-plotty";
 
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
@@ -83,10 +111,12 @@ export default {
     aoiLayer: null,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
-    aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
-    aoaLayer: null,
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
     predLayer: null,
+    aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
+    aoaLayer: null,
+    trainLayer: null,
+    samplePointsLayer: null,
   }),
   methods: {
     initMap: function () {
@@ -98,6 +128,56 @@ export default {
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }
       ).addTo(this.map);
+    },
+    checkLayerGetsFoundWithMessage: function (layer) {
+      if (layer == null) {
+        console.log("Dieser Layer existiert nicht");
+        return false;
+      } else return true;
+    },
+    checkLayerGetsFoundWithoutMessage: function (layer) {
+      if (layer == null) return false;
+      else return true;
+    },
+    clearMap: function () {
+      let temp = this.map;
+      const tileLayerTemp = this.tileLayer;
+      this.map.eachLayer(function (layer) {
+        if (tileLayerTemp != layer) temp.removeLayer(layer);
+      });
+    },
+    uncheckTheOtherCheckboxes: function (current) {
+      console.log(current);
+    },
+    switchLayer: function (id) {
+      this.clearMap();
+      let layer;
+      let checked = document.getElementById(id).checked;
+      if (checked) {
+        if (id == "di") {
+          layer = this.diLayer;
+          if (!this.checkLayerGetsFoundWithMessage(layer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
+        } else if (id == "aoa") {
+          layer = this.aoaLayer;
+          if (!this.checkLayerGetsFoundWithMessage(layer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
+        } else if (id == "pred") {
+          layer = this.predLayer;
+          if (!this.checkLayerGetsFoundWithMessage(layer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
+        } else if (id == "train") {
+          layer = this.trainLayer;
+          if (!this.checkLayerGetsFoundWithMessage(layer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
+        } else if (id == "aoa") {
+          layer = this.aoaLayer;
+          if (!this.checkLayerGetsFoundWithMessage(layer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
+        }
+        layer.addTo(this.map);
+        this.map.fitBounds(layer.getBounds());
+      }
     },
     showTif1Band: async function () {
       //const responseAoi = await fetch(this.aoiUrl);
@@ -138,24 +218,24 @@ export default {
         opacity: 1,
         resolution: 256,
       });
-      this.diLayer.addTo(this.map);
-      this.map.fitBounds(this.diLayer.getBounds());
+      //this.diLayer.addTo(this.map);
+      //this.map.fitBounds(this.diLayer.getBounds());
 
       this.aoaLayer = new GeoRasterLayer({
         georaster: georasterAoa,
         opacity: 1,
         resolution: 256,
       });
-      this.aoaLayer.addTo(this.map);
-      this.map.fitBounds(this.aoaLayer.getBounds());
+      //this.aoaLayer.addTo(this.map);
+      //this.map.fitBounds(this.aoaLayer.getBounds());
 
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
         opacity: 1,
         resolution: 256,
       });
-      this.predLayer.addTo(this.map);
-      this.map.fitBounds(this.predLayer.getBounds());
+      //this.predLayer.addTo(this.map);
+      //this.map.fitBounds(this.predLayer.getBounds());
     },
   },
   mounted() {
