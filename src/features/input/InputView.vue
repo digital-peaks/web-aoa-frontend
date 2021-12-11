@@ -9,6 +9,58 @@
           <label for="name" class="form-label">Name</label>
         </div>
 
+        <h5>Zeitraum auswählen</h5>
+        <h6>Anfangsdatum</h6>
+        <div class="form-floating mt-3 mb-3">
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            min="2018-01-01"
+            max="2022-12-31"
+          />
+          <h6>Enddatum</h6>
+          <input
+            type="date"
+            id="end"
+            name="trip-end"
+            min="2018-01-01"
+            max="2022-12-31"
+          />
+        </div>
+
+        <div class="form-floating mb-3">
+          <select
+            id="cloud_cover"
+            class="form-select"
+            style="width: auto; min-width: 200px"
+            aria-label="Cloud Cover auswählen">
+            <option>0%</option>
+            <option>5%</option>
+            <option>10%</option>
+            <option selected>15%</option>
+            <option>20%</option>
+            <option>25%</option>
+            <option>30%</option>
+            <option>35%</option>
+            <option>40%</option>
+            <option>45%</option>
+            <option>50%</option>
+            <option>55%</option>
+            <option>60%</option>
+            <option>65%</option>
+            <option>70%</option>
+            <option>75%</option>
+            <option>80%</option>
+            <option>85%</option>
+            <option>90%</option>
+            <option>95%</option>
+            <option>100%</option>
+          </select>
+          <label for="algorithm" class="form-label">Cloud Cover auswählen</label>
+        </div>
+       
+
         <div class="form-floating mb-3">
           <select
             id="algorithm"
