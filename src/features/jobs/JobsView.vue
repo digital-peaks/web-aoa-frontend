@@ -91,6 +91,7 @@ export default {
   components: {
     TimeAgo,
   },
+  // Map the state from store/index.js
   computed: mapState(["jobs", "jobsState"]),
   mounted() {
     this.$store.dispatch("getJobs");
@@ -99,6 +100,7 @@ export default {
 </script>
 
 <style scoped>
+/* A circle which show the status of the job. */
 .status-indicator {
   width: 20px;
   height: 20px;

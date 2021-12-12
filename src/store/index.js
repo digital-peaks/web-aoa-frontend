@@ -34,6 +34,10 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    /**
+     * Get jobs from API.
+     * @param context
+     */
     async getJobs(context) {
       context.commit("setJobsState", "loading");
       try {

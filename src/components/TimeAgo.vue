@@ -14,6 +14,10 @@ TimeAgo.addLocale(de);
 TimeAgo.addDefaultLocale(de);
 const timeAgo = new TimeAgo();
 
+/**
+ * Shows the given date in format like "vor 2 Minuten" or (12.12.21, 15:00).
+ * After 24 hours the full date will always shown.
+ */
 export default {
   name: "TimeAgo",
   props: {
@@ -24,7 +28,9 @@ export default {
       const dateInstance = new Date(this.date);
 
       const data = {
+        // value will be shown
         value: "",
+        // on hover show the full date
         title: "",
       };
 
@@ -35,9 +41,12 @@ export default {
       data.title = format(dateInstance, "dd.MM.yy, HH:mm");
 
       if (isBefore(dateInstance, subHours(new Date(), 24))) {
+        // Given date is older than 24 hours
         data.value = data.title;
         data.title = "";
       } else {
+        // Less than 24 hours ago.
+        // Show e.g. "vor 3 Sekunden"
         data.value = timeAgo.format(dateInstance);
       }
       return data;
