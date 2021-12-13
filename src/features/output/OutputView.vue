@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-lg">
             <div>
-              <table class="control">
+              <table class="table" id="control">
                 <thead>
                   <tr>
                     <th scope="col"></th>
@@ -312,7 +312,8 @@ th.title {
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   width: 30px;
-  height: 120px;
+  height: 130px;
+  vertical-align: middle;
 }
 .check {
   text-align: right;
@@ -320,7 +321,7 @@ th.title {
 }
 .download_button {
   /* Doesnt work */
-  display: flex;
+  display: flex; /* Does not work the ay it should */
   justify-content: right;
 }
 .checkbox {
