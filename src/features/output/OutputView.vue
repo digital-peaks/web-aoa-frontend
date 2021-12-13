@@ -29,12 +29,7 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td class="download_button">
-                      <!-- Doesn' work -->
-                      <a>
-                        <img src="download_icon.png" />
-                      </a>
-                    </td>
+                    <td class="download_button"></td>
                   </tr>
                   <tr>
                     <td>Dissimilarity Index</td>
@@ -50,9 +45,7 @@
                       </label>
                     </td>
                     <td class="download_button">
-                      <a>
-                        <img src="download_icon.png" />
-                      </a>
+                      <DownloadIcon width="16" />
                     </td>
                   </tr>
                   <tr>
@@ -69,9 +62,7 @@
                       </label>
                     </td>
                     <td class="download_button">
-                      <a>
-                        <img src="download_icon.png" />
-                      </a>
+                      <DownloadIcon width="16" />
                     </td>
                   </tr>
                   <tr>
@@ -88,9 +79,7 @@
                       </label>
                     </td>
                     <td class="download_button">
-                      <a>
-                        <img src="download_icon.png" />
-                      </a>
+                      <DownloadIcon width="16" />
                     </td>
                   </tr>
                   <tr>
@@ -106,11 +95,7 @@
                         <span class="default"></span>
                       </label>
                     </td>
-                    <td class="download_button">
-                      <a>
-                        <img src="download_icon.png" />
-                      </a>
-                    </td>
+                    <td class="download_button"></td>
                   </tr>
                   <tr>
                     <td>
@@ -129,9 +114,7 @@
                       </label>
                     </td>
                     <td class="download_button">
-                      <a>
-                        <img src="download_icon.png" />
-                      </a>
+                      <DownloadIcon width="16" />
                     </td>
                   </tr>
                 </tbody>
@@ -139,84 +122,6 @@
                 <tbody></tbody>
               </table>
             </div>
-            <!--<div class="card" style="margin: 50px 0">
-              <div class="card-header"></div>
-
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  Area of Interest
-                  <label class="checkbox">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      id="aoi"
-                      v-on:click="switchLayer('aoi')"
-                    />
-                    <span class="default"></span>
-                  </label>
-                </li>
-                <li class="list-group-item">
-                  Dissimilarity Index
-                  <label class="checkbox">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      id="di"
-                      v-on:click="switchLayer('di')"
-                    />
-                    <span class="default"></span>
-                  </label>
-                </li>
-                <li class="list-group-item">
-                  Klassifikation
-                  <label class="checkbox">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      id="pred"
-                      v-on:click="switchLayer('pred')"
-                    />
-                    <span class="default"></span>
-                  </label>
-                </li>
-                <li class="list-group-item">
-                  Area of Applicability
-                  <label class="checkbox">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      id="aoa"
-                      v-on:click="switchLayer('aoa')"
-                    />
-                    <span class="default"></span>
-                  </label>
-                </li>
-                <li class="list-group-item">
-                  Trainingsgebiete
-                  <label class="checkbox">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      id="train"
-                      v-on:click="switchLayer('train')"
-                    />
-                    <span class="default"></span>
-                  </label>
-                </li>
-                <li class="list-group-item">
-                  Empfohlene Orte zum Sammeln von<br />weiteren Trainigsgebieten
-                  <label class="checkbox">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      id="samplePoints"
-                      v-on:click="switchLayer('samplePoints')"
-                    />
-                    <span class="default"></span>
-                  </label>
-                </li>
-              </ul>
-            </div>-->
           </div>
         </div>
       </div>
@@ -231,6 +136,8 @@ import "leaflet/dist/leaflet.css";
 
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
+
+import DownloadIcon from "@/components/DownloadIcon.vue";
 
 export default {
   name: "Output",
@@ -251,6 +158,9 @@ export default {
     trainLayer: null,
     samplePointsLayer: null,
   }),
+  components: {
+    DownloadIcon,
+  },
   methods: {
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
@@ -408,10 +318,10 @@ th.title {
   text-align: right;
   vertical-align: right;
 }
-.download-button {
+.download_button {
   /* Doesnt work */
-  text-align: right;
-  vertical-align: right;
+  display: flex;
+  justify-content: right;
 }
 .checkbox {
   background-color: #fff;
