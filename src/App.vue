@@ -107,4 +107,14 @@ body {
   height: 100%;
   color: #2c3e50;
 }
+
+/* Fix radius for floating inputs with input-group */
+.input-group.floating .form-floating {
+  flex: 1;
+}
+.input-group.floating .form-floating input,
+.input-group.floating .form-floating select {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
 </style>

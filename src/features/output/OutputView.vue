@@ -128,7 +128,7 @@
 </template>
 
 <script>
- // Import that are required for the following functionalities
+// Import that are required for the following functionalities
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
