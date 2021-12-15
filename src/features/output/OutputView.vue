@@ -1,7 +1,5 @@
 <template>
-  <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
-    <div class="bg-light map-column" id="map-container"></div>
-
+  <div class="d-flex flex-column flex-lg-row" style="flex: 1">
     <div class="form-column">
       <div class="container">
         <div class="row">
@@ -99,8 +97,7 @@
                   </tr>
                   <tr>
                     <td>
-                      Empfohlene Orte zum Sammeln von<br />weiteren
-                      Trainigsgebieten
+                      Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
                     </td>
                     <td class="check">
                       <label class="checkbox">
@@ -126,6 +123,7 @@
         </div>
       </div>
     </div>
+    <div class="bg-light map-column" id="map-container"></div>
   </div>
 </template>
 
@@ -290,20 +288,6 @@ export default {
 };
 </script>
 <style scoped>
-@keyframes check {
-  0% {
-    height: 0;
-    width: 0;
-  }
-  25% {
-    height: 0;
-    width: 10px;
-  }
-  50% {
-    height: 20px;
-    width: 10px;
-  }
-}
 td {
   height: 50px;
 }
@@ -319,10 +303,8 @@ th.title {
   text-align: right;
   vertical-align: right;
 }
-.download_button {
-  /* Doesnt work */
-  display: flex; /* Does not work the ay it should */
-  justify-content: right;
+.download_button svg {
+  float: right;
 }
 .checkbox {
   background-color: #fff;
