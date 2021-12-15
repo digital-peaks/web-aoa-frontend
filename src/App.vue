@@ -39,9 +39,6 @@
             <router-link to="/about" class="nav-link px-2 link-dark"
               >About</router-link
             >
-            <router-link to="/input" class="nav-link px-2 link-dark"
-              >Change Values</router-link
-            >
           </ul>
 
           <div class="dropdown text-end d-flex">

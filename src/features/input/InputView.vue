@@ -114,8 +114,14 @@
           </button>
         </div>
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-light">Abbrechen</button>
-          <button type="button" class="btn btn-primary ms-2" v-on:click="create_Job()">Erstellen</button>
+
+          <router-link to="/"
+            ><button type="button" class="btn btn-light">
+              Abbrechen
+            </button></router-link
+          >
+          <button type="button" class="btn btn-primary ms-2">Erstellen</button>
+
         </div>
       </div>
     </div>
