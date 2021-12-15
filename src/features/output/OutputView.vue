@@ -42,8 +42,14 @@
                     </label>
                   </td>
                   <td class="download_button">
-                    <DownloadIcon width="16"
-                    v-on:click="downloadItem(`${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,"aoa_di")"/>
+                    <button
+                      id="download_b"
+                      v-on:click="
+                        downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                      "
+                    >
+                      <DownloadIcon width="16" />
+                    </button>
                   </td>
                 </tr>
                 <tr>
@@ -60,7 +66,14 @@
                     </label>
                   </td>
                   <td class="download_button">
-                    <DownloadIcon width="16" />
+                    <button
+                      id="download_b"
+                      v-on:click="
+                        downloadItem('geotiffs_test/pred.tif', 'pred')
+                      "
+                    >
+                      <DownloadIcon width="16" />
+                    </button>
                   </td>
                 </tr>
                 <tr>
@@ -77,7 +90,14 @@
                     </label>
                   </td>
                   <td class="download_button">
-                    <DownloadIcon width="16" />
+                    <button
+                      id="download_b"
+                      v-on:click="
+                        downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                      "
+                    >
+                      <DownloadIcon width="16" />
+                    </button>
                   </td>
                 </tr>
                 <tr>
@@ -112,6 +132,7 @@
                   </td>
                   <td class="download_button">
                     <DownloadIcon width="16" />
+                    <!--Downloadfile is missing-->
                   </td>
                 </tr>
               </tbody>
@@ -175,7 +196,8 @@ export default {
       ).addTo(this.map);
     },
 
-    downloadItem: async function (url, label) {
+    downloadItem: async function (urlLink, label) {
+      const url = `${process.env.BASE_URL}` + urlLink;
       let response = await axios.get(url, { responseType: "blob" });
       console.log("response: ", response);
       const blob = new Blob([response.data], { type: "image/tiff" });
@@ -295,10 +317,7 @@ export default {
   mounted() {
     this.initMap();
     this.showTif1Band();
-    this.downloadItem(
-      `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
-      "aoa_di"
-    );
+    //this.downloadItem("geotiffs_test/aoa_di.tif", "aoa_di");
   },
   beforeUnmount() {
     if (this.map) {
@@ -318,6 +337,10 @@ th#title {
   width: 25px;
   height: 130px;
   vertical-align: middle;
+}
+#download_b {
+  border: none;
+  background-color: white;
 }
 .check {
   text-align: right;
