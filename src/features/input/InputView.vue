@@ -114,14 +114,18 @@
           </button>
         </div>
         <div class="d-flex justify-content-end">
-
           <router-link to="/"
             ><button type="button" class="btn btn-light">
               Abbrechen
             </button></router-link
           >
-          <button type="button" class="btn btn-primary ms-2">Erstellen</button>
-
+          <button
+            type="button"
+            class="btn btn-primary ms-2"
+            v-on:click="create_Job()"
+          >
+            Erstellen
+          </button>
         </div>
       </div>
     </div>
@@ -183,18 +187,15 @@ export default {
       console.log(this.aoiFile);
     },
 
-    warn_to_increase_Cloud_Cover(){
-      if(document.getElementbyID("cloud_cover")!="15%"){
-
-        alert("test")
+    warn_to_increase_Cloud_Cover() {
+      if (document.getElementbyID("cloud_cover") != "15%") {
+        alert("test");
       }
-
     },
-
-
-    create_Job(){
-      this.$refs.name
-      console.log($refs.name);
+    create_Job() {
+      console.log("test");
+      let test = document.getElementbyID("name");
+      console.log(test);
       
     },
   },
