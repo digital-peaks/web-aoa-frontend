@@ -2,123 +2,121 @@
   <div class="d-flex flex-column flex-lg-row" style="flex: 1">
     <div class="form-column">
       <div class="container">
-        <div class="row">
-          <div class="col-lg">
-            <div>
-              <table class="table" id="control">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th class="title" scope="col">Ein-/Ausblenden</th>
-                    <th class="title" scope="col">Download</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Area of Interest</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="aoi"
-                          v-on:click="switchLayer('aoi')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button"></td>
-                  </tr>
-                  <tr>
-                    <td>Dissimilarity Index</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="di"
-                          v-on:click="switchLayer('di')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
-                      <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Klassifikation</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="pred"
-                          v-on:click="switchLayer('pred')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
-                      <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Area of Applicability</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="aoa"
-                          v-on:click="switchLayer('aoa')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
-                      <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trainingsgebiete</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="train"
-                          v-on:click="switchLayer('train')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button"></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
-                    </td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="samplePoints"
-                          v-on:click="switchLayer('samplePoints')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
-                      <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                </tbody>
+        <div class="col-lg">
+          <div>
+            <table class="table" id="control">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th id="title" scope="col">Ein-/Ausblenden</th>
+                  <th id="title" scope="col">Download</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Area of Interest</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="aoi"
+                        v-on:click="switchLayer('aoi')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button"></td>
+                </tr>
+                <tr>
+                  <td>Dissimilarity Index</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="di"
+                        v-on:click="switchLayer('di')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <DownloadIcon width="16" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Klassifikation</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="pred"
+                        v-on:click="switchLayer('pred')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <DownloadIcon width="16" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Area of Applicability</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="aoa"
+                        v-on:click="switchLayer('aoa')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <DownloadIcon width="16" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Trainingsgebiete</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="train"
+                        v-on:click="switchLayer('train')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button"></td>
+                </tr>
+                <tr>
+                  <td>
+                    Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
+                  </td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="samplePoints"
+                        v-on:click="switchLayer('samplePoints')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <DownloadIcon width="16" />
+                  </td>
+                </tr>
+              </tbody>
 
-                <tbody></tbody>
-              </table>
-            </div>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -128,7 +126,7 @@
 </template>
 
 <script>
- // Import that are required for the following functionalities
+// Import that are required for the following functionalities
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -172,6 +170,11 @@ export default {
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }
       ).addTo(this.map);
+    },
+
+    downloadItem: async function (url) {
+      let response = await Axios.get(url, { responseType: "blob" });
+      consolelog(response);
     },
     checkLayerGetsFoundWithMessage: function (layer) {
       if (layer == null) {
@@ -282,6 +285,7 @@ export default {
   mounted() {
     this.initMap();
     this.showTif1Band();
+    this.downloadItem(`${process.env.BASE_URL}geotiffs_test/aoa_di.tif`);
   },
   beforeUnmount() {
     if (this.map) {
@@ -294,11 +298,11 @@ export default {
 td {
   height: 50px;
 }
-th.title {
+th#title {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
-  width: 30px;
+  width: 25px;
   height: 130px;
   vertical-align: middle;
 }
@@ -381,7 +385,7 @@ th.title {
   }
   .map-column {
     flex: 1;
-    /*position: relative;*/
+    position: relative;
     min-height: 500;
     height: 100%;
   }
