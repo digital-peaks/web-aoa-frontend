@@ -128,6 +128,7 @@
 </template>
 
 <script>
+ // Import that are required for the following functionalities
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -160,6 +161,8 @@ export default {
     DownloadIcon,
   },
   methods: {
+    // This method initializes the map
+
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
