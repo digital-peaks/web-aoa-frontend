@@ -42,7 +42,8 @@
                     </label>
                   </td>
                   <td class="download_button">
-                    <DownloadIcon width="16" />
+                    <DownloadIcon width="16"
+                    v-on:click="downloadItem(`${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,"aoa_di")"/>
                   </td>
                 </tr>
                 <tr>
@@ -136,6 +137,8 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 
 import DownloadIcon from "@/components/DownloadIcon.vue";
 
+import axios from "axios";
+
 export default {
   name: "Output",
   data: () => ({
@@ -172,9 +175,16 @@ export default {
       ).addTo(this.map);
     },
 
-    downloadItem: async function (url) {
-      let response = await Axios.get(url, { responseType: "blob" });
-      consolelog(response);
+    downloadItem: async function (url, label) {
+      let response = await axios.get(url, { responseType: "blob" });
+      console.log("response: ", response);
+      const blob = new Blob([response.data], { type: "image/tiff" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      console.log("link: ", link);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
     },
     checkLayerGetsFoundWithMessage: function (layer) {
       if (layer == null) {
@@ -285,7 +295,10 @@ export default {
   mounted() {
     this.initMap();
     this.showTif1Band();
-    this.downloadItem(`${process.env.BASE_URL}geotiffs_test/aoa_di.tif`);
+    this.downloadItem(
+      `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
+      "aoa_di"
+    );
   },
   beforeUnmount() {
     if (this.map) {
