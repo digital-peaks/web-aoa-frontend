@@ -131,7 +131,9 @@
                     </label>
                   </td>
                   <td class="download_button">
-                    <DownloadIcon width="16" />
+                    <button id="download_b">
+                      <DownloadIcon width="16" />
+                    </button>
                     <!--Downloadfile is missing-->
                   </td>
                 </tr>
@@ -341,6 +343,7 @@ th#title {
 #download_b {
   border: none;
   background-color: white;
+  float: right;
 }
 .check {
   text-align: right;
