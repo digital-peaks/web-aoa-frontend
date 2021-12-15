@@ -9,7 +9,6 @@
           <label for="name" class="form-label">Name</label>
         </div>
 
-        <h5>Zeitraum auswählen</h5>
         <h6>Anfangsdatum</h6>
         <div class="form-floating mt-3 mb-3">
           <input
@@ -34,7 +33,8 @@
             id="cloud_cover"
             class="form-select"
             style="width: auto; min-width: 200px"
-            aria-label="Cloud Cover auswählen">
+            aria-label="Cloud Cover auswählen"
+          >
             <option>0%</option>
             <option>5%</option>
             <option>10%</option>
@@ -57,9 +57,10 @@
             <option>95%</option>
             <option>100%</option>
           </select>
-          <label for="algorithm" class="form-label">Cloud Cover auswählen</label>
+          <label for="cloudcover" class="form-label"
+            >Cloud Cover auswählen</label
+          >
         </div>
-       
 
         <div class="form-floating mb-3">
           <select
@@ -114,7 +115,7 @@
         </div>
         <div class="d-flex justify-content-end">
           <button type="button" class="btn btn-light">Abbrechen</button>
-          <button type="button" class="btn btn-primary ms-2">Erstellen</button>
+          <button type="button" class="btn btn-primary ms-2" v-on:click="create_Job()">Erstellen</button>
         </div>
       </div>
     </div>
@@ -174,6 +175,21 @@ export default {
       const [file] = event.target.files;
       this.aoiFile = file;
       console.log(this.aoiFile);
+    },
+
+    warn_to_increase_Cloud_Cover(){
+      if(document.getElementbyID("cloud_cover")!="15%"){
+
+        alert("test")
+      }
+
+    },
+
+
+    create_Job(){
+      this.$refs.name
+      console.log($refs.name);
+      
     },
   },
   mounted() {
