@@ -319,7 +319,6 @@ export default {
   mounted() {
     this.initMap();
     this.showTif1Band();
-    //this.downloadItem("geotiffs_test/aoa_di.tif", "aoa_di");
   },
   beforeUnmount() {
     if (this.map) {
@@ -331,7 +330,6 @@ export default {
 <style scoped>
 td {
   height: 50px;
-  /*border-bottom: white;*/
 }
 tr#not_last_td {
   border-bottom: white;
