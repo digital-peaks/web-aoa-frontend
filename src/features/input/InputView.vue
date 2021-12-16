@@ -92,7 +92,7 @@
             type="file"
             ref="samplesFileInput"
             class="d-none"
-            accept=".json,.geojson"
+            accept=".json,.geojson,.gpkg"
             v-on:change="onChangeSamplesFileInput"
           />
           <div
@@ -105,7 +105,9 @@
               type="text"
               class="form-control"
               id="samples_preview"
-              :value="samplesFile ? samplesFile.name : 'Select .json, .geojson'"
+              :value="
+                samplesFile ? samplesFile.name : 'Select .json, .geojson, .gpkg'
+              "
               style="pointer-events: none; color: #4c6ef5"
             />
             <label for="samples_preview" class="form-label">File</label>
