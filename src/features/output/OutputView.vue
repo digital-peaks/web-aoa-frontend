@@ -1,124 +1,147 @@
 <template>
   <div class="d-flex flex-column flex-lg-row" style="flex: 1">
     <div class="form-column">
+      <h2 id="job_number">Job xy</h2>
       <div class="container">
-        <div class="row">
-          <div class="col-lg">
-            <div>
-              <table class="table" id="control">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th class="title" scope="col">Ein-/Ausblenden</th>
-                    <th class="title" scope="col">Download</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Area of Interest</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="aoi"
-                          v-on:click="switchLayer('aoi')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button"></td>
-                  </tr>
-                  <tr>
-                    <td>Dissimilarity Index</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="di"
-                          v-on:click="switchLayer('di')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
+        <div class="col-lg">
+          <div>
+            <table class="table" id="control">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th id="title" scope="col">Ein-/Ausblenden</th>
+                  <th id="title" scope="col">Download</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="not_last_td">
+                  <td>Area of Interest</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="aoi"
+                        v-on:click="switchLayer('aoi')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button"></td>
+                </tr>
+                <tr id="not_last_td">
+                  <td>Dissimilarity Index</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="di"
+                        v-on:click="switchLayer('di')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <button
+                      id="download_b"
+                      v-on:click="
+                        downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                      "
+                    >
                       <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Klassifikation</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="pred"
-                          v-on:click="switchLayer('pred')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
+                    </button>
+                  </td>
+                </tr>
+                <tr id="not_last_td">
+                  <td>Klassifikation</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="pred"
+                        v-on:click="switchLayer('pred')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <button
+                      id="download_b"
+                      v-on:click="
+                        downloadItem('geotiffs_test/pred.tif', 'pred')
+                      "
+                    >
                       <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Area of Applicability</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="aoa"
-                          v-on:click="switchLayer('aoa')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
+                    </button>
+                  </td>
+                </tr>
+                <tr id="not_last_td">
+                  <td>Area of Applicability</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="aoa"
+                        v-on:click="switchLayer('aoa')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <button
+                      id="download_b"
+                      v-on:click="
+                        downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                      "
+                    >
                       <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trainingsgebiete</td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="train"
-                          v-on:click="switchLayer('train')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button"></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
-                    </td>
-                    <td class="check">
-                      <label class="checkbox">
-                        <input
-                          class="checkbox"
-                          type="checkbox"
-                          id="samplePoints"
-                          v-on:click="switchLayer('samplePoints')"
-                        />
-                        <span class="default"></span>
-                      </label>
-                    </td>
-                    <td class="download_button">
+                    </button>
+                  </td>
+                </tr>
+                <tr id="last_td">
+                  <td>Trainingsgebiete</td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="train"
+                        v-on:click="switchLayer('train')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button"></td>
+                </tr>
+                <tr id="not_last_td">
+                  <td>
+                    Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
+                  </td>
+                  <td class="check">
+                    <label class="checkbox">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        id="samplePoints"
+                        v-on:click="switchLayer('samplePoints')"
+                      />
+                      <span class="default"></span>
+                    </label>
+                  </td>
+                  <td class="download_button">
+                    <button id="download_b">
                       <DownloadIcon width="16" />
-                    </td>
-                  </tr>
-                </tbody>
+                    </button>
+                    <!--Downloadfile is missing-->
+                  </td>
+                </tr>
+              </tbody>
 
-                <tbody></tbody>
-              </table>
-            </div>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -137,6 +160,8 @@ import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
 import DownloadIcon from "@/components/DownloadIcon.vue";
+
+import axios from "axios";
 
 export default {
   name: "Output",
@@ -172,6 +197,18 @@ export default {
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }
       ).addTo(this.map);
+    },
+    downloadItem: async function (urlLink, label) {
+      const url = `${process.env.BASE_URL}` + urlLink;
+      let response = await axios.get(url, { responseType: "blob" });
+      console.log("response: ", response);
+      const blob = new Blob([response.data], { type: "image/tiff" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      console.log("link: ", link);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
     },
     checkLayerGetsFoundWithMessage: function (layer) {
       if (layer == null) {
@@ -294,20 +331,34 @@ export default {
 td {
   height: 50px;
 }
-th.title {
+tr#not_last_td {
+  border-bottom: white;
+}
+tr#last_td {
+  border-bottom: grey;
+  border-bottom-style: double;
+}
+th#title {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
-  width: 30px;
+  width: 25px;
   height: 130px;
   vertical-align: middle;
 }
+#download_b {
+  border: none;
+  background-color: white;
+  float: right;
+}
+
 .check {
   text-align: right;
   vertical-align: right;
 }
-.download_button svg {
-  float: right;
+#job_number {
+  padding-left: 20px;
+  padding-top: 20px;
 }
 .checkbox {
   background-color: #fff;
@@ -377,12 +428,13 @@ th.title {
     height: 100%;
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 0;
   }
   .map-column {
     flex: 1;
-    /*position: relative;*/
-    min-height: 500;
+    position: relative;
+    min-height: 600px;
     height: 100%;
   }
 }
