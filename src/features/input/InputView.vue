@@ -331,6 +331,7 @@ export default {
     height: 100%;
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 0;
   }
   .map-column {
