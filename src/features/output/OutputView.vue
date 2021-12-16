@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-lg-row" style="flex: 1">
     <div class="form-column">
+      <h2 id="job_number">Job xy</h2>
       <div class="container">
         <div class="col-lg">
           <div>
@@ -13,7 +14,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr id="not_last_td">
                   <td>Area of Interest</td>
                   <td class="check">
                     <label class="checkbox">
@@ -28,7 +29,7 @@
                   </td>
                   <td class="download_button"></td>
                 </tr>
-                <tr>
+                <tr id="not_last_td">
                   <td>Dissimilarity Index</td>
                   <td class="check">
                     <label class="checkbox">
@@ -52,7 +53,7 @@
                     </button>
                   </td>
                 </tr>
-                <tr>
+                <tr id="not_last_td">
                   <td>Klassifikation</td>
                   <td class="check">
                     <label class="checkbox">
@@ -76,7 +77,7 @@
                     </button>
                   </td>
                 </tr>
-                <tr>
+                <tr id="not_last_td">
                   <td>Area of Applicability</td>
                   <td class="check">
                     <label class="checkbox">
@@ -100,7 +101,7 @@
                     </button>
                   </td>
                 </tr>
-                <tr>
+                <tr id="last_td">
                   <td>Trainingsgebiete</td>
                   <td class="check">
                     <label class="checkbox">
@@ -115,7 +116,7 @@
                   </td>
                   <td class="download_button"></td>
                 </tr>
-                <tr>
+                <tr id="not_last_td">
                   <td>
                     Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
                   </td>
@@ -330,6 +331,14 @@ export default {
 <style scoped>
 td {
   height: 50px;
+  /*border-bottom: white;*/
+}
+tr#not_last_td {
+  border-bottom: white;
+}
+tr#last_td {
+  border-bottom: grey;
+  border-bottom-style: double;
 }
 th#title {
   -webkit-transform: rotate(45deg);
@@ -349,8 +358,9 @@ th#title {
   text-align: right;
   vertical-align: right;
 }
-.download_button svg {
-  float: right;
+#job_number {
+  padding-left: 20px;
+  padding-top: 20px;
 }
 .checkbox {
   background-color: #fff;
@@ -426,7 +436,7 @@ th#title {
   .map-column {
     flex: 1;
     position: relative;
-    min-height: 500;
+    min-height: 600px;
     height: 100%;
   }
 }
