@@ -197,7 +197,6 @@ export default {
         }
       ).addTo(this.map);
     },
-
     downloadItem: async function (urlLink, label) {
       const url = `${process.env.BASE_URL}` + urlLink;
       let response = await axios.get(url, { responseType: "blob" });
@@ -345,6 +344,7 @@ th#title {
   background-color: white;
   float: right;
 }
+
 .check {
   text-align: right;
   vertical-align: right;
