@@ -1,134 +1,157 @@
 <template>
   <div class="d-flex flex-column-reverse flex-lg-row" style="flex: 1">
-    <div class="form-column">
-      <div class="m-3">
-        <h3>Job erstellen</h3>
+    <form class="d-flex flex-column form-column m-3" v-on:submit="onSubmitForm">
+      <h3>Create job</h3>
 
-        <div class="form-floating mt-3 mb-3">
-          <input type="text" class="form-control" id="name" placeholder="Jo" />
+      <div class="mt-2 mb-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder=""
+            v-model="formData.name"
+          />
           <label for="name" class="form-label">Name</label>
         </div>
+      </div>
 
-        <h6>Anfangsdatum</h6>
-        <div class="form-floating mt-3 mb-3">
-          <input
-            type="date"
-            id="start"
-            name="trip-start"
-            min="2018-01-01"
-            max="2022-12-31"
-          />
-          <h6>Enddatum</h6>
-          <input
-            type="date"
-            id="end"
-            name="trip-end"
-            min="2018-01-01"
-            max="2022-12-31"
-          />
-        </div>
+      <div class="mt-3 mb-2"><h6>Sentinel-2</h6></div>
 
-        <div class="form-floating mb-3">
-          <select
-            id="cloud_cover"
-            class="form-select"
-            style="width: auto; min-width: 200px"
-            aria-label="Cloud Cover auswählen"
-          >
-            <option>0%</option>
-            <option>5%</option>
-            <option>10%</option>
-            <option selected>15%</option>
-            <option>20%</option>
-            <option>25%</option>
-            <option>30%</option>
-            <option>35%</option>
-            <option>40%</option>
-            <option>45%</option>
-            <option>50%</option>
-            <option>55%</option>
-            <option>60%</option>
-            <option>65%</option>
-            <option>70%</option>
-            <option>75%</option>
-            <option>80%</option>
-            <option>85%</option>
-            <option>90%</option>
-            <option>95%</option>
-            <option>100%</option>
-          </select>
-          <label for="cloudcover" class="form-label"
-            >Cloud Cover auswählen</label
-          >
-        </div>
-
-        <div class="form-floating mb-3">
-          <select
-            id="algorithm"
-            class="form-select"
-            style="width: auto; min-width: 200px"
-            aria-label="Algorithmus auswählen"
-          >
-            <option selected>Random Forest</option>
-            <option>Weitere...</option>
-          </select>
-          <label for="algorithm" class="form-label">Algorithmus</label>
-        </div>
-
-        <div class="mb-3">
-          <!-- Hide input file and trigger it via the button -->
-          <input
-            type="file"
-            ref="aoiInputJson"
-            @
-            v-on:change="onChangeAOIInputJson()"
-            accept="application/JSON"
-            class="d-none"
-          />
-          <div v-if="aoiFile">
-            {{ aoiFile.name }}
+      <div class="row mb-3">
+        <div class="col">
+          <div class="form-floating">
+            <input
+              type="date"
+              class="form-control"
+              id="start_timestamp"
+              v-model="formData.start_timestamp"
+              :min="minTimestamp"
+              :max="maxTimestamp"
+              required
+            />
+            <label for="start_timestamp" class="form-label">From</label>
           </div>
-          <button
-            type="button"
-            v-on:click="selectAOIFileJson()"
-            class="btn btn-secondary"
-          >
-            Area of Interest hochladen (*.json)
-          </button>
-          <input
-            type="file"
-            ref="aoiInputGpkg"
-            @change="loadGeoPackage"
-            accept="application/geopackage+sqlite3"
-            class="d-none"
-          />
-          <div v-if="aoiFile">
-            {{ aoiFile.name }}
-          </div>
-          <button
-            type="button"
-            @click="loadGeoPackage"
-            class="btn btn-secondary"
-          >
-            Area of Interest hochladen (*.gpkg)
-          </button>
         </div>
-        <div class="d-flex justify-content-end">
-          <router-link to="/"
-            ><button type="button" class="btn btn-light">
-              Abbrechen
-            </button></router-link
-          >
-          <button
-            type="button"
-            class="btn btn-primary ms-2"
-            v-on:click="create_Job()"
-          >
-            Erstellen
-          </button>
+        <div class="col">
+          <div class="form-floating">
+            <input
+              type="date"
+              class="form-control"
+              id="end_timestamp"
+              v-model="formData.end_timestamp"
+              :min="minTimestamp"
+              :max="maxTimestamp"
+              required
+            />
+            <label for="end_timestamp" class="form-label">To</label>
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <div class="input-group floating">
+            <div class="form-floating">
+              <select
+                class="form-select"
+                id="resolution"
+                v-model="formData.resolution"
+              >
+                <option selected value="10">10</option>
+                <option selected value="20">20</option>
+                <option selected value="60">60</option>
+              </select>
+
+              <label for="resolution" class="form-label">Resolution</label>
+            </div>
+            <span class="input-group-text">meter</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group floating">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                id="cloud_cover"
+                v-model="formData.cloud_cover"
+              />
+              <label for="cloud_cover" class="form-label">Cloud Cover</label>
+            </div>
+            <span class="input-group-text">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3 mb-2"><h6>Samples</h6></div>
+
+      <div class="row mb-3">
+        <div class="col-6">
+          <input
+            type="file"
+            ref="samplesFileInput"
+            class="d-none"
+            accept=".json,.geojson,.gpkg"
+            v-on:change="onChangeSamplesFileInput"
+          />
+          <div
+            class="form-floating"
+            v-on:click="selectSamplesFile"
+            v-on:keyup.enter="selectSamplesFile"
+            style="cursor: pointer"
+          >
+            <input
+              type="text"
+              class="form-control"
+              id="samples_preview"
+              :value="
+                samplesFile ? samplesFile.name : 'Select .json, .geojson, .gpkg'
+              "
+              style="pointer-events: none; color: #4c6ef5"
+            />
+            <label for="samples_preview" class="form-label">File</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="samples_class"
+              v-model="formData.samples_class"
+            />
+            <label for="samples_class" class="form-label">Class field</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3 mb-2"><h6>Algorithm</h6></div>
+
+      <div class="row mb-3">
+        <div class="col-6">
+          <div class="form-floating">
+            <select
+              id="algorithm"
+              class="form-select"
+              aria-label="Select algorithm"
+            >
+              <option selected>Random Forest</option>
+            </select>
+            <label for="algorithm" class="form-label">Algorithm</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <router-link to="/"
+          ><button type="button" class="btn btn-light">
+            Cancel
+          </button></router-link
+        >
+        <button type="submit" class="btn btn-primary ms-2">Start</button>
+      </div>
+    </form>
     <div class="bg-light map-column" id="map-container"></div>
   </div>
 </template>
@@ -138,11 +161,28 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
+import subMonths from "date-fns/subMonths";
+import format from "date-fns/format";
+import * as API from "@/common/api";
+
 export default {
   name: "InputView",
   data: () => ({
+    formData: {
+      name: "",
+      resolution: "10",
+      cloud_cover: "15",
+      start_timestamp: format(subMonths(new Date(), 6), "yyyy-MM-dd"),
+      end_timestamp: format(new Date(), "yyyy-MM-dd"),
+      samples_class: "class",
+    },
+    // Sentinel-2B start:
+    minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
+    maxTimestamp: format(new Date(), "yyyy-MM-dd"),
+    // file previews:
+    samplesFile: null,
+    // map:
     map: null,
-    aoiFile: undefined,
     tileLayer: null,
     drawControl: null,
     rectangleLayer: null,
@@ -169,34 +209,50 @@ export default {
         }
       ).addTo(this.map);
     },
-    selectAOIFileJson() {
-      this.aoiInputJson.click();
+    selectSamplesFile() {
+      this.$refs.samplesFileInput.click();
     },
-    onChangeAOIInputJson(event) {
-      //onChangeAOIInputJson() {
-      //const [file] = event.target.files;
-      var file = event.target.files[0];
-      this.aoiFile = file;
+    onChangeSamplesFileInput(event) {
+      const file = event.target.files[0];
+      this.samplesFile = file;
     },
-    selectAOIFileGpkg() {
-      this.aoiInputGpkg.click();
-    },
-    loadGeoPackage(event) {
-      const [file] = event.target.files;
-      this.aoiFile = file;
-      console.log(this.aoiFile);
-    },
+    /**
+     * Checks the form and send it to the API.
+     */
+    async onSubmitForm(e) {
+      // prevent that the form is send:
+      e.preventDefault();
 
-    warn_to_increase_Cloud_Cover() {
-      if (document.getElementbyID("cloud_cover") != "15%") {
-        alert("test");
+      // TODO: Implement a better form check with yup:
+      if (!this.formData.name || !this.samplesFile || !this.drawnItem) {
+        return;
       }
-    },
-    create_Job() {
-      console.log("test");
-      let test = document.getElementbyID("name");
-      console.log(test);
-      
+
+      // create job object for the api
+      const job = {
+        name: this.formData.name,
+        use_lookup: false,
+        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+        cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
+        start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
+        end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
+        samples_class: this.formData.samples_class,
+        sampling_strategy: "regular",
+        use_pretrained_model: false,
+        area_of_interest: {
+          type: "FeatureCollection",
+          features: [{ ...this.aoiJson }],
+        },
+      };
+
+      try {
+        await API.createJob({ samples: this.samplesFile, job });
+        // Go to the job overview
+        this.$router.push("/");
+      } catch (err) {
+        // TODO: Better error handling:
+        console.error(err);
+      }
     },
   },
   mounted() {
@@ -277,6 +333,7 @@ export default {
     height: 100%;
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 0;
   }
   .map-column {
