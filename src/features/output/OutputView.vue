@@ -9,13 +9,13 @@
               <thead>
                 <tr>
                   <th scope="col"></th>
-                  <th id="title" scope="col">Ein-/Ausblenden</th>
+                  <th id="title" scope="col">Show/Hide</th>
                   <th id="title" scope="col">Download</th>
                 </tr>
               </thead>
               <tbody>
                 <tr id="not_last_td">
-                  <td>Area of Interest</td>
+                  <td>Area of Interest (AOI)</td>
                   <td class="check">
                     <label class="checkbox">
                       <input
@@ -54,7 +54,7 @@
                   </td>
                 </tr>
                 <tr id="not_last_td">
-                  <td>Klassifikation</td>
+                  <td>Prediction / Classification</td>
                   <td class="check">
                     <label class="checkbox">
                       <input
@@ -78,7 +78,7 @@
                   </td>
                 </tr>
                 <tr id="not_last_td">
-                  <td>Area of Applicability</td>
+                  <td>Area of Applicability (AOA)</td>
                   <td class="check">
                     <label class="checkbox">
                       <input
@@ -102,7 +102,7 @@
                   </td>
                 </tr>
                 <tr id="last_td">
-                  <td>Trainingsgebiete</td>
+                  <td>Sample Polygons</td>
                   <td class="check">
                     <label class="checkbox">
                       <input
@@ -117,9 +117,7 @@
                   <td class="download_button"></td>
                 </tr>
                 <tr id="not_last_td">
-                  <td>
-                    Empfohlene Orte zum Sammeln von weiteren Trainigsgebieten
-                  </td>
+                  <td>Suggested locations for trainings polygons</td>
                   <td class="check">
                     <label class="checkbox">
                       <input
