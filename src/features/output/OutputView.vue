@@ -10,6 +10,7 @@
               <th scope="col"></th>
               <th id="title" scope="col">Show/Hide</th>
               <th id="title" scope="col">Download</th>
+              <th id="title" scope="col">Zoom To Layer</th>
             </tr>
           </thead>
           <tbody>
@@ -27,9 +28,20 @@
                 </label>
               </td>
               <td class="download_button"></td>
+              <td>
+                <button color="primary" v-on:click="zoomToLayer('aoi')">
+                  Zoom
+                </button>
+              </td>
             </tr>
             <tr id="not_last_td">
-              <td>Dissimilarity Index</td>
+              <td>
+                Dissimilarity Index
+                <vue-slider
+                  v-model="diTransparency"
+                  v-on:change="changeOpacity('di')"
+                />
+              </td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -51,9 +63,20 @@
                   <DownloadIcon width="16" />
                 </button>
               </td>
+              <td>
+                <button color="primary" v-on:click="zoomToLayer('di')">
+                  Zoom
+                </button>
+              </td>
             </tr>
             <tr id="not_last_td">
-              <td>Prediciton / Classification</td>
+              <td>
+                Prediciton / Classification
+                <vue-slider
+                  v-model="predTransparency"
+                  v-on:change="changeOpacity('pred')"
+                />
+              </td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -73,13 +96,18 @@
                   <DownloadIcon width="16" />
                 </button>
               </td>
+              <td>
+                <button color="primary" v-on:click="zoomToLayer('pred')">
+                  Zoom
+                </button>
+              </td>
             </tr>
             <tr id="not_last_td">
               <td>
                 Area of Applicability (AOA)
                 <vue-slider
-                  v-model="aoaTransparecy"
-                  v-on:change="changeOpacity"
+                  v-model="aoaTransparency"
+                  v-on:change="changeOpacity('aoa')"
                 />
               </td>
               <td class="check">
@@ -103,6 +131,11 @@
                   <DownloadIcon width="16" />
                 </button>
               </td>
+              <td>
+                <button color="primary" v-on:click="zoomToLayer('aoa')">
+                  Zoom
+                </button>
+              </td>
             </tr>
             <tr id="last_td">
               <td>Sample Polygons</td>
@@ -118,6 +151,14 @@
                 </label>
               </td>
               <td class="download_button"></td>
+              <td>
+                <button
+                  color="primary"
+                  v-on:click="zoomToLayer('samplePolygons')"
+                >
+                  Zoom
+                </button>
+              </td>
             </tr>
             <tr id="not_last_td">
               <td>Suggested locations for training polygons</td>
@@ -173,13 +214,15 @@ export default {
     // Here you have to link the .tif-folder given from the r-script
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
-    aoaTransparecy: 0,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
+    diTransparency: 0,
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
     predLayer: null,
+    predTransparency: 0,
     aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
     aoaLayer: null,
+    aoaTransparency: 0,
     samplePolygonsJson: `${process.env.BASE_URL}geotiffs_test/samplePolygons.geojson`,
     samplePolygonsLayer: null,
   }),
@@ -242,9 +285,14 @@ export default {
         )
           document.getElementById(allCheckboxes[i]).checked = false;
     },
-    changeOpacity: function () {
-      this.aoaLayer.setOpacity(this.aoaTransparecy / 100);
-      console.log("value ", this.aoaTransparecy / 100);
+    changeOpacity: function (layerId) {
+      if (layerId == "aoa") {
+        this.aoaLayer.setOpacity(this.aoaTransparency / 100);
+      } else if (layerId == "di") {
+        this.diLayer.setOpacity(this.diTransparency / 100);
+      } else if (layerId == "pred") {
+        this.predLayer.setOpacity(this.predTransparency / 100);
+      }
     },
     switchLayer: function (id) {
       this.uncheckTheOtherCheckboxes(id);
@@ -291,6 +339,18 @@ export default {
         this.map.fitBounds(tempLayer.getBounds());
       }
     },
+    zoomToLayer: function (layerId) {
+      // STOPPED
+      let tempLayer = null;
+      if (layerId == "aoi") tempLayer = this.aoiLayer;
+      else if (layerId == "di") tempLayer = this.diLayer;
+      else if (layerId == "pred") tempLayer = this.predLayer;
+      else if (layerId == "aoa") tempLayer = this.aoaLayer;
+      else if (layerId == "samplePolygons")
+        tempLayer = this.samplePolygonsLayer;
+      else return;
+      this.map.fitBounds(tempLayer.getBounds());
+    },
     showGeoJson: async function () {
       const responseAoi = await fetch(this.aoiJson);
       const responseSamplePolygons = await fetch(this.samplePolygonsJson);
@@ -325,23 +385,24 @@ export default {
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
-        opacity: 1, // SET OPACITY????
+        opacity: this.diTransparency, // SET OPACITY????
         resolution: 256,
       });
+      this.diLayer.addTo(this.map);
 
       this.aoaLayer = new GeoRasterLayer({
         georaster: georasterAoa,
-        opacity: 0,
+        opacity: this.aoaTransparency,
         resolution: 256,
       });
-
       this.aoaLayer.addTo(this.map);
 
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
-        opacity: 1,
+        opacity: this.predTransparency,
         resolution: 256,
       });
+      this.predLayer.addTo(this.map);
     },
   },
   mounted() {

@@ -28,6 +28,7 @@
     "vue-slider-component": "^3.2.15",
     "vue2-leaflet": "^2.7.1",
     "vue2-leaflet-draw-toolbar": "^0.1.1",
+    "vuetify": "^2.6.1",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
