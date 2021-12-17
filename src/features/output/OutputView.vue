@@ -14,7 +14,10 @@
           </thead>
           <tbody>
             <tr id="not_last_td">
-              <td>Area of Interest (AOI)</td>
+              <td>
+                Area of Interest (AOI)
+                <vue-slider v-model="aoiTransparecy" />
+              </td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -154,6 +157,9 @@ import DownloadIcon from "@/components/DownloadIcon.vue";
 
 import axios from "axios";
 
+import VueSlider from "vue-slider-component";
+import "vue-slider-component/theme/antd.css";
+
 export default {
   name: "Output",
   data: () => ({
@@ -164,6 +170,7 @@ export default {
     // Here you have to link the .tif-folder given from the r-script
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
+    aoiTransparecy: 0,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
@@ -175,6 +182,7 @@ export default {
   }),
   components: {
     DownloadIcon,
+    VueSlider,
   },
   methods: {
     // This method initializes the map
@@ -311,7 +319,7 @@ export default {
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
-        opacity: 1,
+        opacity: 1, // SET OPACITY????
         resolution: 256,
       });
 
@@ -458,4 +466,3 @@ th#title {
   }
 }
 </style>
-test
