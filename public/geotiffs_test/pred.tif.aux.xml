@@ -7,12 +7,5 @@
       <Category>water</Category>
       <Category>wood</Category>
     </CategoryNames>
-    <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">4</MDI>
-      <MDI key="STATISTICS_MEAN">2.0059263953434</MDI>
-      <MDI key="STATISTICS_MINIMUM">1</MDI>
-      <MDI key="STATISTICS_STDDEV">0.80434736815819</MDI>
-      <MDI key="STATISTICS_VALID_PERCENT">100</MDI>
-    </Metadata>
   </PAMRasterBand>
 </PAMDataset>

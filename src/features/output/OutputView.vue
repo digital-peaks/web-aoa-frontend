@@ -14,10 +14,7 @@
           </thead>
           <tbody>
             <tr id="not_last_td">
-              <td>
-                Area of Interest (AOI)
-                <vue-slider v-model="aoiTransparecy" />
-              </td>
+              <td>Area of Interest (AOI)</td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -78,7 +75,13 @@
               </td>
             </tr>
             <tr id="not_last_td">
-              <td>Area of Applicability (AOA)</td>
+              <td>
+                Area of Applicability (AOA)
+                <vue-slider
+                  v-model="aoaTransparecy"
+                  v-on:change="changeOpacity"
+                />
+              </td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -170,7 +173,7 @@ export default {
     // Here you have to link the .tif-folder given from the r-script
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
-    aoiTransparecy: 0,
+    aoaTransparecy: 0,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
@@ -239,9 +242,12 @@ export default {
         )
           document.getElementById(allCheckboxes[i]).checked = false;
     },
+    changeOpacity: function () {
+      this.aoaLayer.setOpacity(this.aoaTransparecy / 100);
+      console.log("value ", this.aoaTransparecy / 100);
+    },
     switchLayer: function (id) {
       this.uncheckTheOtherCheckboxes(id);
-      debugger;
 
       if (id != "aoi" && id != "samplePolygons") {
         this.clearMap();
@@ -302,12 +308,12 @@ export default {
 
       // Make sure you get what you expect!
       // Should be an "image/tiff"  THESE TESTS MIGHT BE USEFULL WHEN THE TRUE DATA HAS TO BE LINKED
-      /*console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
+      console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
       console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
       console.log(
         "Content-Type Pred:",
         responsePred.headers.get("Content-Type")
-      );*/
+      );
 
       const arrayBufferDi = await responseDi.arrayBuffer();
       const arrayBufferAoa = await responseAoa.arrayBuffer();
@@ -325,9 +331,11 @@ export default {
 
       this.aoaLayer = new GeoRasterLayer({
         georaster: georasterAoa,
-        opacity: 1,
+        opacity: 0,
         resolution: 256,
       });
+
+      this.aoaLayer.addTo(this.map);
 
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
