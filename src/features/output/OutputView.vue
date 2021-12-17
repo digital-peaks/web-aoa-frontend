@@ -1,147 +1,140 @@
 <template>
   <div class="d-flex flex-column flex-lg-row" style="flex: 1">
-    <div class="form-column">
+    <div class="flex-column m-3">
       <h2 id="job_number">Job xy</h2>
-      <div class="container">
-        <div class="col-lg">
-          <div>
-            <table class="table" id="control">
-              <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th id="title" scope="col">Show/Hide</th>
-                  <th id="title" scope="col">Download</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="not_last_td">
-                  <td>Area of Interest (AOI)</td>
-                  <td class="check">
-                    <label class="checkbox">
-                      <input
-                        class="checkbox"
-                        type="checkbox"
-                        id="aoi"
-                        v-on:click="switchLayer('aoi')"
-                      />
-                      <span class="default"></span>
-                    </label>
-                  </td>
-                  <td class="download_button"></td>
-                </tr>
-                <tr id="not_last_td">
-                  <td>Dissimilarity Index</td>
-                  <td class="check">
-                    <label class="checkbox">
-                      <input
-                        class="checkbox"
-                        type="checkbox"
-                        id="di"
-                        v-on:click="switchLayer('di')"
-                      />
-                      <span class="default"></span>
-                    </label>
-                  </td>
-                  <td class="download_button">
-                    <button
-                      id="download_b"
-                      v-on:click="
-                        downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                      "
-                    >
-                      <DownloadIcon width="16" />
-                    </button>
-                  </td>
-                </tr>
-                <tr id="not_last_td">
-                  <td>Prediction / Classification</td>
-                  <td class="check">
-                    <label class="checkbox">
-                      <input
-                        class="checkbox"
-                        type="checkbox"
-                        id="pred"
-                        v-on:click="switchLayer('pred')"
-                      />
-                      <span class="default"></span>
-                    </label>
-                  </td>
-                  <td class="download_button">
-                    <button
-                      id="download_b"
-                      v-on:click="
-                        downloadItem('geotiffs_test/pred.tif', 'pred')
-                      "
-                    >
-                      <DownloadIcon width="16" />
-                    </button>
-                  </td>
-                </tr>
-                <tr id="not_last_td">
-                  <td>Area of Applicability (AOA)</td>
-                  <td class="check">
-                    <label class="checkbox">
-                      <input
-                        class="checkbox"
-                        type="checkbox"
-                        id="aoa"
-                        v-on:click="switchLayer('aoa')"
-                      />
-                      <span class="default"></span>
-                    </label>
-                  </td>
-                  <td class="download_button">
-                    <button
-                      id="download_b"
-                      v-on:click="
-                        downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                      "
-                    >
-                      <DownloadIcon width="16" />
-                    </button>
-                  </td>
-                </tr>
-                <tr id="last_td">
-                  <td>Sample Polygons</td>
-                  <td class="check">
-                    <label class="checkbox">
-                      <input
-                        class="checkbox"
-                        type="checkbox"
-                        id="train"
-                        v-on:click="switchLayer('train')"
-                      />
-                      <span class="default"></span>
-                    </label>
-                  </td>
-                  <td class="download_button"></td>
-                </tr>
-                <tr id="not_last_td">
-                  <td>Suggested locations for trainings polygons</td>
-                  <td class="check">
-                    <label class="checkbox">
-                      <input
-                        class="checkbox"
-                        type="checkbox"
-                        id="samplePoints"
-                        v-on:click="switchLayer('samplePoints')"
-                      />
-                      <span class="default"></span>
-                    </label>
-                  </td>
-                  <td class="download_button">
-                    <button id="download_b">
-                      <DownloadIcon width="16" />
-                    </button>
-                    <!--Downloadfile is missing-->
-                  </td>
-                </tr>
-              </tbody>
 
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
+      <div class="col-lg">
+        <table class="table" id="control">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th id="title" scope="col">Show/Hide</th>
+              <th id="title" scope="col">Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="not_last_td">
+              <td>Area of Interest (AOI)</td>
+              <td class="check">
+                <label class="checkbox">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    id="aoi"
+                    v-on:click="switchLayer('aoi')"
+                  />
+                  <span class="default"></span>
+                </label>
+              </td>
+              <td class="download_button"></td>
+            </tr>
+            <tr id="not_last_td">
+              <td>Dissimilarity Index</td>
+              <td class="check">
+                <label class="checkbox">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    id="di"
+                    v-on:click="switchLayer('di')"
+                  />
+                  <span class="default"></span>
+                </label>
+              </td>
+              <td class="download_button">
+                <button
+                  id="download_b"
+                  v-on:click="
+                    downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                  "
+                >
+                  <DownloadIcon width="16" />
+                </button>
+              </td>
+            </tr>
+            <tr id="not_last_td">
+              <td>Prediciton / Classification</td>
+              <td class="check">
+                <label class="checkbox">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    id="pred"
+                    v-on:click="switchLayer('pred')"
+                  />
+                  <span class="default"></span>
+                </label>
+              </td>
+              <td class="download_button">
+                <button
+                  id="download_b"
+                  v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
+                >
+                  <DownloadIcon width="16" />
+                </button>
+              </td>
+            </tr>
+            <tr id="not_last_td">
+              <td>Area of Applicability (AOA)</td>
+              <td class="check">
+                <label class="checkbox">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    id="aoa"
+                    v-on:click="switchLayer('aoa')"
+                  />
+                  <span class="default"></span>
+                </label>
+              </td>
+              <td class="download_button">
+                <button
+                  id="download_b"
+                  v-on:click="
+                    downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                  "
+                >
+                  <DownloadIcon width="16" />
+                </button>
+              </td>
+            </tr>
+            <tr id="last_td">
+              <td>Sample Polygons</td>
+              <td class="check">
+                <label class="checkbox">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    id="samplePolygons"
+                    v-on:click="switchLayer('samplePolygons')"
+                  />
+                  <span class="default"></span>
+                </label>
+              </td>
+              <td class="download_button"></td>
+            </tr>
+            <tr id="not_last_td">
+              <td>Suggested locations for training polygons</td>
+              <td class="check">
+                <label class="checkbox">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    id="samplePolygons"
+                    v-on:click="switchLayer('samplePolygons')"
+                  />
+                  <span class="default"></span>
+                </label>
+              </td>
+              <td class="download_button">
+                <button id="download_b">
+                  <DownloadIcon width="16" />
+                </button>
+                <!--Downloadfile is missing-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="bg-light map-column" id="map-container"></div>
@@ -169,7 +162,7 @@ export default {
     // In most cases it's just "/aoa_example.tif"
     // See: https://cli.vuejs.org/config/#baseurl
     // Here you have to link the .tif-folder given from the r-script
-    //aoiUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
+    aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
@@ -177,8 +170,8 @@ export default {
     predLayer: null,
     aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
     aoaLayer: null,
-    trainLayer: null,
-    samplePointsLayer: null,
+    samplePolygonsJson: `${process.env.BASE_URL}geotiffs_test/samplePolygons.geojson`,
+    samplePolygonsLayer: null,
   }),
   components: {
     DownloadIcon,
@@ -221,76 +214,97 @@ export default {
     clearMap: function () {
       let temp = this.map;
       const tileLayerTemp = this.tileLayer;
+      const samplePolygonsLayerTemp = this.samplePolygonsLayer;
+
       this.map.eachLayer(function (layer) {
-        if (tileLayerTemp != layer) temp.removeLayer(layer);
+        if (tileLayerTemp != layer && samplePolygonsLayerTemp != layer)
+          temp.removeLayer(layer);
       });
     },
     uncheckTheOtherCheckboxes: function (current) {
-      const allCheckboxes = [
-        "aoi",
-        "di",
-        "pred",
-        "aoa",
-        "train",
-        "samplePoints",
-      ];
+      const allCheckboxes = ["aoi", "di", "pred", "aoa", "samplePolygons"];
       for (var i = 0; i < allCheckboxes.length; ++i)
-        if (allCheckboxes[i] != current)
+        if (
+          allCheckboxes[i] != current &&
+          allCheckboxes[i] != "aoi" &&
+          allCheckboxes[i] != "samplePolygons"
+        )
           document.getElementById(allCheckboxes[i]).checked = false;
     },
     switchLayer: function (id) {
       this.uncheckTheOtherCheckboxes(id);
-      this.clearMap();
-      let layer;
+      debugger;
+
+      if (id != "aoi" && id != "samplePolygons") {
+        this.clearMap();
+      } else if (
+        id == "aoi" &&
+        document.getElementById("aoi").checked == false
+      ) {
+        this.map.removeLayer("aoiLayer");
+      } else if (
+        id == "samplePolygons" &&
+        document.getElementById("samplePolygons").checked == false
+      ) {
+        this.map.removeLayer("samplePolygonsLayers");
+      }
+
+      let tempLayer = null;
       let checked = document.getElementById(id).checked;
       if (checked) {
-        if (id == "di") {
-          layer = this.diLayer;
-          if (!this.checkLayerGetsFoundWithMessage(layer))
+        if (id == "aoi") {
+          tempLayer = this.aoiLayer;
+          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "aoa") {
-          layer = this.aoaLayer;
-          if (!this.checkLayerGetsFoundWithMessage(layer))
+        } else if (id == "di") {
+          tempLayer = this.diLayer;
+          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
         } else if (id == "pred") {
-          layer = this.predLayer;
-          if (!this.checkLayerGetsFoundWithMessage(layer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "train") {
-          layer = this.trainLayer;
-          if (!this.checkLayerGetsFoundWithMessage(layer))
+          tempLayer = this.predLayer;
+          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
         } else if (id == "aoa") {
-          layer = this.aoaLayer;
-          if (!this.checkLayerGetsFoundWithMessage(layer))
+          tempLayer = this.aoaLayer;
+          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
+        } else if (id == "samplePolygons") {
+          tempLayer = this.samplePolygonsLayer;
+          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
         }
-        layer.addTo(this.map);
-        this.map.fitBounds(layer.getBounds());
+        tempLayer.addTo(this.map);
+        this.map.fitBounds(tempLayer.getBounds());
       }
     },
+    showGeoJson: async function () {
+      const responseAoi = await fetch(this.aoiJson);
+      const responseSamplePolygons = await fetch(this.samplePolygonsJson);
+
+      const aoi = await responseAoi.json();
+      const samplePolygons = await responseSamplePolygons.json();
+
+      this.aoiLayer = L.geoJson().addData(aoi);
+      this.samplePolygonsLayer = L.geoJson().addData(samplePolygons);
+    },
     showTif1Band: async function () {
-      //const responseAoi = await fetch(this.aoiUrl);
       const responseDi = await fetch(this.diUrl);
       const responseAoa = await fetch(this.aoaUrl);
       const responsePred = await fetch(this.predUrl);
 
       // Make sure you get what you expect!
-      // Should be an "image/tiff"
-      //console.log("Content-Type Aoi:", responseAoi.headers.get("Content-Type"));
-      console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
+      // Should be an "image/tiff"  THESE TESTS MIGHT BE USEFULL WHEN THE TRUE DATA HAS TO BE LINKED
+      /*console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
       console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
       console.log(
         "Content-Type Pred:",
         responsePred.headers.get("Content-Type")
-      );
+      );*/
 
-      //const arrayBufferAoi = await responseAoi.arrayBuffer();
       const arrayBufferDi = await responseDi.arrayBuffer();
       const arrayBufferAoa = await responseAoa.arrayBuffer();
       const arrayBufferPred = await responsePred.arrayBuffer();
 
-      //const georasterAoi = await parseGeoraster(arrayBufferAoi);
       const georasterDi = await parseGeoraster(arrayBufferDi);
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
       const georasterPred = await parseGeoraster(arrayBufferPred);
@@ -317,6 +331,7 @@ export default {
   mounted() {
     this.initMap();
     this.showTif1Band();
+    this.showGeoJson();
   },
   beforeUnmount() {
     if (this.map) {
@@ -326,6 +341,9 @@ export default {
 };
 </script>
 <style scoped>
+body {
+  text-align: center;
+}
 td {
   height: 50px;
 }
@@ -349,7 +367,6 @@ th#title {
   background-color: white;
   float: right;
 }
-
 .check {
   text-align: right;
   vertical-align: right;
@@ -411,7 +428,6 @@ th#title {
 .checkbox input:checked + .default:after {
   border-color: #444;
 }
-
 .form-column {
   flex: auto;
 }
@@ -419,6 +435,11 @@ th#title {
   flex: auto;
   min-height: 500px;
   height: 50%;
+}
+#control.table {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 @media (min-width: 992px) {
   .form-column {
@@ -437,3 +458,4 @@ th#title {
   }
 }
 </style>
+test
