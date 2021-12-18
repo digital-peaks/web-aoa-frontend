@@ -7,7 +7,7 @@
         <table class="table" id="control">
           <thead>
             <tr>
-              <th scope="col"></th>
+              <th id="layer_name" scope="col"></th>
               <th id="title" scope="col">Show/Hide</th>
               <th id="title" scope="col">Download</th>
               <th id="title" scope="col">Zoom To Layer</th>
@@ -15,7 +15,7 @@
           </thead>
           <tbody>
             <tr id="not_last_td">
-              <td>Area of Interest (AOI)</td>
+              <td id="td_elements_without_slider">Area of Interest (AOI)</td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -29,9 +29,17 @@
               </td>
               <td class="download_button"></td>
               <td>
-                <button color="primary" v-on:click="zoomToLayer('aoi')">
+                <!--<button color="primary" v-on:click="zoomToLayer('aoi')">
                   Zoom
-                </button>
+                </button>-->
+                <v-btn
+                  color="primary"
+                  elevation="2"
+                  outlined
+                  rounded
+                  text
+                  x-small
+                ></v-btn>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -40,7 +48,9 @@
                 <vue-slider
                   v-model="diTransparency"
                   v-on:change="changeOpacity('di')"
+                  :tooltip-formatter="sliderPercentage"
                 />
+                <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
                 <label class="checkbox">
@@ -75,7 +85,9 @@
                 <vue-slider
                   v-model="predTransparency"
                   v-on:change="changeOpacity('pred')"
+                  :tooltip-formatter="sliderPercentage"
                 />
+                <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
                 <label class="checkbox">
@@ -108,7 +120,9 @@
                 <vue-slider
                   v-model="aoaTransparency"
                   v-on:change="changeOpacity('aoa')"
+                  :tooltip-formatter="sliderPercentage"
                 />
+                <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
                 <label class="checkbox">
@@ -138,7 +152,7 @@
               </td>
             </tr>
             <tr id="last_td">
-              <td>Sample Polygons</td>
+              <td id="td_elements_without_slider">Sample Polygons</td>
               <td class="check">
                 <label class="checkbox">
                   <input
@@ -161,23 +175,37 @@
               </td>
             </tr>
             <tr id="not_last_td">
-              <td>Suggested locations for training polygons</td>
+              <td id="td_elements_without_slider">
+                Suggested locations for training polygons
+              </td>
               <td class="check">
                 <label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
-                    id="samplePolygons"
-                    v-on:click="switchLayer('samplePolygons')"
+                    id="suggestion"
+                    v-on:click="switchLayer('suggestion')"
                   />
                   <span class="default"></span>
                 </label>
               </td>
               <td class="download_button">
-                <button id="download_b">
+                <button
+                  id="download_b"
+                  v-on:click="
+                    downloadItem(
+                      'geotiffs_test/suggestion.geojson',
+                      'suggestion'
+                    )
+                  "
+                >
                   <DownloadIcon width="16" />
                 </button>
-                <!--Downloadfile is missing-->
+              </td>
+              <td>
+                <button color="primary" v-on:click="zoomToLayer('suggestion')">
+                  Zoom
+                </button>
               </td>
             </tr>
           </tbody>
@@ -216,23 +244,27 @@ export default {
     aoiLayer: null,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
-    diTransparency: 0,
+    diTransparency: 100,
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
     predLayer: null,
-    predTransparency: 0,
+    predTransparency: 100,
     aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
     aoaLayer: null,
-    aoaTransparency: 0,
+    aoaTransparency: 100,
     samplePolygonsJson: `${process.env.BASE_URL}geotiffs_test/samplePolygons.geojson`,
     samplePolygonsLayer: null,
+    suggestionJson: `${process.env.BASE_URL}geotiffs_test/suggestion.geojson`,
+    suggestionLayer: null,
+    sliderPercentage: "{value} %",
   }),
   components: {
     DownloadIcon,
     VueSlider,
   },
   methods: {
-    // This method initializes the map
-
+    /**
+     *
+     */
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
@@ -261,10 +293,6 @@ export default {
         return false;
       } else return true;
     },
-    checkLayerGetsFoundWithoutMessage: function (layer) {
-      if (layer == null) return false;
-      else return true;
-    },
     clearMap: function () {
       let temp = this.map;
       const tileLayerTemp = this.tileLayer;
@@ -276,12 +304,20 @@ export default {
       });
     },
     uncheckTheOtherCheckboxes: function (current) {
-      const allCheckboxes = ["aoi", "di", "pred", "aoa", "samplePolygons"];
+      const allCheckboxes = [
+        "aoi",
+        "di",
+        "pred",
+        "aoa",
+        "samplePolygons",
+        "suggestion",
+      ];
       for (var i = 0; i < allCheckboxes.length; ++i)
         if (
           allCheckboxes[i] != current &&
           allCheckboxes[i] != "aoi" &&
-          allCheckboxes[i] != "samplePolygons"
+          allCheckboxes[i] != "samplePolygons" &&
+          allCheckboxes[i] != "sugestion"
         )
           document.getElementById(allCheckboxes[i]).checked = false;
     },
@@ -295,7 +331,7 @@ export default {
       }
     },
     switchLayer: function (id) {
-      this.uncheckTheOtherCheckboxes(id);
+      /*this.uncheckTheOtherCheckboxes(id);
 
       if (id != "aoi" && id != "samplePolygons") {
         this.clearMap();
@@ -309,7 +345,12 @@ export default {
         document.getElementById("samplePolygons").checked == false
       ) {
         this.map.removeLayer("samplePolygonsLayers");
-      }
+      } else if (
+        id == "suggestion" &&
+        document.getElementById("suggestion").checked == false
+      ) {
+        this.map.removeLayer("suggestionLayer");
+      }*/
 
       let tempLayer = null;
       let checked = document.getElementById(id).checked;
@@ -334,9 +375,27 @@ export default {
           tempLayer = this.samplePolygonsLayer;
           if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
+        } else if (id == "suggestion") {
+          tempLayer = this.samplePolygonsLayer;
+          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
+            throw "ERROR - Dieser Layer exisitiert nicht!";
         }
         tempLayer.addTo(this.map);
         this.map.fitBounds(tempLayer.getBounds());
+      } else if (!checked) {
+        if (id == "aoi") {
+          this.map.removeLayer(this.aoiLayer);
+        } else if (id == "di") {
+          this.map.removeLayer(this.diLayer);
+        } else if (id == "pred") {
+          this.map.removeLayer(this.predLayer);
+        } else if (id == "aoa") {
+          this.map.removeLayer(this.aoaLayer);
+        } else if (id == "samplePolygons") {
+          this.map.removeLayer(this.samplePolygonsLayer);
+        } else if (id == "suggestion") {
+          this.map.removeLayer(this.suggestionLayer);
+        }
       }
     },
     zoomToLayer: function (layerId) {
@@ -348,18 +407,22 @@ export default {
       else if (layerId == "aoa") tempLayer = this.aoaLayer;
       else if (layerId == "samplePolygons")
         tempLayer = this.samplePolygonsLayer;
+      else if (layerId == "suggestion") tempLayer = this.suggestionLayer;
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
     showGeoJson: async function () {
       const responseAoi = await fetch(this.aoiJson);
       const responseSamplePolygons = await fetch(this.samplePolygonsJson);
+      const responseSuggestion = await fetch(this.suggestionJson);
 
       const aoi = await responseAoi.json();
       const samplePolygons = await responseSamplePolygons.json();
+      const suggestion = await responseSuggestion.json();
 
       this.aoiLayer = L.geoJson().addData(aoi);
       this.samplePolygonsLayer = L.geoJson().addData(samplePolygons);
+      this.suggestionLayer = L.geoJson().addData(suggestion);
     },
     showTif1Band: async function () {
       const responseDi = await fetch(this.diUrl);
@@ -385,24 +448,21 @@ export default {
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
-        opacity: this.diTransparency, // SET OPACITY????
+        opacity: this.diTransparency,
         resolution: 256,
       });
-      this.diLayer.addTo(this.map);
 
       this.aoaLayer = new GeoRasterLayer({
         georaster: georasterAoa,
         opacity: this.aoaTransparency,
         resolution: 256,
       });
-      this.aoaLayer.addTo(this.map);
 
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
         opacity: this.predTransparency,
         resolution: 256,
       });
-      this.predLayer.addTo(this.map);
     },
   },
   mounted() {
@@ -422,7 +482,10 @@ body {
   text-align: center;
 }
 td {
-  height: 50px;
+  height: 90px;
+}
+#td_elements_without_slider {
+  padding-top: 25px;
 }
 tr#not_last_td {
   border-bottom: white;
@@ -432,21 +495,27 @@ tr#last_td {
   border-bottom-style: double;
 }
 th#title {
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  width: 25px;
-  height: 130px;
+  -webkit-transform: rotate(60deg);
+  -moz-transform: rotate(60deg);
+  -o-transform: rotate(60deg);
+  width: 20px;
+  height: 100px;
   vertical-align: middle;
+}
+th#layer_name {
+  width: 200px;
 }
 #download_b {
   border: none;
   background-color: white;
   float: right;
+  padding-top: 17px;
 }
 .check {
   text-align: right;
   vertical-align: right;
+  align-items: center;
+  padding-top: 25px;
 }
 #job_number {
   padding-left: 20px;
@@ -526,6 +595,7 @@ th#title {
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 0;
+    max-width: 200px;
   }
   .map-column {
     flex: 1;
