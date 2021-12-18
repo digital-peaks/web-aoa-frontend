@@ -39,7 +39,8 @@
                   rounded
                   text
                   x-small
-                ></v-btn>
+                  >Zoom</v-btn
+                >
               </td>
             </tr>
             <tr id="not_last_td">
