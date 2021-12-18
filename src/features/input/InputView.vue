@@ -4,83 +4,54 @@
       <h3>Create job</h3>
 
       <div class="mt-2 mb-3">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            placeholder=""
-            v-model="formData.name"
-          />
-          <label for="name" class="form-label">Name</label>
-        </div>
+        <v-text-field type="text" label="Name" filled v-model="formData.name" />
       </div>
 
       <div class="mt-3 mb-2"><h6>Sentinel-2</h6></div>
 
       <div class="row mb-3">
         <div class="col">
-          <div class="form-floating">
-            <input
-              type="date"
-              class="form-control"
-              id="start_timestamp"
-              v-model="formData.start_timestamp"
-              :min="minTimestamp"
-              :max="maxTimestamp"
-              required
-            />
-            <label for="start_timestamp" class="form-label">From</label>
-          </div>
+          <v-text-field
+            type="date"
+            label="From"
+            filled
+            v-model="formData.start_timestamp"
+            :min="minTimestamp"
+            :max="maxTimestamp"
+          />
         </div>
         <div class="col">
-          <div class="form-floating">
-            <input
-              type="date"
-              class="form-control"
-              id="end_timestamp"
-              v-model="formData.end_timestamp"
-              :min="minTimestamp"
-              :max="maxTimestamp"
-              required
-            />
-            <label for="end_timestamp" class="form-label">To</label>
-          </div>
+          <v-text-field
+            type="date"
+            label="To"
+            filled
+            v-model="formData.end_timestamp"
+            :min="minTimestamp"
+            :max="maxTimestamp"
+          />
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col">
-          <div class="input-group floating">
-            <div class="form-floating">
-              <select
-                class="form-select"
-                id="resolution"
-                v-model="formData.resolution"
-              >
-                <option selected value="10">10</option>
-                <option selected value="20">20</option>
-                <option selected value="60">60</option>
-              </select>
-
-              <label for="resolution" class="form-label">Resolution</label>
-            </div>
-            <span class="input-group-text">meter</span>
-          </div>
+          <v-select
+            filled
+            :items="['10', '20', '60']"
+            label="Resolution"
+            v-model="formData.resolution"
+            suffix="meter"
+          ></v-select>
         </div>
         <div class="col">
-          <div class="input-group floating">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                id="cloud_cover"
-                v-model="formData.cloud_cover"
-              />
-              <label for="cloud_cover" class="form-label">Cloud Cover</label>
-            </div>
-            <span class="input-group-text">%</span>
-          </div>
+          <v-text-field
+            type="number"
+            filled
+            label="Cloud Cover"
+            v-model="formData.cloud_cover"
+            min="0"
+            max="100"
+            suffix="%"
+          />
         </div>
       </div>
 
@@ -88,41 +59,26 @@
 
       <div class="row mb-3">
         <div class="col-6">
-          <input
-            type="file"
-            ref="samplesFileInput"
-            class="d-none"
+          <v-file-input
+            filled
+            label="Sample Polygons"
             accept=".json,.geojson,.gpkg"
-            v-on:change="onChangeSamplesFileInput"
-          />
-          <div
-            class="form-floating"
-            v-on:click="selectSamplesFile"
-            v-on:keyup.enter="selectSamplesFile"
-            style="cursor: pointer"
-          >
-            <input
-              type="text"
-              class="form-control"
-              id="samples_preview"
-              :value="
-                samplesFile ? samplesFile.name : 'Select .json, .geojson, .gpkg'
-              "
-              style="pointer-events: none; color: #4c6ef5"
-            />
-            <label for="samples_preview" class="form-label">File</label>
-          </div>
+            persistent-hint
+            hint=".json,.geojson,.gpkg (max. 10 MB)"
+            show-size
+            truncate-length="25"
+            v-model="samplesFile"
+          ></v-file-input>
         </div>
         <div class="col-6">
-          <div class="form-floating">
-            <input
-              type="text"
-              class="form-control"
-              id="samples_class"
-              v-model="formData.samples_class"
-            />
-            <label for="samples_class" class="form-label">Class field</label>
-          </div>
+          <v-text-field
+            filled
+            type="string"
+            label="Class field"
+            persistent-hint
+            hint="Field which classifies the polygons."
+            v-model="formData.samples_class"
+          />
         </div>
       </div>
 
@@ -130,16 +86,12 @@
 
       <div class="row mb-3">
         <div class="col-6">
-          <div class="form-floating">
-            <select
-              id="algorithm"
-              class="form-select"
-              aria-label="Select algorithm"
-            >
-              <option selected>Random Forest</option>
-            </select>
-            <label for="algorithm" class="form-label">Algorithm</label>
-          </div>
+          <v-select
+            filled
+            :items="['Random Forest']"
+            label="Algorithm"
+            value="Random Forest"
+          ></v-select>
         </div>
       </div>
 
@@ -209,13 +161,6 @@ export default {
         }
       ).addTo(this.map);
     },
-    selectSamplesFile() {
-      this.$refs.samplesFileInput.click();
-    },
-    onChangeSamplesFileInput(event) {
-      const file = event.target.files[0];
-      this.samplesFile = file;
-    },
     /**
      * Checks the form and send it to the API.
      */
@@ -239,10 +184,7 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
         use_pretrained_model: false,
-        area_of_interest: {
-          type: "FeatureCollection",
-          features: [{ ...this.aoiJson }],
-        },
+        area_of_interest: { ...this.aoiJson },
       };
 
       try {
