@@ -8,8 +8,8 @@
           <thead>
             <tr>
               <th id="layer_name" scope="col"></th>
-              <th id="title" scope="col">Show/Hide</th>
-              <th id="title" scope="col">Download</th>
+              <th id="title" scope="col">Show / Hide</th>
+              <th id="title_download" scope="col">Download</th>
               <th id="title" scope="col">Zoom To Layer</th>
             </tr>
           </thead>
@@ -28,19 +28,10 @@
                 </label>
               </td>
               <td class="download_button"></td>
-              <td>
-                <!--<button color="primary" v-on:click="zoomToLayer('aoi')">
-                  Zoom
-                </button>-->
-                <v-btn
-                  color="primary"
-                  elevation="2"
-                  outlined
-                  rounded
-                  text
-                  x-small
-                  >Zoom</v-btn
-                >
+              <td id="zoom_button">
+                <v-btn icon v-on:click="zoomToLayer('aoi')">
+                  <MagnifierIcon width="20" />
+                </v-btn>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -65,19 +56,27 @@
                 </label>
               </td>
               <td class="download_button">
-                <button
+                <v-btn
+                  icon
+                  v-on:click="
+                    downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                  "
+                >
+                  <DownloadIcon width="16" />
+                </v-btn>
+                <!--<button
                   id="download_b"
                   v-on:click="
                     downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
                   "
                 >
                   <DownloadIcon width="16" />
-                </button>
+                </button>-->
               </td>
-              <td>
-                <button color="primary" v-on:click="zoomToLayer('di')">
-                  Zoom
-                </button>
+              <td id="zoom_button">
+                <v-btn icon v-on:click="zoomToLayer('di')">
+                  <MagnifierIcon width="20" />
+                </v-btn>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -88,6 +87,15 @@
                   v-on:change="changeOpacity('pred')"
                   :tooltip-formatter="sliderPercentage"
                 />
+                <!--<v-slider
+                  v-model="predTransparency"
+                  hint="Transparency"
+                  max="100"
+                  min="0"
+                  v-on:change="changeOpacity('pred')"
+                  persistent-hint
+                  thumb-label
+                ></v-slider>-->
                 <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
@@ -102,17 +110,23 @@
                 </label>
               </td>
               <td class="download_button">
-                <button
+                <v-btn
+                  icon
+                  v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
+                >
+                  <DownloadIcon width="16" />
+                </v-btn>
+                <!--<button
                   id="download_b"
                   v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
                 >
                   <DownloadIcon width="16" />
-                </button>
+                </button>-->
               </td>
-              <td>
-                <button color="primary" v-on:click="zoomToLayer('pred')">
-                  Zoom
-                </button>
+              <td id="zoom_button">
+                <v-btn icon v-on:click="zoomToLayer('pred')">
+                  <MagnifierIcon width="20" />
+                </v-btn>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -137,19 +151,27 @@
                 </label>
               </td>
               <td class="download_button">
-                <button
+                <v-btn
+                  icon
+                  v-on:click="
+                    downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                  "
+                >
+                  <DownloadIcon width="16" />
+                </v-btn>
+                <!--<button
                   id="download_b"
                   v-on:click="
                     downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
                   "
                 >
                   <DownloadIcon width="16" />
-                </button>
+                </button>-->
               </td>
-              <td>
-                <button color="primary" v-on:click="zoomToLayer('aoa')">
-                  Zoom
-                </button>
+              <td id="zoom_button">
+                <v-btn icon v-on:click="zoomToLayer('aoa')">
+                  <MagnifierIcon width="20" />
+                </v-btn>
               </td>
             </tr>
             <tr id="last_td">
@@ -166,13 +188,10 @@
                 </label>
               </td>
               <td class="download_button"></td>
-              <td>
-                <button
-                  color="primary"
-                  v-on:click="zoomToLayer('samplePolygons')"
-                >
-                  Zoom
-                </button>
+              <td id="zoom_button">
+                <v-btn icon v-on:click="zoomToLayer('samplePolygons')">
+                  <MagnifierIcon width="20" />
+                </v-btn>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -191,7 +210,7 @@
                 </label>
               </td>
               <td class="download_button">
-                <button
+                <!--<button
                   id="download_b"
                   v-on:click="
                     downloadItem(
@@ -201,12 +220,23 @@
                   "
                 >
                   <DownloadIcon width="16" />
-                </button>
+                </button>-->
+                <v-btn
+                  icon
+                  v-on:click="
+                    downloadItem(
+                      'geotiffs_test/suggestion.geojson',
+                      'suggestion'
+                    )
+                  "
+                >
+                  <DownloadIcon width="16" />
+                </v-btn>
               </td>
-              <td>
-                <button color="primary" v-on:click="zoomToLayer('suggestion')">
-                  Zoom
-                </button>
+              <td id="zoom_button">
+                <v-btn icon v-on:click="zoomToLayer('suggestion')">
+                  <MagnifierIcon width="20" />
+                </v-btn>
               </td>
             </tr>
           </tbody>
@@ -227,6 +257,7 @@ import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
 import DownloadIcon from "@/components/DownloadIcon.vue";
+import MagnifierIcon from "@/components/MagnifierIcon.vue";
 
 import axios from "axios";
 
@@ -260,6 +291,7 @@ export default {
   }),
   components: {
     DownloadIcon,
+    MagnifierIcon,
     VueSlider,
   },
   methods: {
@@ -332,27 +364,6 @@ export default {
       }
     },
     switchLayer: function (id) {
-      /*this.uncheckTheOtherCheckboxes(id);
-
-      if (id != "aoi" && id != "samplePolygons") {
-        this.clearMap();
-      } else if (
-        id == "aoi" &&
-        document.getElementById("aoi").checked == false
-      ) {
-        this.map.removeLayer("aoiLayer");
-      } else if (
-        id == "samplePolygons" &&
-        document.getElementById("samplePolygons").checked == false
-      ) {
-        this.map.removeLayer("samplePolygonsLayers");
-      } else if (
-        id == "suggestion" &&
-        document.getElementById("suggestion").checked == false
-      ) {
-        this.map.removeLayer("suggestionLayer");
-      }*/
-
       let tempLayer = null;
       let checked = document.getElementById(id).checked;
       if (checked) {
@@ -377,7 +388,7 @@ export default {
           if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
         } else if (id == "suggestion") {
-          tempLayer = this.samplePolygonsLayer;
+          tempLayer = this.suggestionLayer;
           if (!this.checkLayerGetsFoundWithMessage(tempLayer))
             throw "ERROR - Dieser Layer exisitiert nicht!";
         }
@@ -496,21 +507,40 @@ tr#last_td {
   border-bottom-style: double;
 }
 th#title {
-  -webkit-transform: rotate(60deg);
-  -moz-transform: rotate(60deg);
-  -o-transform: rotate(60deg);
+  /*-webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);*/
   width: 20px;
   height: 100px;
-  vertical-align: middle;
+  text-align: center;
+}
+th#title_download {
+  /*-webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);*/
+  width: 20px;
+  height: 100px;
+  text-align: center;
+  padding-bottom: 32px;
 }
 th#layer_name {
-  width: 200px;
+  width: 210px;
 }
 #download_b {
-  border: none;
+  /*border: none;
   background-color: white;
-  float: right;
+  float: right;*/
   padding-top: 17px;
+}
+.download_button {
+  padding-top: 20px;
+  /* DOESNT WORK */
+  margin-left: auto;
+  margin-right: auto;
+}
+#zoom_button {
+  /* NOT READY */
+  padding-top: 20px;
 }
 .check {
   text-align: right;
@@ -596,12 +626,12 @@ th#layer_name {
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 0;
-    max-width: 200px;
+    max-width: 210px;
   }
   .map-column {
     flex: 1;
     position: relative;
-    min-height: 600px;
+    min-height: 800px;
     height: 100%;
   }
 }
