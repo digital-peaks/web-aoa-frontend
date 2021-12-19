@@ -15,7 +15,24 @@
           </thead>
           <tbody>
             <tr id="not_last_td">
-              <td id="td_elements_without_slider">Area of Interest (AOI)</td>
+              <td id="td_elements_without_slider">
+                Area of Interest (AOI)
+                <vue-slider
+                  v-model="aoiTransparency"
+                  v-on:change="changeOpacity('aoi')"
+                  :minRange="0"
+                  :maxRange="10"
+                />
+                <p style="font-size: 10px">Transparency</p>
+                <vue-slider
+                  v-model="aoiLineThickness"
+                  v-on:change="changeLineThickness('aoi')"
+                  :data="[0, 1, 2, 3, 4, 5]"
+                  :marks="true"
+                  :hide-label="true"
+                />
+                <p style="font-size: 10px">Line thickness</p>
+              </td>
               <td class="check">
                 <v-checkbox
                   id="aoi"
@@ -128,7 +145,23 @@
               </td>
             </tr>
             <tr id="last_td">
-              <td id="td_elements_without_slider">Sample Polygons</td>
+              <td id="td_elements_without_slider">
+                Sample Polygons
+                <vue-slider
+                  v-model="samplePolygonsTransparency"
+                  v-on:change="changeOpacity('samplePolygons')"
+                  :tooltip-formatter="sliderPercentage"
+                />
+                <p style="font-size: 10px">Transparency</p>
+                <vue-slider
+                  v-model="samplePolygonsLineThickness"
+                  v-on:change="changeLineThickness('samplePolygons')"
+                  :data="[0, 1, 2, 3, 4, 5]"
+                  :marks="true"
+                  :hide-label="true"
+                />
+                <p style="font-size: 10px">Line thickness</p>
+              </td>
               <td class="check">
                 <v-checkbox
                   id="samplePolygons"
@@ -211,6 +244,8 @@ export default {
     // Here you have to link the .tif-folder given from the r-script
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
+    aoiTransparency: 50,
+    aoiLineThickness: 1,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
     diTransparency: 100,
@@ -222,14 +257,11 @@ export default {
     aoaTransparency: 100,
     samplePolygonsJson: `${process.env.BASE_URL}geotiffs_test/samplePolygons.geojson`,
     samplePolygonsLayer: null,
+    samplePolygonsTransparency: 50,
+    samplePolygonsLineThickness: 1,
     suggestionJson: `${process.env.BASE_URL}geotiffs_test/suggestion.geojson`,
     suggestionLayer: null,
     sliderPercentage: "{value} %",
-    /*markerIcon: L.icon({
-      iconUrl: "@/assets/markerIcon.png",
-      iconSize: [17, 25],
-      iconAnchor: [8, 24],
-    }),*/
   }),
   components: {
     DownloadIcon,
@@ -268,41 +300,32 @@ export default {
         return false;
       } else return true;
     },
-    clearMap: function () {
-      let temp = this.map;
-      const tileLayerTemp = this.tileLayer;
-      const samplePolygonsLayerTemp = this.samplePolygonsLayer;
-
-      this.map.eachLayer(function (layer) {
-        if (tileLayerTemp != layer && samplePolygonsLayerTemp != layer)
-          temp.removeLayer(layer);
-      });
-    },
-    uncheckTheOtherCheckboxes: function (current) {
-      const allCheckboxes = [
-        "aoi",
-        "di",
-        "pred",
-        "aoa",
-        "samplePolygons",
-        "suggestion",
-      ];
-      for (var i = 0; i < allCheckboxes.length; ++i)
-        if (
-          allCheckboxes[i] != current &&
-          allCheckboxes[i] != "aoi" &&
-          allCheckboxes[i] != "samplePolygons" &&
-          allCheckboxes[i] != "sugestion"
-        )
-          document.getElementById(allCheckboxes[i]).checked = false;
-    },
     changeOpacity: function (layerId) {
-      if (layerId == "aoa") {
+      if (layerId == "aoi") {
+        this.aoiLayer.setStyle({
+          fillOpacity: this.aoiTransparency / 100,
+        });
+      } else if (layerId == "aoa") {
         this.aoaLayer.setOpacity(this.aoaTransparency / 100);
       } else if (layerId == "di") {
         this.diLayer.setOpacity(this.diTransparency / 100);
       } else if (layerId == "pred") {
         this.predLayer.setOpacity(this.predTransparency / 100);
+      } else if (layerId == "samplePolygons") {
+        this.samplePolygonsLayer.setStyle({
+          fillOpacity: this.samplePolygonsTransparency / 100,
+        });
+      }
+    },
+    changeLineThickness: function (layerId) {
+      if (layerId == "aoi") {
+        this.aoiLayer.setStyle({
+          weight: this.aoiLineThickness,
+        });
+      } else if (layerId == "samplePolygons") {
+        this.samplePolygonsLayer.setStyle({
+          weight: this.samplePolygonsLineThickness,
+        });
       }
     },
     switchLayer: function (id) {
@@ -311,7 +334,6 @@ export default {
       if (!checked) checked = true;
       // This line and the following one convert the value because vuetify uses switched values
       else checked = false;
-      console.log(checked);
       if (checked) {
         if (id == "aoi") {
           tempLayer = this.aoiLayer;
@@ -379,12 +401,10 @@ export default {
       const suggestion = await responseSuggestion.json();
 
       this.aoiLayer = L.geoJson().addData(aoi);
-      this.samplePolygonsLayer = L.geoJson().addData(samplePolygons);
-      this.suggestionLayer = L.geoJson(suggestion, {
-        onEachFeature: function (feature, layer) {
-          layer.bindPopup(feature.geometry.coordinates);
-        },
+      this.samplePolygonsLayer = L.geoJson(samplePolygons, {
+        style: { fillOpacity: this.samplePolygonsTransparency / 100 },
       });
+      this.suggestionLayer = L.geoJson(suggestion);
     },
     showTif1Band: async function () {
       const responseDi = await fetch(this.diUrl);
@@ -521,14 +541,10 @@ td.check {
   width: 100%;
   height: 350px;
 }
-/*.map-column {
-  flex: auto;
-  min-height: 500px;
-  height: 50%;
-}*/
 @media (min-width: 992px) {
   .wrapper {
     flex: 1;
+    height: 100%;
     min-height: 0;
     overflow: hidden;
   }
@@ -545,11 +561,5 @@ td.check {
     width: 100%;
     height: 100%;
   }
-  /*.map-column {
-    flex: 1;
-    position: relative;
-    min-height: 100%;
-    height: 100%;
-  }*/
 }
 </style>
