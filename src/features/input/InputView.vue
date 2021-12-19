@@ -68,7 +68,9 @@
         />
       </div>
 
-      <div class="mt-3 mb-2"><h6>Area of Interest (AOI)</h6></div>
+      <div class="mt-3 mb-2">
+        <span class="text-h6">Area of Interest (AOI)</span>
+      </div>
 
       <v-row class="mb-3">
         <v-col class="d-flex align-items-center">
@@ -92,7 +94,7 @@
         </v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><h6>Sentinel-2</h6></div>
+      <div class="mt-3 mb-2"><span class="text-h6">Sentinel-2</span></div>
 
       <v-row>
         <v-col cols="6">
@@ -143,7 +145,7 @@
         </v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><h6>Samples</h6></div>
+      <div class="mt-3 mb-2"><span class="text-h6">Samples</span></div>
 
       <div class="row mb-3">
         <div class="col-6">
@@ -176,7 +178,7 @@
         </div>
       </div>
 
-      <div class="mt-3 mb-2"><h6>Algorithm</h6></div>
+      <div class="mt-3 mb-2"><span class="text-h6">Algorithm</span></div>
 
       <div class="row mb-3">
         <div class="col-6">
