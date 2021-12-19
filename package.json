@@ -18,7 +18,6 @@
     "georaster-layer-for-leaflet": "^3.5.0",
     "geotiff": "^1.0.9",
     "javascript-time-ago": "^2.3.10",
-    "jquery": "^3.6.0",
     "leaflet": "^1.7.1",
     "leaflet-draw": "^1.0.4",
     "leaflet-geometryutil": "^0.10.0",
