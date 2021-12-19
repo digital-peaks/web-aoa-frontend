@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column flex-lg-row" style="flex: 1">
+  <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column m-3">
       <h2 id="job_number">Job xy</h2>
 
@@ -22,15 +22,6 @@
                   v-on:click="switchLayer('aoi')"
                   color="primary"
                 ></v-checkbox>
-                <!--<label class="checkbox">
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    id="aoi"
-                    v-on:click="switchLayer('aoi')"
-                  />
-                  <span class="default"></span>
-                </label>-->
               </td>
               <td class="download_button"></td>
               <td id="zoom_button">
@@ -55,15 +46,6 @@
                   v-on:click="switchLayer('di')"
                   color="primary"
                 ></v-checkbox>
-                <!--<label class="checkbox">
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    id="di"
-                    v-on:click="switchLayer('di')"
-                  />
-                  <span class="default"></span>
-                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -97,15 +79,6 @@
                   v-on:click="switchLayer('pred')"
                   color="primary"
                 ></v-checkbox>
-                <!--<label class="checkbox">
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    id="pred"
-                    v-on:click="switchLayer('pred')"
-                  />
-                  <span class="default"></span>
-                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -137,15 +110,6 @@
                   v-on:click="switchLayer('aoa')"
                   color="primary"
                 ></v-checkbox>
-                <!--<label class="checkbox">
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    id="aoa"
-                    v-on:click="switchLayer('aoa')"
-                  />
-                  <span class="default"></span>
-                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -171,15 +135,6 @@
                   v-on:click="switchLayer('samplePolygons')"
                   color="primary"
                 ></v-checkbox>
-                <!--<label class="checkbox">
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    id="samplePolygons"
-                    v-on:click="switchLayer('samplePolygons')"
-                  />
-                  <span class="default"></span>
-                </label>-->
               </td>
               <td class="download_button"></td>
               <td id="zoom_button">
@@ -198,15 +153,6 @@
                   v-on:click="switchLayer('suggestion')"
                   color="primary"
                 ></v-checkbox>
-                <!--<label class="checkbox">
-                  <input
-                    class="checkbox"
-                    type="checkbox"
-                    id="suggestion"
-                    v-on:click="switchLayer('suggestion')"
-                  />
-                  <span class="default"></span>
-                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -231,7 +177,10 @@
         </table>
       </div>
     </div>
-    <div class="bg-light map-column" id="map-container"></div>
+    <!--<div class="bg-light map-column" id="map-container"></div>-->
+    <div class="d-flex align-stretch bg-light" style="flex: 1">
+      <div id="map-container"></div>
+    </div>
   </div>
 </template>
 
@@ -558,20 +507,31 @@ td.check {
   padding-left: 20px;
   padding-top: 20px;
 }
-.form-column {
-  flex: auto;
-}
-.map-column {
-  flex: auto;
-  min-height: 500px;
-  height: 50%;
-}
+
 #control.table {
   display: block;
+  /* DOENST WORK BUT THE TARGET WAS A CENTER ALIGNED LAYER CONTROL FOR THE RESPONSIVE DESIGN */
   margin-left: auto;
   margin-right: auto;
 }
+.form-column {
+  flex: auto;
+}
+#map-container {
+  width: 100%;
+  height: 350px;
+}
+/*.map-column {
+  flex: auto;
+  min-height: 500px;
+  height: 50%;
+}*/
 @media (min-width: 992px) {
+  .wrapper {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
   .form-column {
     flex: 1;
     height: 100%;
@@ -581,11 +541,15 @@ td.check {
     min-height: 0;
     max-width: 210px;
   }
-  .map-column {
-    flex: 1;
-    position: relative;
-    min-height: 800px;
+  #map-container {
+    width: 100%;
     height: 100%;
   }
+  /*.map-column {
+    flex: 1;
+    position: relative;
+    min-height: 100%;
+    height: 100%;
+  }*/
 }
 </style>
