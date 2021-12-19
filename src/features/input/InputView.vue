@@ -302,6 +302,7 @@ export default {
       } catch (err) {
         console.error(err);
 
+        // Create an error message for the modal.
         if (err?.response?.data) {
           this.dialogError = true;
           this.errorMessage = {
@@ -313,6 +314,9 @@ export default {
         }
       }
     },
+    /**
+     * Enables to draw a Rectangle on Leaflet.
+     */
     drawItem() {
       if (!this.map || !this.drawControl) {
         return;
