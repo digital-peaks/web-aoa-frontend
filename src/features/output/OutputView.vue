@@ -8,16 +8,21 @@
           <thead>
             <tr>
               <th id="layer_name" scope="col"></th>
-              <th id="title" scope="col">Show / Hide</th>
+              <th id="title_show_hide" scope="col">Show/ Hide</th>
               <th id="title_download" scope="col">Download</th>
-              <th id="title" scope="col">Zoom To Layer</th>
+              <th id="title" scope="col">Zoom to layer</th>
             </tr>
           </thead>
           <tbody>
             <tr id="not_last_td">
               <td id="td_elements_without_slider">Area of Interest (AOI)</td>
               <td class="check">
-                <label class="checkbox">
+                <v-checkbox
+                  id="aoi"
+                  v-on:click="switchLayer('aoi')"
+                  color="primary"
+                ></v-checkbox>
+                <!--<label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
@@ -25,7 +30,7 @@
                     v-on:click="switchLayer('aoi')"
                   />
                   <span class="default"></span>
-                </label>
+                </label>-->
               </td>
               <td class="download_button"></td>
               <td id="zoom_button">
@@ -45,7 +50,12 @@
                 <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
-                <label class="checkbox">
+                <v-checkbox
+                  id="di"
+                  v-on:click="switchLayer('di')"
+                  color="primary"
+                ></v-checkbox>
+                <!--<label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
@@ -53,7 +63,7 @@
                     v-on:click="switchLayer('di')"
                   />
                   <span class="default"></span>
-                </label>
+                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -64,14 +74,6 @@
                 >
                   <DownloadIcon width="16" />
                 </v-btn>
-                <!--<button
-                  id="download_b"
-                  v-on:click="
-                    downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                  "
-                >
-                  <DownloadIcon width="16" />
-                </button>-->
               </td>
               <td id="zoom_button">
                 <v-btn icon v-on:click="zoomToLayer('di')">
@@ -87,19 +89,15 @@
                   v-on:change="changeOpacity('pred')"
                   :tooltip-formatter="sliderPercentage"
                 />
-                <!--<v-slider
-                  v-model="predTransparency"
-                  hint="Transparency"
-                  max="100"
-                  min="0"
-                  v-on:change="changeOpacity('pred')"
-                  persistent-hint
-                  thumb-label
-                ></v-slider>-->
                 <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
-                <label class="checkbox">
+                <v-checkbox
+                  id="pred"
+                  v-on:click="switchLayer('pred')"
+                  color="primary"
+                ></v-checkbox>
+                <!--<label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
@@ -107,7 +105,7 @@
                     v-on:click="switchLayer('pred')"
                   />
                   <span class="default"></span>
-                </label>
+                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -116,12 +114,6 @@
                 >
                   <DownloadIcon width="16" />
                 </v-btn>
-                <!--<button
-                  id="download_b"
-                  v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
-                >
-                  <DownloadIcon width="16" />
-                </button>-->
               </td>
               <td id="zoom_button">
                 <v-btn icon v-on:click="zoomToLayer('pred')">
@@ -140,7 +132,12 @@
                 <p style="font-size: 10px">Transparency</p>
               </td>
               <td class="check">
-                <label class="checkbox">
+                <v-checkbox
+                  id="aoa"
+                  v-on:click="switchLayer('aoa')"
+                  color="primary"
+                ></v-checkbox>
+                <!--<label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
@@ -148,7 +145,7 @@
                     v-on:click="switchLayer('aoa')"
                   />
                   <span class="default"></span>
-                </label>
+                </label>-->
               </td>
               <td class="download_button">
                 <v-btn
@@ -159,14 +156,6 @@
                 >
                   <DownloadIcon width="16" />
                 </v-btn>
-                <!--<button
-                  id="download_b"
-                  v-on:click="
-                    downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                  "
-                >
-                  <DownloadIcon width="16" />
-                </button>-->
               </td>
               <td id="zoom_button">
                 <v-btn icon v-on:click="zoomToLayer('aoa')">
@@ -177,7 +166,12 @@
             <tr id="last_td">
               <td id="td_elements_without_slider">Sample Polygons</td>
               <td class="check">
-                <label class="checkbox">
+                <v-checkbox
+                  id="samplePolygons"
+                  v-on:click="switchLayer('samplePolygons')"
+                  color="primary"
+                ></v-checkbox>
+                <!--<label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
@@ -185,7 +179,7 @@
                     v-on:click="switchLayer('samplePolygons')"
                   />
                   <span class="default"></span>
-                </label>
+                </label>-->
               </td>
               <td class="download_button"></td>
               <td id="zoom_button">
@@ -199,7 +193,12 @@
                 Suggested locations for training polygons
               </td>
               <td class="check">
-                <label class="checkbox">
+                <v-checkbox
+                  id="suggestion"
+                  v-on:click="switchLayer('suggestion')"
+                  color="primary"
+                ></v-checkbox>
+                <!--<label class="checkbox">
                   <input
                     class="checkbox"
                     type="checkbox"
@@ -207,20 +206,9 @@
                     v-on:click="switchLayer('suggestion')"
                   />
                   <span class="default"></span>
-                </label>
+                </label>-->
               </td>
               <td class="download_button">
-                <!--<button
-                  id="download_b"
-                  v-on:click="
-                    downloadItem(
-                      'geotiffs_test/suggestion.geojson',
-                      'suggestion'
-                    )
-                  "
-                >
-                  <DownloadIcon width="16" />
-                </button>-->
                 <v-btn
                   icon
                   v-on:click="
@@ -288,6 +276,11 @@ export default {
     suggestionJson: `${process.env.BASE_URL}geotiffs_test/suggestion.geojson`,
     suggestionLayer: null,
     sliderPercentage: "{value} %",
+    /*markerIcon: L.icon({
+      iconUrl: "@/assets/markerIcon.png",
+      iconSize: [17, 25],
+      iconAnchor: [8, 24],
+    }),*/
   }),
   components: {
     DownloadIcon,
@@ -366,6 +359,10 @@ export default {
     switchLayer: function (id) {
       let tempLayer = null;
       let checked = document.getElementById(id).checked;
+      if (!checked) checked = true;
+      // This line and the following one convert the value because vuetify uses switched values
+      else checked = false;
+      console.log(checked);
       if (checked) {
         if (id == "aoi") {
           tempLayer = this.aoiLayer;
@@ -434,7 +431,11 @@ export default {
 
       this.aoiLayer = L.geoJson().addData(aoi);
       this.samplePolygonsLayer = L.geoJson().addData(samplePolygons);
-      this.suggestionLayer = L.geoJson().addData(suggestion);
+      this.suggestionLayer = L.geoJson(suggestion, {
+        onEachFeature: function (feature, layer) {
+          layer.bindPopup(feature.geometry.coordinates);
+        },
+      });
     },
     showTif1Band: async function () {
       const responseDi = await fetch(this.diUrl);
@@ -443,12 +444,11 @@ export default {
 
       // Make sure you get what you expect!
       // Should be an "image/tiff"  THESE TESTS MIGHT BE USEFULL WHEN THE TRUE DATA HAS TO BE LINKED
-      console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
-      console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
-      console.log(
-        "Content-Type Pred:",
-        responsePred.headers.get("Content-Type")
-      );
+      // THE FOLLOWING LINES OF CODE ARE JUST INCLUDES FOR INTERNAL CHECKS IF THEY ARE NECESSARY
+
+      //console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
+      //console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
+      //console.log("Content-Type Pred:", responsePred.headers.get("Content-Type"));
 
       const arrayBufferDi = await responseDi.arrayBuffer();
       const arrayBufferAoa = await responseAoa.arrayBuffer();
@@ -507,15 +507,24 @@ tr#last_td {
   border-bottom-style: double;
 }
 th#title {
-  /*-webkit-transform: rotate(90deg);
+  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);*/
   width: 20px;
   height: 100px;
   text-align: center;
 }
+th#title_show_hide {
+  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);*/
+  width: 20px;
+  height: 100px;
+  text-align: center;
+  padding-bottom: 22px;
+}
 th#title_download {
-  /*-webkit-transform: rotate(90deg);
+  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);*/
   width: 20px;
@@ -527,83 +536,27 @@ th#layer_name {
   width: 210px;
 }
 #download_b {
-  /*border: none;
-  background-color: white;
-  float: right;*/
   padding-top: 17px;
 }
 .download_button {
   padding-top: 20px;
-  /* DOESNT WORK */
-  margin-left: auto;
-  margin-right: auto;
+  padding-left: 28px;
 }
 #zoom_button {
-  /* NOT READY */
-  padding-top: 20px;
+  padding-top: 18px;
+  padding-left: 13px;
 }
-.check {
-  text-align: right;
-  vertical-align: right;
+td.check {
+  margin: auto;
+  text-align: center;
   align-items: center;
-  padding-top: 25px;
+  justify-content: center;
+  padding-bottom: 20px;
+  padding-left: 20px;
 }
 #job_number {
   padding-left: 20px;
   padding-top: 20px;
-}
-.checkbox {
-  background-color: #fff;
-  display: inline-block;
-  height: 28px;
-  margin: 0 0.25em;
-  width: 28px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  /*float: middle;*/
-}
-.checkbox span {
-  display: block;
-  height: 28px;
-  position: relative;
-  width: 28px;
-  padding: 0;
-  text-align: center;
-}
-.checkbox span:after {
-  -moz-transform: scaleX(-1) rotate(135deg);
-  -ms-transform: scaleX(-1) rotate(135deg);
-  -webkit-transform: scaleX(-1) rotate(135deg);
-  transform: scaleX(-1) rotate(135deg);
-  -moz-transform-origin: left top;
-  -ms-transform-origin: left top;
-  -webkit-transform-origin: left top;
-  transform-origin: left top;
-  border-right: 4px solid #fff;
-  border-top: 4px solid #fff;
-  content: "";
-  display: block;
-  height: 20px;
-  left: 3px;
-  position: absolute;
-  top: 15px;
-  width: 10px;
-}
-.checkbox span:hover:after {
-  border-color: #999;
-}
-.checkbox input {
-  display: none;
-}
-.checkbox input:checked + span:after {
-  -webkit-animation: check 0.8s;
-  -moz-animation: check 0.8s;
-  -o-animation: check 0.8s;
-  animation: check 0.8s;
-  border-color: #555;
-}
-.checkbox input:checked + .default:after {
-  border-color: #444;
 }
 .form-column {
   flex: auto;
