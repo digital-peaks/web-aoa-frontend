@@ -366,15 +366,17 @@ export default {
         // Prepare coordinates for AOI GeoJSON
         const coordinates = [];
         for (let i = 0; i < 4; ++i) {
-          coordinates[i] = [rectangle[i].lat, rectangle[i].lng];
+          coordinates[i] = [rectangle[i].lng, rectangle[i].lat];
         }
+        // For GeoJSON Polygon the first and the last must be the same:
+        coordinates[4] = coordinates[0];
 
         // Set AOI:
         this.formData.area_of_interest = {
           type: "Feature",
           geometry: {
             type: "Polygon",
-            coordinates,
+            coordinates: [coordinates],
           },
           properties: {
             name: "AOI",
