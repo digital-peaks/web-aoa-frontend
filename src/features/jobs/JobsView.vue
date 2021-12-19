@@ -36,8 +36,9 @@
             <div
               class="status-indicator"
               v-bind:class="{
-                error: false,
-                loading: false,
+                running: job.status === 'running',
+                error: job.status === 'error',
+                success: job.status === 'success',
               }"
             ></div>
           </div>
@@ -105,7 +106,7 @@ export default {
   width: 20px;
   height: 20px;
   border-radius: 20px;
-  background-color: #12b886;
+  background-color: #aaaaaa;
 }
 
 /* Source: https://www.florin-pop.com/blog/2019/03/css-pulse-effect/ */
@@ -124,14 +125,16 @@ export default {
   }
 }
 
-.status-indicator.loading {
+.status-indicator.running {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
   transform: scale(1);
   animation: pulse 2s infinite;
   background-color: #15aabf;
 }
-
 .status-indicator.error {
   background-color: #e64980;
+}
+.status-indicator.success {
+  background-color: #12b886;
 }
 </style>
