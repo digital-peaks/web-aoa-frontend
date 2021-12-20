@@ -237,6 +237,8 @@ import axios from "axios";
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
 
+import chroma from "chroma-js";
+
 export default {
   name: "Output",
   data: () => ({
@@ -463,6 +465,11 @@ export default {
 
       const georasterDi = await parseGeoraster(arrayBufferDi);
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
+      console.log("georasterAoa.mins[0]: ", georasterAoa.mins[0]);
+      console.log("georasterAoa.maxs[0]: ", georasterAoa.maxs[0]);
+      console.log("georasterAoa.ranges[0]: ", georasterAoa.ranges[0]);
+      console.log(chroma.brewer);
+
       const georasterPred = await parseGeoraster(arrayBufferPred);
 
       this.diLayer = new GeoRasterLayer({
