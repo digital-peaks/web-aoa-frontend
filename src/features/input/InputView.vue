@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title class="text-h5 red--text">Oops!</v-card-title>
 
-        <v-card-text>
+        <v-card-text> test 
           <div class="mb-3">
             Something went wrong. Please try again later or send us the error
             message and we will help you.
@@ -30,7 +30,7 @@
                     : errorMessage
                 "
               ></v-textarea>
-            </div>
+            </div>  
           </div>
         </v-card-text>
 
