@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title class="text-h5 red--text">Oops!</v-card-title>
 
-        <v-card-text>  
+        <v-card-text>
           <div class="mb-3">
             Something went wrong. Please try again later or send us the error
             message and we will help you.
@@ -30,7 +30,7 @@
                     : errorMessage
                 "
               ></v-textarea>
-            </div>  
+            </div>
           </div>
         </v-card-text>
 
@@ -269,66 +269,7 @@ export default {
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }
       ).addTo(this.map);
-    },
-    /**
-     * Checks the form and send it to the API.
-     */
-    async onSubmitForm(e) {
-      // prevent that the form is send:
-      e.preventDefault();
 
-      const isFormCorrect = await this.v$.$validate();
-
-      if (!isFormCorrect) {
-        return;
-      }
-
-      // create job object for the api
-      const job = {
-        name: this.formData.name,
-        area_of_interest: this.formData.area_of_interest,
-        use_lookup: false,
-        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
-        cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
-        start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
-        end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
-        samples_class: this.formData.samples_class,
-        sampling_strategy: "regular",
-        use_pretrained_model: false,
-      };
-
-      try {
-        await API.createJob({ samples: this.samplesFile, job });
-        // Go to the job overview
-        this.$router.push("/");
-      } catch (err) {
-        console.error(err);
-
-        // Create an error message for the modal.
-        if (err?.response?.data) {
-          this.dialogError = true;
-          this.errorMessage = {
-            type: "createJob",
-            timestamp: new Date(),
-            ...err.response.data,
-            body: job,
-          };
-        }
-      }
-    },
-    /**
-     * Enables to draw a Rectangle on Leaflet.
-     */
-    drawItem() {
-      if (!this.map || !this.drawControl) {
-        return;
-      }
-      new L.Draw.Rectangle(this.map).enable();
-    },
-  },
-  mounted() {
-    this.initMap();
-    this.$nextTick(() => {
       this.rectangleLayer = new L.FeatureGroup().addTo(this.map);
 
       this.drawControl = new L.Control.Draw({
@@ -391,7 +332,66 @@ export default {
         // Do whatever else you need to. (save to db, add to map etc)
         this.rectangleLayer.addLayer(this.drawnItem);
       });
-    });
+    },
+    /**
+     * Checks the form and send it to the API.
+     */
+    async onSubmitForm(e) {
+      // prevent that the form is send:
+      e.preventDefault();
+
+      const isFormCorrect = await this.v$.$validate();
+
+      if (!isFormCorrect) {
+        return;
+      }
+
+      // create job object for the api
+      const job = {
+        name: this.formData.name,
+        area_of_interest: this.formData.area_of_interest,
+        use_lookup: false,
+        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+        cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
+        start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
+        end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
+        samples_class: this.formData.samples_class,
+        sampling_strategy: "regular",
+        use_pretrained_model: false,
+      };
+
+      try {
+        await API.createJob({ samples: this.samplesFile, job });
+        // Go to the job overview
+        this.$router.push("/");
+      } catch (err) {
+        console.error(err);
+
+        // Create an error message for the modal.
+        if (err?.response?.data) {
+          this.dialogError = true;
+          this.errorMessage = {
+            type: "createJob",
+            timestamp: new Date(),
+            ...err.response.data,
+            body: job,
+          };
+        }
+      }
+    },
+    /**
+     * Enables to draw a Rectangle on Leaflet.
+     */
+    drawItem() {
+      if (!this.map || !this.drawControl) {
+        return;
+      }
+      new L.Draw.Rectangle(this.map).enable();
+    },
+  },
+  mounted() {
+    this.initMap();
+    this.$nextTick(() => {});
   },
   beforeUnmount() {
     if (this.map) {
