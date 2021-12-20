@@ -4,7 +4,7 @@
       <h2 id="job_number">Job xy</h2>
 
       <div class="col-lg">
-        <v-simple-table fixed-header fill-height>
+        <v-simple-table fixed-header height="600px">
           <template v-slot:default>
             <thead>
               <tr>
