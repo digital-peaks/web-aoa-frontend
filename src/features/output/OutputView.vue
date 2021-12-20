@@ -464,16 +464,21 @@ export default {
       const arrayBufferPred = await responsePred.arrayBuffer();
 
       const georasterDi = await parseGeoraster(arrayBufferDi);
+      const georasterAoa = await parseGeoraster(arrayBufferAoa);
+      const georasterPred = await parseGeoraster(arrayBufferPred);
+
+      console.log(georasterAoa);
+      const minAoa = georasterAoa.mins[0];
+      console.log(minAoa);
+      //const maxAoa = georasterAoa.maxs[0];
+      const rangeAoa = georasterAoa.ranges[0];
 
       const minDi = georasterDi.mins[0];
       //const maxDi = georasterDi.maxs[0];
       const rangeDi = georasterDi.ranges[0];
 
-      const georasterAoa = await parseGeoraster(arrayBufferAoa);
-
-      const scale = chroma.scale("Viridis");
-
-      const georasterPred = await parseGeoraster(arrayBufferPred);
+      const scaleViridis = chroma.scale("Viridis");
+      const scaleWhiteRed = chroma.scale(["white", "red"]);
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
@@ -485,7 +490,7 @@ export default {
           // scale to 0 - 1 used by chroma
           var scaledPixelValue = (pixelValue - minDi) / rangeDi;
 
-          var color = scale(scaledPixelValue).hex();
+          var color = scaleViridis(scaledPixelValue).hex();
 
           return color;
         },
@@ -497,7 +502,14 @@ export default {
         opacity: this.aoaTransparency,
         pixelValuesToColorFn: function (pixelValues) {
           var pixelValue = pixelValues[0];
-          console.log(pixelValue);
+          // if there's zero wind, don't return a color
+          if (pixelValue === 0) return null;
+          // scale to 0 - 1 used by chroma
+          var scaledPixelValue = (pixelValue - minAoa) / rangeAoa;
+
+          var color = scaleWhiteRed(scaledPixelValue).hex();
+
+          return color;
         },
         resolution: 256,
       });
