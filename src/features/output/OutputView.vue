@@ -465,17 +465,33 @@ export default {
 
       const georasterDi = await parseGeoraster(arrayBufferDi);
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
-      console.log("georasterAoa.mins[0]: ", georasterAoa.mins[0]);
-      console.log("georasterAoa.maxs[0]: ", georasterAoa.maxs[0]);
-      console.log("georasterAoa.ranges[0]: ", georasterAoa.ranges[0]);
+
+      const min = georasterDi.mins[0];
+      const max = georasterDi.maxs[0];
+      console.log(min, " + ", max);
+      const range = georasterDi.ranges[0];
       console.log(chroma.brewer);
       const scale = chroma.scale("Viridis");
+      console.log("scale: ", scale);
 
       const georasterPred = await parseGeoraster(arrayBufferPred);
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
         opacity: this.diTransparency,
+        pixelValuesToColorFn: function (pixelValues) {
+          var pixelValue = pixelValues[0]; // there's just one band in this raster
+
+          // if there's zero wind, don't return a color
+          if (pixelValue === 0) return null;
+
+          // scale to 0 - 1 used by chroma
+          var scaledPixelValue = (pixelValue - min) / range;
+
+          var color = scale(scaledPixelValue).hex();
+
+          return color;
+        },
         resolution: 256,
       });
 
