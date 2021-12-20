@@ -26,17 +26,17 @@
                 <p style="font-size: 10px">Line thickness</p>
               </td>
               <td class="check justify-center align-start">
-                <v-checkbox
-                  id="aoi"
-                  v-on:click="switchLayer('aoi')"
-                  color="primary"
-                ></v-checkbox>
-              </td>
-              <td class="download_button"></td>
-              <td id="zoom_button">
-                <v-btn icon v-on:click="zoomToLayer('aoi')">
-                  <MagnifierIcon width="20" />
-                </v-btn>
+                <div class="d-flex align-items-center">
+                  <v-checkbox
+                    id="aoi"
+                    v-on:click="switchLayer('aoi')"
+                    color="primary"
+                  ></v-checkbox>
+
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('aoi')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -51,27 +51,26 @@
 
                 <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
               </td>
-              <td class="check">
-                <v-checkbox
-                  id="di"
-                  v-on:click="switchLayer('di')"
-                  color="primary"
-                ></v-checkbox>
-              </td>
-              <td class="download_button">
-                <v-btn
-                  icon
-                  v-on:click="
-                    downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                  "
-                >
-                  <DownloadIcon width="16" />
-                </v-btn>
-              </td>
-              <td id="zoom_button">
-                <v-btn icon v-on:click="zoomToLayer('di')">
-                  <MagnifierIcon width="20" />
-                </v-btn>
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-checkbox
+                    id="di"
+                    v-on:click="switchLayer('di')"
+                    color="primary"
+                  ></v-checkbox>
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('di')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="
+                      downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                    "
+                  >
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -84,25 +83,24 @@
                 />
                 <p style="font-size: 10px">Transparency</p>
               </td>
-              <td class="check">
-                <v-checkbox
-                  id="pred"
-                  v-on:click="switchLayer('pred')"
-                  color="primary"
-                ></v-checkbox>
-              </td>
-              <td class="download_button">
-                <v-btn
-                  icon
-                  v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
-                >
-                  <DownloadIcon width="16" />
-                </v-btn>
-              </td>
-              <td id="zoom_button">
-                <v-btn icon v-on:click="zoomToLayer('pred')">
-                  <MagnifierIcon width="20" />
-                </v-btn>
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-checkbox
+                    id="pred"
+                    v-on:click="switchLayer('pred')"
+                    color="primary"
+                  ></v-checkbox>
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('pred')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
+                  >
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </tr>
             <tr id="not_last_td">
@@ -121,27 +119,27 @@
                   :fixed="0"
                 />
               </td>
-              <td class="check">
-                <v-checkbox
-                  id="aoa"
-                  v-on:click="switchLayer('aoa')"
-                  color="primary"
-                ></v-checkbox>
-              </td>
-              <td class="download_button">
-                <v-btn
-                  icon
-                  v-on:click="
-                    downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                  "
-                >
-                  <DownloadIcon width="16" />
-                </v-btn>
-              </td>
-              <td id="zoom_button">
-                <v-btn icon v-on:click="zoomToLayer('aoa')">
-                  <MagnifierIcon width="20" />
-                </v-btn>
+
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-checkbox
+                    id="aoa"
+                    v-on:click="switchLayer('aoa')"
+                    color="primary"
+                  ></v-checkbox>
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('aoa')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="
+                      downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                    "
+                  >
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </tr>
             <tr id="last_td">
@@ -162,48 +160,55 @@
                 />
                 <p style="font-size: 10px">Line thickness</p>
               </td>
-              <td class="check">
-                <v-checkbox
-                  id="samplePolygons"
-                  v-on:click="switchLayer('samplePolygons')"
-                  color="primary"
-                ></v-checkbox>
-              </td>
-              <td class="download_button"></td>
-              <td id="zoom_button">
-                <v-btn icon v-on:click="zoomToLayer('samplePolygons')">
-                  <MagnifierIcon width="20" />
-                </v-btn>
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-checkbox
+                    id="samplePolygons"
+                    v-on:click="switchLayer('samplePolygons')"
+                    color="primary"
+                  ></v-checkbox>
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="zoomToLayer('samplePolygons')"
+                  >
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </tr>
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
                 Suggested locations for training polygons
               </td>
-              <td class="check">
-                <v-checkbox
-                  id="suggestion"
-                  v-on:click="switchLayer('suggestion')"
-                  color="primary"
-                ></v-checkbox>
-              </td>
-              <td class="download_button">
-                <v-btn
-                  icon
-                  v-on:click="
-                    downloadItem(
-                      'geotiffs_test/suggestion.geojson',
-                      'suggestion'
-                    )
-                  "
-                >
-                  <DownloadIcon width="16" />
-                </v-btn>
-              </td>
-              <td id="zoom_button">
-                <v-btn icon v-on:click="zoomToLayer('suggestion')">
-                  <MagnifierIcon width="20" />
-                </v-btn>
+
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-checkbox
+                    id="suggestion"
+                    v-on:click="switchLayer('suggestion')"
+                    color="primary"
+                  ></v-checkbox>
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="zoomToLayer('suggestion')"
+                  >
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="
+                      downloadItem(
+                        'geotiffs_test/suggestion.geojson',
+                        'suggestion'
+                      )
+                    "
+                  >
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -227,8 +232,6 @@ import "leaflet/dist/leaflet.css";
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
-import DownloadIcon from "@/components/DownloadIcon.vue";
-import MagnifierIcon from "@/components/MagnifierIcon.vue";
 import ColorLegend from "@/components/ColorLegend";
 
 import axios from "axios";
@@ -276,8 +279,6 @@ export default {
     sliderPercentage: "{value} %",
   }),
   components: {
-    DownloadIcon,
-    MagnifierIcon,
     VueSlider,
     ColorLegend,
   },
@@ -538,33 +539,7 @@ tr#last_td {
   border-bottom: grey;
   border-bottom-style: double;
 }
-th#title {
-  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);*/
-  width: 20px;
-  height: 100px;
-  text-align: center;
-}
-th#title_show_hide {
-  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);*/
-  width: 20px;
-  height: 100px;
-  text-align: center;
-}
-th#title_download {
-  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);*/
-  width: 20px;
-  height: 100px;
-  text-align: center;
-}
-th#layer_name {
-  width: 210px;
-}
+
 #download_b {
   padding-top: 17px;
 }
@@ -575,14 +550,6 @@ th#layer_name {
   position: relative;
 }
 #zoom_button {
-}
-td.check {
-  margin: auto;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 20px;
-  padding-left: 20px;
 }
 
 #control.table {
