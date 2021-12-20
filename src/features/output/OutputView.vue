@@ -255,10 +255,6 @@ export default {
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
     diTransparency: 100,
-    diColorLegend: {
-      colors: [], // will be calculated
-      values: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
-    },
     // Everything needed to visualize the pred.tif.
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
     predLayer: null,
