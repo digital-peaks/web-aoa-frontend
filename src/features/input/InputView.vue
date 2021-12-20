@@ -302,6 +302,7 @@ export default {
           this.rectangleLayer.removeLayer(this.drawnItem);
         }
         this.drawnItem = e.layer;
+        console.log("drawnItem: ", this.drawnItem);
 
         // Get the first element
         const [rectangle] = this.drawnItem.getLatLngs();
@@ -325,6 +326,7 @@ export default {
             name: "AOI",
           },
         };
+        console.log("form data: ", this.formData);
 
         // This variable contains the size of the entered aoi in m2.
         this.aoiSize = L.GeometryUtil.geodesicArea(rectangle);
