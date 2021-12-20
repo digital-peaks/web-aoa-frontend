@@ -3,7 +3,7 @@
     <div style="d-flex">
       <v-app-bar elevation="4" color="grey darken-4" class="px-1" dark>
         <div class="me-3">
-          <router-link to="/"><LogoIcon width="75" /></router-link>
+          <router-link to="/"><LogoIcon width="55" /></router-link>
         </div>
         <v-toolbar-title>Web-AOA</v-toolbar-title>
         <v-btn to="/" dark text class="ms-8"> My Jobs </v-btn>
