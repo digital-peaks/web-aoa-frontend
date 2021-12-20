@@ -451,14 +451,6 @@ export default {
       const responseAoa = await fetch(this.aoaUrl);
       const responsePred = await fetch(this.predUrl);
 
-      // Make sure you get what you expect!
-      // Should be an "image/tiff"  THESE TESTS MIGHT BE USEFULL WHEN THE TRUE DATA HAS TO BE LINKED
-      // THE FOLLOWING LINES OF CODE ARE JUST INCLUDES FOR INTERNAL CHECKS IF THEY ARE NECESSARY
-
-      //console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
-      //console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
-      //console.log("Content-Type Pred:", responsePred.headers.get("Content-Type"));
-
       const arrayBufferDi = await responseDi.arrayBuffer();
       const arrayBufferAoa = await responseAoa.arrayBuffer();
       const arrayBufferPred = await responsePred.arrayBuffer();
@@ -468,29 +460,23 @@ export default {
       const georasterPred = await parseGeoraster(arrayBufferPred);
 
       console.log(georasterAoa);
-      const minAoa = georasterAoa.mins[0];
-      console.log(minAoa);
-      //const maxAoa = georasterAoa.maxs[0];
-      const rangeAoa = georasterAoa.ranges[0];
 
       const minDi = georasterDi.mins[0];
-      //const maxDi = georasterDi.maxs[0];
       const rangeDi = georasterDi.ranges[0];
 
       const scaleViridis = chroma.scale("Viridis");
-      const scaleWhiteRed = chroma.scale(["#cf1f8f", "white"]);
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
         opacity: this.diTransparency,
         pixelValuesToColorFn: function (pixelValues) {
-          var pixelValue = pixelValues[0]; // there's just one band in this raster
+          const [pixelValue] = pixelValues; // there's just one band in this raster
           // if there's zero wind, don't return a color
           if (pixelValue === 0) return null;
           // scale to 0 - 1 used by chroma
-          var scaledPixelValue = (pixelValue - minDi) / rangeDi;
+          const scaledPixelValue = (pixelValue - minDi) / rangeDi;
 
-          var color = scaleViridis(scaledPixelValue).hex();
+          const color = scaleViridis(scaledPixelValue).hex();
 
           return color;
         },
@@ -501,15 +487,12 @@ export default {
         georaster: georasterAoa,
         opacity: this.aoaTransparency,
         pixelValuesToColorFn: function (pixelValues) {
-          var pixelValue = pixelValues[0];
+          const pixelValue = pixelValues[0];
           // if there's zero wind, don't return a color
-          if (pixelValue === 1) return null;
-          // scale to 0 - 1 used by chroma
-          var scaledPixelValue = (pixelValue - minAoa) / rangeAoa;
-
-          var color = scaleWhiteRed(scaledPixelValue).hex();
-
-          return color;
+          if (pixelValue === 1) {
+            return null;
+          }
+          return "#cf1f8f";
         },
         resolution: 256,
       });
