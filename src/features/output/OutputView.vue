@@ -57,6 +57,8 @@
                     :tooltip-formatter="sliderPercentage"
                   />
                   <p style="font-size: 10px">Transparency</p>
+
+                  <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
                 </td>
                 <td class="check">
                   <v-checkbox
@@ -121,6 +123,12 @@
                     :tooltip-formatter="sliderPercentage"
                   />
                   <p style="font-size: 10px">Transparency</p>
+
+                  <ColorLegend
+                    :scale="['#cf1f8f', '#ffffff']"
+                    :steps="2"
+                    :fixed="0"
+                  />
                 </td>
                 <td class="check">
                   <v-checkbox
@@ -231,6 +239,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 
 import DownloadIcon from "@/components/DownloadIcon.vue";
 import MagnifierIcon from "@/components/MagnifierIcon.vue";
+import ColorLegend from "@/components/ColorLegend";
 
 import axios from "axios";
 
@@ -253,6 +262,10 @@ export default {
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
     diTransparency: 100,
+    diColorLegend: {
+      colors: [], // will be calculated
+      values: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+    },
     // Everything needed to visualize the pred.tif.
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
     predLayer: null,
@@ -276,6 +289,7 @@ export default {
     DownloadIcon,
     MagnifierIcon,
     VueSlider,
+    ColorLegend,
   },
   methods: {
     /**
