@@ -11,13 +11,9 @@
         align-items-end
       "
     >
-      <h4 class="mb-0">Meine Jobs</h4>
+      <div class="mb-0 text-h5">My jobs</div>
       <div>
-        <router-link to="/input">
-          <button type="button" class="btn btn-primary">
-            Neuen Job erstellen
-          </button></router-link
-        >
+        <v-btn to="/input" color="primary">Create new job</v-btn>
       </div>
     </div>
     <div v-if="!loading" class="list-group">
@@ -64,7 +60,7 @@
               </svg>
             </button>
             <ul class="dropdown-menu" aria-labelledby="jobMenu">
-              <li><a class="dropdown-item" href="#">Logs einsehen</a></li>
+              <li><a class="dropdown-item" href="#">Show Logs</a></li>
             </ul>
           </div>
         </div>
@@ -75,10 +71,10 @@
       v-if="Object.keys(jobs).length === 0 && jobsState === 'loaded'"
       class="text-center m-3"
     >
-      Keine Jobs vorhanden.
+      No jobs available.
     </div>
     <div v-if="jobsState === 'error'" class="text-center m-3">
-      Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.
+      An error has occurred. Please try again later.
     </div>
   </div>
 </template>

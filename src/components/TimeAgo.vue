@@ -8,10 +8,10 @@ import isBefore from "date-fns/isBefore";
 import subHours from "date-fns/subHours";
 import format from "date-fns/format";
 import TimeAgo from "javascript-time-ago";
-import de from "javascript-time-ago/locale/de.json";
+import en from "javascript-time-ago/locale/en.json";
 
-TimeAgo.addLocale(de);
-TimeAgo.addDefaultLocale(de);
+TimeAgo.addLocale(en);
+TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo();
 
 /**
@@ -38,7 +38,7 @@ export default {
         return data;
       }
 
-      data.title = format(dateInstance, "dd.MM.yy, HH:mm");
+      data.title = format(dateInstance, "yyyy-MM-dd, HH:mm");
 
       if (isBefore(dateInstance, subHours(new Date(), 24))) {
         // Given date is older than 24 hours
