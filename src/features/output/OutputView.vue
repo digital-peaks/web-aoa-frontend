@@ -478,7 +478,7 @@ export default {
       const rangeDi = georasterDi.ranges[0];
 
       const scaleViridis = chroma.scale("Viridis");
-      const scaleWhiteRed = chroma.scale(["white", "red"]);
+      const scaleWhiteRed = chroma.scale(["#cf1f8f", "white"]);
 
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
@@ -503,7 +503,7 @@ export default {
         pixelValuesToColorFn: function (pixelValues) {
           var pixelValue = pixelValues[0];
           // if there's zero wind, don't return a color
-          if (pixelValue === 0) return null;
+          if (pixelValue === 1) return null;
           // scale to 0 - 1 used by chroma
           var scaledPixelValue = (pixelValue - minAoa) / rangeAoa;
 
