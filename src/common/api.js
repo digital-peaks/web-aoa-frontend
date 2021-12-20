@@ -18,7 +18,9 @@ export const getJobs = () => api.get("/jobs");
  */
 export const createJob = ({ samples, model, job }) => {
   const form = new FormData();
-  form.append("samples", samples);
+  if (samples) {
+    form.append("samples", samples);
+  }
   if (model) {
     form.append("model", model);
   }
