@@ -391,7 +391,6 @@ export default {
   },
   mounted() {
     this.initMap();
-    this.$nextTick(() => {});
   },
   beforeUnmount() {
     if (this.map) {
