@@ -16,56 +16,41 @@
         <v-btn to="/input" color="primary">Create new job</v-btn>
       </div>
     </div>
-    <div v-if="!loading" class="list-group">
-      <router-link
-        v-for="job in jobs"
-        :key="job.id"
-        :to="'/output/' + job.id"
-        class="list-group-item list-group-item-action"
-      >
-        <div class="d-flex w-100 justify-content-between align-items-center">
-          <div class="me-2 d-flex flex-fill flex-column flex-md-row">
-            <div class="flex-fill">{{ job.name }}</div>
-            <small class="text-muted"><time-ago :date="job.created" /></small>
-          </div>
-          <div class="mx-2">
-            <div
-              class="status-indicator"
-              v-bind:class="{
-                running: job.status === 'running',
-                error: job.status === 'error',
-                success: job.status === 'success',
-              }"
-            ></div>
-          </div>
-          <div class="ms-2">
-            <button
-              id="jobMenu"
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-three-dots-vertical"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
-                />
-              </svg>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="jobMenu">
-              <li><a class="dropdown-item" href="#">Show Logs</a></li>
-            </ul>
-          </div>
-        </div>
-      </router-link>
-    </div>
+    <v-card elevation="3">
+      <v-list v-if="!loading">
+        <v-list-item-group
+          v-model="selected"
+          active-class="pink--text"
+          multiple
+        >
+          <template v-for="(job, index) in Object.values(jobs)">
+            <v-list-item link :to="'/output/' + job.id" :key="job.id">
+              <v-list-item-content style="flex: 1">{{
+                job.name
+              }}</v-list-item-content>
+              <v-list-item-action class="text-caption text--secondary">
+                <time-ago :date="job.created" />
+              </v-list-item-action>
+              <v-list-item-action>
+                <div
+                  class="status-indicator"
+                  v-bind:class="{
+                    running: job.status === 'running',
+                    error: job.status === 'error',
+                    success: job.status === 'success',
+                  }"
+                ></div>
+              </v-list-item-action>
+            </v-list-item>
+            <v-divider
+              v-if="index < Object.keys(jobs).length - 1"
+              :key="job.id"
+              class="m-0"
+            ></v-divider>
+          </template>
+        </v-list-item-group>
+      </v-list>
+    </v-card>
 
     <div
       v-if="Object.keys(jobs).length === 0 && jobsState === 'loaded'"
