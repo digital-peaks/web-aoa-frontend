@@ -25,6 +25,7 @@
     "leaflet-draw": "^1.0.4",
     "leaflet-geometryutil": "^0.10.0",
     "leaflet-geotiff-2": "^1.1.0",
+    "lodash.range": "^3.2.0",
     "raw-loader": "^4.0.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
