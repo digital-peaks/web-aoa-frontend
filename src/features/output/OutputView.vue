@@ -241,6 +241,8 @@ import "vue-slider-component/theme/antd.css";
 
 import chroma from "chroma-js";
 
+import markerPng from "@/assets/markerIconBlueBorder.png";
+
 export default {
   name: "Output",
   data: () => ({
@@ -428,6 +430,14 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
+    createCustomIcon: function (latlng) {
+      const customizedIcon = L.icon({
+        iconUrl: markerPng,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
+      });
+      return L.marker(latlng, { icon: customizedIcon });
+    },
     /**
      * This function builds layers for all .geojson files.
      */
@@ -442,7 +452,16 @@ export default {
 
       this.aoiLayer = L.geoJson().addData(aoi);
       this.samplePolygonsLayer = L.geoJson(samplePolygons);
-      this.suggestionLayer = L.geoJson(suggestion);
+      this.suggestionLayer = L.geoJson(suggestion, {
+        /*pointToLayer: function (latlng) {
+          const customizedIcon = L.icon({
+            iconUrl: markerPng,
+            iconSize: [26, 26],
+            iconAnchor: [13, 13],
+          });
+          return L.marker(latlng, { icon: customizedIcon });
+        },*/
+      });
     },
     /**
      * This function builds layers for all .tif files.
@@ -510,11 +529,11 @@ export default {
     this.showTif1Band();
     this.showGeoJson();
     const greenMarker = L.icon({
-      iconUrl: "@/assets/markerIconGreen.png",
-      iconSize: [15, 15],
-      iconAnchor: [7, 7],
+      iconUrl: markerPng,
+      iconSize: [26, 26],
+      iconAnchor: [13, 13],
     });
-    L.marker([51.96251456880403, 7.625563144683837], {
+    L.marker([51.955638746195966, 7.579278945922851], {
       icon: greenMarker,
     }).addTo(this.map);
   },
