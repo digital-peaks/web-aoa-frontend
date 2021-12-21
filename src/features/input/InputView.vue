@@ -48,7 +48,7 @@
       v-on:submit="onSubmitForm"
     >
       <div class="d-flex w-100 mb-3">
-        <div style="flex: 1"><h3>Create job</h3></div>
+        <div style="flex: 1"><span class="text-h5">Create job</span></div>
         <div>
           <v-btn to="/">Cancel</v-btn>
           &nbsp;
