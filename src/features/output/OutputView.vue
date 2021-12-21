@@ -248,6 +248,7 @@ export default {
   data: () => ({
     map: null,
     tileLayer: null,
+    earthLayer: null,
     // Everything needed to visualize the aoi.geojson.
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
@@ -285,14 +286,30 @@ export default {
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
-      this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }
-      ).addTo(this.map);
+      );
+
+      const earthUrl =
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+      const earthAttr =
+        "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
+
+      this.earthLayer = L.tileLayer(earthUrl, { attribution: earthAttr });
+      this.map = L.map("map-container", {
+        layers: this.tileLayer,
+      }).setView([51.966, 7.633], 10);
+
+      L.control
+        .layers(
+          { "Open Street Map": this.tileLayer },
+          { "World Imagery": this.earthLayer }
+        )
+        .addTo(this.map);
     },
     /**
      * this function triggers the downlad process of the result of the calculations.
