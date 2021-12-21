@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">Job xy</div>
+      <div id="job_number" class="m-3 text-h5">{{ job.name || "Job xy" }}</div>
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -234,6 +234,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 
 import ColorLegend from "@/components/ColorLegend";
 
+import { mapState } from "vuex";
 import axios from "axios";
 
 import VueSlider from "vue-slider-component";
@@ -245,6 +246,13 @@ import markerPng from "@/assets/markerIconRedCrossWithBlackEvenThicker.png";
 
 export default {
   name: "Output",
+  computed: mapState({
+    job(state) {
+      // Getting job based on the router parameter:
+      const { jobId } = this.$route.params;
+      return state.jobs[jobId] || {};
+    },
+  }),
   data: () => ({
     map: null,
     tileLayer: null,
