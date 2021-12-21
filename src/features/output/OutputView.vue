@@ -290,14 +290,17 @@ export default {
         layers: this.tileLayer,
       }).setView([51.966, 7.633], 10);
 
+      // To make sure, that the two basement options lie underneath the outputlayers which should be visualized,
+      // a Pane with a z-Index gets created, which makes sure they will always lie underneath.
       this.map.createPane("basemap");
       this.map.getPane("basemap").style.zIndex = 10;
+      // To keep sure the tiles are not able to grab this line gets added.
       this.map.getPane("basemap").style.pointerEvents = "none";
-
+      // First the osm layer gets initialized.
       const osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
       const osmAttr =
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-
+      // Afterwards the world imagery layer gets initialized.
       const earthUrl =
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
       const earthAttr =
@@ -305,14 +308,15 @@ export default {
 
       this.tileLayer = L.tileLayer(osmUrl, {
         attribution: osmAttr,
-        pane: "basemap",
+        pane: "basemap", // Both layers are added to the basemap-pane.
       }).addTo(this.map);
 
       this.earthLayer = L.tileLayer(earthUrl, {
         attribution: earthAttr,
-        pane: "basemap",
+        pane: "basemap", // Both layers are added to the basemap-pane.
       });
 
+      // At last a layer control must be added to switch between multiple basemaps.
       L.control
         .layers(
           { "Open Street Map": this.tileLayer },
