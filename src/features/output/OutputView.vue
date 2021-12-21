@@ -241,11 +241,14 @@ import "vue-slider-component/theme/antd.css";
 
 import chroma from "chroma-js";
 
+import markerPng from "@/assets/markerIconRedCrossWithBlackEvenThicker.png";
+
 export default {
   name: "Output",
   data: () => ({
     map: null,
     tileLayer: null,
+    earthLayer: null,
     // Everything needed to visualize the aoi.geojson.
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
@@ -283,14 +286,43 @@ export default {
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
-      this.map = L.map("map-container").setView([51.966, 7.633], 10);
-      this.tileLayer = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }
-      ).addTo(this.map);
+      this.map = L.map("map-container", {
+        layers: this.tileLayer,
+      }).setView([51.966, 7.633], 10);
+
+      // To make sure, that the two basement options lie underneath the outputlayers which should be visualized,
+      // a Pane with a z-Index gets created, which makes sure they will always lie underneath.
+      this.map.createPane("basemap");
+      this.map.getPane("basemap").style.zIndex = 10;
+      // To keep sure the tiles are not able to grab this line gets added.
+      this.map.getPane("basemap").style.pointerEvents = "none";
+      // First the osm layer gets initialized.
+      const osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+      const osmAttr =
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+      // Afterwards the world imagery layer gets initialized.
+      const earthUrl =
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+      const earthAttr =
+        "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
+
+      this.tileLayer = L.tileLayer(osmUrl, {
+        attribution: osmAttr,
+        pane: "basemap", // Both layers are added to the basemap-pane.
+      }).addTo(this.map);
+
+      this.earthLayer = L.tileLayer(earthUrl, {
+        attribution: earthAttr,
+        pane: "basemap", // Both layers are added to the basemap-pane.
+      });
+
+      // At last a layer control must be added to switch between multiple basemaps.
+      L.control
+        .layers(
+          { "Open Street Map": this.tileLayer },
+          { "World Imagery": this.earthLayer }
+        )
+        .addTo(this.map);
     },
     /**
      * this function triggers the downlad process of the result of the calculations.
@@ -300,11 +332,9 @@ export default {
     downloadItem: async function (urlLink, label) {
       const url = `${process.env.BASE_URL}` + urlLink;
       let response = await axios.get(url, { responseType: "blob" });
-      console.log("response: ", response);
       const blob = new Blob([response.data], { type: "image/tiff" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      console.log("link: ", link);
       link.download = label;
       link.click();
       URL.revokeObjectURL(link.href);
@@ -428,10 +458,23 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
+    // eslint-disable-next-line
+    createCustomIcon: function (feature, latlng) {
+      const customizedIcon = L.icon({
+        iconUrl: markerPng,
+        iconSize: [46, 46],
+        iconAnchor: [23, 23],
+      });
+      return L.marker(latlng, { icon: customizedIcon });
+    },
     /**
      * This function builds layers for all .geojson files.
      */
     showGeoJson: async function () {
+      const myLayerOptions = {
+        pointToLayer: this.createCustomIcon,
+      };
+
       const responseAoi = await fetch(this.aoiJson);
       const responseSamplePolygons = await fetch(this.samplePolygonsJson);
       const responseSuggestion = await fetch(this.suggestionJson);
@@ -440,9 +483,9 @@ export default {
       const samplePolygons = await responseSamplePolygons.json();
       const suggestion = await responseSuggestion.json();
 
-      this.aoiLayer = L.geoJson().addData(aoi);
+      this.aoiLayer = L.geoJson(aoi);
       this.samplePolygonsLayer = L.geoJson(samplePolygons);
-      this.suggestionLayer = L.geoJson(suggestion);
+      this.suggestionLayer = L.geoJson(suggestion, myLayerOptions);
     },
     /**
      * This function builds layers for all .tif files.
@@ -459,8 +502,6 @@ export default {
       const georasterDi = await parseGeoraster(arrayBufferDi);
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
       const georasterPred = await parseGeoraster(arrayBufferPred);
-
-      console.log(georasterAoa);
 
       const minDi = georasterDi.mins[0];
       const rangeDi = georasterDi.ranges[0];

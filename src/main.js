@@ -18,15 +18,15 @@ new Vue({
 }).$mount("#app");
 
 // The following lines of code are required to use/visualize leaflet markers. The deposited marker icon is a customized one
-delete Icon.Default.prototype._getIconUrl;
+/*delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require("@/assets/markerIcon.png"),
   iconUrl: require("@/assets/markerIcon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-});
+});*/
 // THIS WAS THE DEFAULT CODE AND ICON
-/*Icon.Default.mergeOptions({
+Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-});*/
+});

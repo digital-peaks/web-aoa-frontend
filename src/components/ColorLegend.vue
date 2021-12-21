@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     data: function () {
-      console.log(this.scale);
+      //console.log(this.scale);
       const scale = chroma.scale(this.scale);
 
       const [min, max] = this.domain;
