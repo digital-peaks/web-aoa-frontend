@@ -286,20 +286,19 @@ export default {
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
-      this.tileLayer = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }
-      );
+      const osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+      const osmAttr =
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
       const earthUrl =
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
       const earthAttr =
         "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
 
+      this.tileLayer = L.tileLayer(osmUrl, { attribution: osmAttr });
+
       this.earthLayer = L.tileLayer(earthUrl, { attribution: earthAttr });
+
       this.map = L.map("map-container", {
         layers: this.tileLayer,
       }).setView([51.966, 7.633], 10);
@@ -470,7 +469,7 @@ export default {
       const samplePolygons = await responseSamplePolygons.json();
       const suggestion = await responseSuggestion.json();
 
-      this.aoiLayer = L.geoJson().addData(aoi);
+      this.aoiLayer = L.geoJson(aoi);
       this.samplePolygonsLayer = L.geoJson(samplePolygons);
       this.suggestionLayer = L.geoJson(suggestion, myLayerOptions);
     },
