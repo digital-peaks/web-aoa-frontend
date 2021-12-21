@@ -1,195 +1,203 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
-    <div class="flex-column m-3">
-      <h2 id="job_number">Job xy</h2>
+    <div class="flex-column layer-column">
+      <div id="job_number" class="m-3 text-h5">Job xy</div>
 
-      <div class="col-lg">
-        <v-simple-table fixed-header height="600px">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th id="layer_name" class="text-center"></th>
-                <th id="title_show_hide" class="text-center">Show/ Hide</th>
-                <th id="title_download" class="text-center">Download</th>
-                <th id="title" class="text-center">Zoom to layer</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Area of Interest (AOI)
-                  <vue-slider
-                    v-model="aoiTransparency"
-                    v-on:change="changeOpacity('aoi')"
-                    :minRange="0"
-                    :maxRange="10"
-                  />
-                  <p style="font-size: 10px">Transparency</p>
-                  <vue-slider
-                    v-model="aoiLineThickness"
-                    v-on:change="changeLineThickness('aoi')"
-                    :data="[0, 1, 2, 3, 4, 5]"
-                    :marks="true"
-                    :hide-label="true"
-                  />
-                  <p style="font-size: 10px">Line thickness</p>
-                </td>
-                <td class="check justify-center align-start">
+      <v-simple-table class="mb-6">
+        <template v-slot:default>
+          <tbody>
+            <tr id="not_last_td">
+              <td id="td_elements_with_slider">
+                Area of Interest (AOI)
+                <vue-slider
+                  v-model="aoiTransparency"
+                  v-on:change="changeOpacity('aoi')"
+                  :minRange="0"
+                  :maxRange="10"
+                />
+                <p style="font-size: 10px">Transparency</p>
+                <vue-slider
+                  v-model="aoiLineThickness"
+                  v-on:change="changeLineThickness('aoi')"
+                  :data="[0, 1, 2, 3, 4, 5]"
+                  :marks="true"
+                  :hide-label="true"
+                />
+                <p style="font-size: 10px">Line thickness</p>
+              </td>
+              <td class="check justify-center align-start">
+                <div class="d-flex align-items-center">
                   <v-checkbox
                     id="aoi"
                     v-on:click="switchLayer('aoi')"
                     color="primary"
                   ></v-checkbox>
-                </td>
-                <td class="download_button"></td>
-                <td id="zoom_button">
-                  <v-btn icon v-on:click="zoomToLayer('aoi')">
-                    <MagnifierIcon width="20" />
+
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('aoi')">
+                    <v-icon>mdi-magnify</v-icon>
                   </v-btn>
-                </td>
-              </tr>
-              <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Dissimilarity Index
-                  <vue-slider
-                    v-model="diTransparency"
-                    v-on:change="changeOpacity('di')"
-                    :tooltip-formatter="sliderPercentage"
-                  />
-                  <p style="font-size: 10px">Transparency</p>
-                </td>
-                <td class="check">
+                </div>
+              </td>
+            </tr>
+            <tr id="not_last_td">
+              <td id="td_elements_with_slider">
+                Dissimilarity Index
+                <vue-slider
+                  v-model="diTransparency"
+                  v-on:change="changeOpacity('di')"
+                  :tooltip-formatter="sliderPercentage"
+                />
+                <p style="font-size: 10px">Transparency</p>
+
+                <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
                   <v-checkbox
                     id="di"
                     v-on:click="switchLayer('di')"
                     color="primary"
                   ></v-checkbox>
-                </td>
-                <td class="download_button">
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('di')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
                   <v-btn
+                    class="ms-2"
                     icon
                     v-on:click="
                       downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
                     "
                   >
-                    <DownloadIcon width="16" />
+                    <v-icon>mdi-download</v-icon>
                   </v-btn>
-                </td>
-                <td id="zoom_button">
-                  <v-btn icon v-on:click="zoomToLayer('di')">
-                    <MagnifierIcon width="20" />
-                  </v-btn>
-                </td>
-              </tr>
-              <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Prediciton / Classification
-                  <vue-slider
-                    v-model="predTransparency"
-                    v-on:change="changeOpacity('pred')"
-                    :tooltip-formatter="sliderPercentage"
-                  />
-                  <p style="font-size: 10px">Transparency</p>
-                </td>
-                <td class="check">
+                </div>
+              </td>
+            </tr>
+            <tr id="not_last_td">
+              <td id="td_elements_with_slider">
+                Prediciton / Classification
+                <vue-slider
+                  v-model="predTransparency"
+                  v-on:change="changeOpacity('pred')"
+                  :tooltip-formatter="sliderPercentage"
+                />
+                <p style="font-size: 10px">Transparency</p>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
                   <v-checkbox
                     id="pred"
                     v-on:click="switchLayer('pred')"
                     color="primary"
                   ></v-checkbox>
-                </td>
-                <td class="download_button">
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('pred')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
                   <v-btn
+                    class="ms-2"
                     icon
                     v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
                   >
-                    <DownloadIcon width="16" />
+                    <v-icon>mdi-download</v-icon>
                   </v-btn>
-                </td>
-                <td id="zoom_button">
-                  <v-btn icon v-on:click="zoomToLayer('pred')">
-                    <MagnifierIcon width="20" />
-                  </v-btn>
-                </td>
-              </tr>
-              <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Area of Applicability (AOA)
-                  <vue-slider
-                    v-model="aoaTransparency"
-                    v-on:change="changeOpacity('aoa')"
-                    :tooltip-formatter="sliderPercentage"
-                  />
-                  <p style="font-size: 10px">Transparency</p>
-                </td>
-                <td class="check">
+                </div>
+              </td>
+            </tr>
+            <tr id="not_last_td">
+              <td id="td_elements_with_slider">
+                Area of Applicability (AOA)
+                <vue-slider
+                  v-model="aoaTransparency"
+                  v-on:change="changeOpacity('aoa')"
+                  :tooltip-formatter="sliderPercentage"
+                />
+                <p style="font-size: 10px">Transparency</p>
+
+                <ColorLegend
+                  :scale="['#cf1f8f', '#ffffff']"
+                  :steps="2"
+                  :fixed="0"
+                />
+              </td>
+
+              <td>
+                <div class="d-flex align-items-center">
                   <v-checkbox
                     id="aoa"
                     v-on:click="switchLayer('aoa')"
                     color="primary"
                   ></v-checkbox>
-                </td>
-                <td class="download_button">
+                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('aoa')">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
                   <v-btn
+                    class="ms-2"
                     icon
                     v-on:click="
                       downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
                     "
                   >
-                    <DownloadIcon width="16" />
+                    <v-icon>mdi-download</v-icon>
                   </v-btn>
-                </td>
-                <td id="zoom_button">
-                  <v-btn icon v-on:click="zoomToLayer('aoa')">
-                    <MagnifierIcon width="20" />
-                  </v-btn>
-                </td>
-              </tr>
-              <tr id="last_td">
-                <td id="td_elements_with_slider">
-                  Sample Polygons
-                  <vue-slider
-                    v-model="samplePolygonsTransparency"
-                    v-on:change="changeOpacity('samplePolygons')"
-                    :tooltip-formatter="sliderPercentage"
-                  />
-                  <p style="font-size: 10px">Transparency</p>
-                  <vue-slider
-                    v-model="samplePolygonsLineThickness"
-                    v-on:change="changeLineThickness('samplePolygons')"
-                    :data="[0, 1, 2, 3, 4, 5]"
-                    :marks="true"
-                    :hide-label="true"
-                  />
-                  <p style="font-size: 10px">Line thickness</p>
-                </td>
-                <td class="check">
+                </div>
+              </td>
+            </tr>
+            <tr id="last_td">
+              <td id="td_elements_with_slider">
+                Sample Polygons
+                <vue-slider
+                  v-model="samplePolygonsTransparency"
+                  v-on:change="changeOpacity('samplePolygons')"
+                  :tooltip-formatter="sliderPercentage"
+                />
+                <p style="font-size: 10px">Transparency</p>
+                <vue-slider
+                  v-model="samplePolygonsLineThickness"
+                  v-on:change="changeLineThickness('samplePolygons')"
+                  :data="[0, 1, 2, 3, 4, 5]"
+                  :marks="true"
+                  :hide-label="true"
+                />
+                <p style="font-size: 10px">Line thickness</p>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
                   <v-checkbox
                     id="samplePolygons"
                     v-on:click="switchLayer('samplePolygons')"
                     color="primary"
                   ></v-checkbox>
-                </td>
-                <td class="download_button"></td>
-                <td id="zoom_button">
-                  <v-btn icon v-on:click="zoomToLayer('samplePolygons')">
-                    <MagnifierIcon width="20" />
+                  <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="zoomToLayer('samplePolygons')"
+                  >
+                    <v-icon>mdi-magnify</v-icon>
                   </v-btn>
-                </td>
-              </tr>
-              <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Suggested locations for training polygons
-                </td>
-                <td class="check">
+                </div>
+              </td>
+            </tr>
+            <tr id="not_last_td">
+              <td id="td_elements_with_slider">
+                Suggested locations for training polygons
+              </td>
+
+              <td>
+                <div class="d-flex align-items-center">
                   <v-checkbox
                     id="suggestion"
                     v-on:click="switchLayer('suggestion')"
                     color="primary"
                   ></v-checkbox>
-                </td>
-                <td class="download_button">
                   <v-btn
+                    class="ms-2"
+                    icon
+                    v-on:click="zoomToLayer('suggestion')"
+                  >
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="ms-2"
                     icon
                     v-on:click="
                       downloadItem(
@@ -198,21 +206,16 @@
                       )
                     "
                   >
-                    <DownloadIcon width="16" />
+                    <v-icon>mdi-download</v-icon>
                   </v-btn>
-                </td>
-                <td id="zoom_button">
-                  <v-btn icon v-on:click="zoomToLayer('suggestion')">
-                    <MagnifierIcon width="20" />
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
+                </div>
+              </td>
+            </tr>
+          </tbody>
 
-            <tbody></tbody
-          ></template>
-        </v-simple-table>
-      </div>
+          <tbody></tbody
+        ></template>
+      </v-simple-table>
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -229,13 +232,14 @@ import "leaflet/dist/leaflet.css";
 import parseGeoraster from "georaster";
 import GeoRasterLayer from "georaster-layer-for-leaflet";
 
-import DownloadIcon from "@/components/DownloadIcon.vue";
-import MagnifierIcon from "@/components/MagnifierIcon.vue";
+import ColorLegend from "@/components/ColorLegend";
 
 import axios from "axios";
 
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
+
+import chroma from "chroma-js";
 
 export default {
   name: "Output",
@@ -271,9 +275,8 @@ export default {
     sliderPercentage: "{value} %",
   }),
   components: {
-    DownloadIcon,
-    MagnifierIcon,
     VueSlider,
+    ColorLegend,
   },
   methods: {
     /**
@@ -449,14 +452,6 @@ export default {
       const responseAoa = await fetch(this.aoaUrl);
       const responsePred = await fetch(this.predUrl);
 
-      // Make sure you get what you expect!
-      // Should be an "image/tiff"  THESE TESTS MIGHT BE USEFULL WHEN THE TRUE DATA HAS TO BE LINKED
-      // THE FOLLOWING LINES OF CODE ARE JUST INCLUDES FOR INTERNAL CHECKS IF THEY ARE NECESSARY
-
-      //console.log("Content-Type Di:", responseDi.headers.get("Content-Type"));
-      //console.log("Content-Type Aoa:", responseAoa.headers.get("Content-Type"));
-      //console.log("Content-Type Pred:", responsePred.headers.get("Content-Type"));
-
       const arrayBufferDi = await responseDi.arrayBuffer();
       const arrayBufferAoa = await responseAoa.arrayBuffer();
       const arrayBufferPred = await responsePred.arrayBuffer();
@@ -465,15 +460,41 @@ export default {
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
       const georasterPred = await parseGeoraster(arrayBufferPred);
 
+      console.log(georasterAoa);
+
+      const minDi = georasterDi.mins[0];
+      const rangeDi = georasterDi.ranges[0];
+
+      const scaleViridis = chroma.scale("Viridis");
+
       this.diLayer = new GeoRasterLayer({
         georaster: georasterDi,
         opacity: this.diTransparency,
+        pixelValuesToColorFn: function (pixelValues) {
+          const [pixelValue] = pixelValues; // there's just one band in this raster
+          // if there's zero wind, don't return a color
+          if (pixelValue === 0) return null;
+          // scale to 0 - 1 used by chroma
+          const scaledPixelValue = (pixelValue - minDi) / rangeDi;
+
+          const color = scaleViridis(scaledPixelValue).hex();
+
+          return color;
+        },
         resolution: 256,
       });
 
       this.aoaLayer = new GeoRasterLayer({
         georaster: georasterAoa,
         opacity: this.aoaTransparency,
+        pixelValuesToColorFn: function (pixelValues) {
+          const pixelValue = pixelValues[0];
+          // if there's zero wind, don't return a color
+          if (pixelValue === 1) {
+            return null;
+          }
+          return "#cf1f8f";
+        },
         resolution: 256,
       });
 
@@ -514,33 +535,7 @@ tr#last_td {
   border-bottom: grey;
   border-bottom-style: double;
 }
-th#title {
-  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);*/
-  width: 20px;
-  height: 100px;
-  text-align: center;
-}
-th#title_show_hide {
-  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);*/
-  width: 20px;
-  height: 100px;
-  text-align: center;
-}
-th#title_download {
-  /*-webkit-transform: rotate(90deg); ROTATION REMOVED NOT SURE WHETHER TO KEEP IT THAT WAY OR NOT 
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);*/
-  width: 20px;
-  height: 100px;
-  text-align: center;
-}
-th#layer_name {
-  width: 210px;
-}
+
 #download_b {
   padding-top: 17px;
 }
@@ -552,18 +547,6 @@ th#layer_name {
 }
 #zoom_button {
 }
-td.check {
-  margin: auto;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 20px;
-  padding-left: 20px;
-}
-#job_number {
-  padding-left: 20px;
-  padding-top: 20px;
-}
 
 #control.table {
   display: block;
@@ -571,28 +554,28 @@ td.check {
   margin-left: auto;
   margin-right: auto;
 }
-.form-column {
+.layer-column {
   flex: auto;
 }
 #map-container {
   width: 100%;
   height: 500px;
 }
-@media (min-width: 992px) {
+@media (min-width: 1264px) {
   .wrapper {
     flex: 1;
     height: 100%;
     min-height: 0;
     overflow: hidden;
   }
-  .form-column {
-    flex: 1;
+  .layer-column {
     height: 100%;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 0;
-    max-width: 210px;
+    min-width: 410px;
+    max-width: 410px;
   }
   #map-container {
     width: 100%;
