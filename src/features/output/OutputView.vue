@@ -241,7 +241,7 @@ import "vue-slider-component/theme/antd.css";
 
 import chroma from "chroma-js";
 
-import markerPng from "@/assets/markerIconBlueBorder.png";
+import markerPng from "@/assets/markerIconRedCrossWithBlackThick.png";
 
 export default {
   name: "Output",
@@ -302,11 +302,9 @@ export default {
     downloadItem: async function (urlLink, label) {
       const url = `${process.env.BASE_URL}` + urlLink;
       let response = await axios.get(url, { responseType: "blob" });
-      console.log("response: ", response);
       const blob = new Blob([response.data], { type: "image/tiff" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      console.log("link: ", link);
       link.download = label;
       link.click();
       URL.revokeObjectURL(link.href);
@@ -430,11 +428,12 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    createCustomIcon: function (latlng) {
+    // eslint-disable-next-line
+    createCustomIcon: function (feature, latlng) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
-        iconSize: [26, 26],
-        iconAnchor: [13, 13],
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
       });
       return L.marker(latlng, { icon: customizedIcon });
     },
@@ -442,6 +441,10 @@ export default {
      * This function builds layers for all .geojson files.
      */
     showGeoJson: async function () {
+      const myLayerOptions = {
+        pointToLayer: this.createCustomIcon,
+      };
+
       const responseAoi = await fetch(this.aoiJson);
       const responseSamplePolygons = await fetch(this.samplePolygonsJson);
       const responseSuggestion = await fetch(this.suggestionJson);
@@ -452,16 +455,7 @@ export default {
 
       this.aoiLayer = L.geoJson().addData(aoi);
       this.samplePolygonsLayer = L.geoJson(samplePolygons);
-      this.suggestionLayer = L.geoJson(suggestion, {
-        /*pointToLayer: function (latlng) {
-          const customizedIcon = L.icon({
-            iconUrl: markerPng,
-            iconSize: [26, 26],
-            iconAnchor: [13, 13],
-          });
-          return L.marker(latlng, { icon: customizedIcon });
-        },*/
-      });
+      this.suggestionLayer = L.geoJson(suggestion, myLayerOptions);
     },
     /**
      * This function builds layers for all .tif files.
@@ -478,8 +472,6 @@ export default {
       const georasterDi = await parseGeoraster(arrayBufferDi);
       const georasterAoa = await parseGeoraster(arrayBufferAoa);
       const georasterPred = await parseGeoraster(arrayBufferPred);
-
-      console.log(georasterAoa);
 
       const minDi = georasterDi.mins[0];
       const rangeDi = georasterDi.ranges[0];
@@ -528,14 +520,6 @@ export default {
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
-    const greenMarker = L.icon({
-      iconUrl: markerPng,
-      iconSize: [26, 26],
-      iconAnchor: [13, 13],
-    });
-    L.marker([51.955638746195966, 7.579278945922851], {
-      icon: greenMarker,
-    }).addTo(this.map);
   },
   beforeUnmount() {
     if (this.map) {
