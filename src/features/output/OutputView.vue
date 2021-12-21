@@ -241,7 +241,7 @@ import "vue-slider-component/theme/antd.css";
 
 import chroma from "chroma-js";
 
-import markerPng from "@/assets/markerIconRedCrossWithBlackThick.png";
+import markerPng from "@/assets/markerIconRedCrossWithBlackEvenThicker.png";
 
 export default {
   name: "Output",
@@ -286,6 +286,14 @@ export default {
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
+      this.map = L.map("map-container", {
+        layers: this.tileLayer,
+      }).setView([51.966, 7.633], 10);
+
+      this.map.createPane("basemap");
+      this.map.getPane("basemap").style.zIndex = 10;
+      this.map.getPane("basemap").style.pointerEvents = "none";
+
       const osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
       const osmAttr =
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -295,13 +303,15 @@ export default {
       const earthAttr =
         "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
 
-      this.tileLayer = L.tileLayer(osmUrl, { attribution: osmAttr });
+      this.tileLayer = L.tileLayer(osmUrl, {
+        attribution: osmAttr,
+        pane: "basemap",
+      }).addTo(this.map);
 
-      this.earthLayer = L.tileLayer(earthUrl, { attribution: earthAttr });
-
-      this.map = L.map("map-container", {
-        layers: this.tileLayer,
-      }).setView([51.966, 7.633], 10);
+      this.earthLayer = L.tileLayer(earthUrl, {
+        attribution: earthAttr,
+        pane: "basemap",
+      });
 
       L.control
         .layers(
@@ -448,8 +458,8 @@ export default {
     createCustomIcon: function (feature, latlng) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18],
+        iconSize: [46, 46],
+        iconAnchor: [23, 23],
       });
       return L.marker(latlng, { icon: customizedIcon });
     },
