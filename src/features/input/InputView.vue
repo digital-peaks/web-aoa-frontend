@@ -145,38 +145,73 @@
         </v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><span class="text-h6">Samples</span></div>
+      <template v-if="formData.use_pretrained_model === false">
+        <div class="mt-3 mb-2"><span class="text-h6">Samples</span></div>
 
-      <div class="row mb-3">
-        <div class="col-6">
-          <v-file-input
-            filled
-            label="Sample Polygons"
-            accept=".json,.geojson,.gpkg"
-            persistent-hint
-            hint=".json,.geojson,.gpkg (max. 10 MB)"
-            show-size
-            truncate-length="25"
-            v-model="samplesFile"
-            :error-messages="
-              v$.samplesFile.$error ? ['This field is required'] : []
-            "
-          ></v-file-input>
-        </div>
-        <div class="col-6">
-          <v-text-field
-            filled
-            type="string"
-            label="Class field"
-            persistent-hint
-            hint="Field which classifies the polygons."
-            v-model="formData.samples_class"
-            :error-messages="
-              v$.formData.samples_class.$error ? ['This field is required'] : []
-            "
-          />
-        </div>
-      </div>
+        <v-row>
+          <v-col cols="6">
+            <v-file-input
+              filled
+              label="Sample Polygons"
+              accept=".json,.geojson,.gpkg"
+              persistent-hint
+              hint=".json,.geojson,.gpkg (max. 10 MB)"
+              show-size
+              truncate-length="25"
+              v-model="samplesFile"
+              :error-messages="
+                v$.samplesFile.$error ? ['This field is required'] : []
+              "
+            ></v-file-input>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              filled
+              type="string"
+              label="Class field"
+              persistent-hint
+              hint="Field which classifies the polygons."
+              v-model="formData.samples_class"
+              :error-messages="
+                v$.formData.samples_class.$error
+                  ? ['This field is required']
+                  : []
+              "
+            />
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-if="formData.use_pretrained_model === true">
+        <div class="mt-3 mb-2"><span class="text-h6">Model</span></div>
+
+        <v-row>
+          <v-col cols="6">
+            <v-file-input
+              filled
+              label="Select model"
+              accept=".rds"
+              persistent-hint
+              hint=".rds (max. 10 MB)"
+              show-size
+              truncate-length="25"
+              v-model="modelFile"
+              :error-messages="
+                v$.modelFile.$error ? ['This field is required'] : []
+              "
+            ></v-file-input>
+          </v-col>
+        </v-row>
+      </template>
+
+      <v-row class="mb-1">
+        <v-col cols="6">
+          <v-switch
+            v-model="formData.use_pretrained_model"
+            label="Use existing model"
+          ></v-switch>
+        </v-col>
+      </v-row>
 
       <div class="mt-3 mb-2"><span class="text-h6">Algorithm</span></div>
 
@@ -199,7 +234,12 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, minValue, maxValue } from "@vuelidate/validators";
+import {
+  required,
+  minValue,
+  maxValue,
+  requiredIf,
+} from "@vuelidate/validators";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-draw";
@@ -223,12 +263,14 @@ export default {
         start_timestamp: format(subMonths(new Date(), 6), "yyyy-MM-dd"),
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
+        use_pretrained_model: false,
       },
       // Sentinel-2B start:
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
       maxTimestamp: format(new Date(), "yyyy-MM-dd"),
       // file previews:
       samplesFile: null,
+      modelFile: null,
       // Error Dialog:
       dialogError: false,
       dialogErrorShowError: false,
@@ -253,10 +295,18 @@ export default {
           minValue: minValue(0),
           maxValue: maxValue(100),
         },
-        samples_class: { required },
+        samples_class: {
+          required: requiredIf(() => !this.formData.use_pretrained_model),
+        },
         area_of_interest: { required },
+        use_pretrained_model: { required },
       },
-      samplesFile: { required },
+      samplesFile: {
+        required: requiredIf(() => !this.formData.use_pretrained_model),
+      },
+      modelFile: {
+        required: requiredIf(() => this.formData.use_pretrained_model),
+      },
     };
   },
   methods: {
@@ -359,11 +409,22 @@ export default {
         end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
-        use_pretrained_model: false,
+        use_pretrained_model: this.formData.use_pretrained_model,
       };
 
+      const data = { job };
+
+      if (job.use_pretrained_model) {
+        // Set model file
+        data.model = this.modelFile;
+        data.job.samples_class = "";
+      } else {
+        // Set samples file
+        data.samples = this.samplesFile;
+      }
+
       try {
-        await API.createJob({ samples: this.samplesFile, job });
+        await API.createJob(data);
         // Go to the job overview
         this.$router.push("/");
       } catch (err) {
