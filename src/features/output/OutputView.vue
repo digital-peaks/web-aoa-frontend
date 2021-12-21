@@ -509,6 +509,14 @@ export default {
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
+    const greenMarker = L.icon({
+      iconUrl: "@/assets/markerIconGreen.png",
+      iconSize: [15, 15],
+      iconAnchor: [7, 7],
+    });
+    L.marker([51.96251456880403, 7.625563144683837], {
+      icon: greenMarker,
+    }).addTo(this.map);
   },
   beforeUnmount() {
     if (this.map) {
