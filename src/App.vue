@@ -8,6 +8,7 @@
         <v-toolbar-title>Web-AOA</v-toolbar-title>
         <v-btn to="/" dark text class="ms-8"> My Jobs </v-btn>
         <v-btn to="/about" dark text class="ms-3"> About </v-btn>
+        <v-btn to="/impressum" dark text class="ms-3"> Impressum </v-btn>
         <v-spacer></v-spacer>
         <v-btn icon>
           <v-icon large>mdi-account-circle</v-icon>
