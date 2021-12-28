@@ -82,15 +82,22 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-btn
-                    class="ms-2"
-                    icon
-                    v-on:click="
-                      downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                    "
-                  >
-                    <v-icon>mdi-download</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span>
+                  </v-tooltip>
                 </div>
               </td>
             </tr>
@@ -125,13 +132,22 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-btn
-                    class="ms-2"
-                    icon
-                    v-on:click="downloadItem('geotiffs_test/pred.tif', 'pred')"
-                  >
-                    <v-icon>mdi-download</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadItem('geotiffs_test/pred.tif', 'pred')
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span>
+                  </v-tooltip>
                 </div>
               </td>
             </tr>
@@ -173,15 +189,22 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-btn
-                    class="ms-2"
-                    icon
-                    v-on:click="
-                      downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                    "
-                  >
-                    <v-icon>mdi-download</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span>
+                  </v-tooltip>
                 </div>
               </td>
             </tr>
@@ -253,18 +276,25 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-btn
-                    class="ms-2"
-                    icon
-                    v-on:click="
-                      downloadItem(
-                        'geotiffs_test/suggestion.geojson',
-                        'suggestion'
-                      )
-                    "
-                  >
-                    <v-icon>mdi-download</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadItem(
+                            'geotiffs_test/suggestion.geojson',
+                            'suggestion'
+                          )
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span>
+                  </v-tooltip>
                 </div>
               </td>
             </tr>
