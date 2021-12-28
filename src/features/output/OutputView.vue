@@ -32,10 +32,20 @@
                     v-on:click="switchLayer('aoi')"
                     color="primary"
                   ></v-checkbox>
-
-                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('aoi')">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('aoi')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
                 </div>
               </td>
             </tr>
@@ -58,9 +68,20 @@
                     v-on:click="switchLayer('di')"
                     color="primary"
                   ></v-checkbox>
-                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('di')">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('di')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
                   <v-btn
                     class="ms-2"
                     icon
@@ -90,9 +111,20 @@
                     v-on:click="switchLayer('pred')"
                     color="primary"
                   ></v-checkbox>
-                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('pred')">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('pred')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
                   <v-btn
                     class="ms-2"
                     icon
@@ -127,9 +159,20 @@
                     v-on:click="switchLayer('aoa')"
                     color="primary"
                   ></v-checkbox>
-                  <v-btn class="ms-2" icon v-on:click="zoomToLayer('aoa')">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('aoa')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
                   <v-btn
                     class="ms-2"
                     icon
@@ -167,13 +210,20 @@
                     v-on:click="switchLayer('samplePolygons')"
                     color="primary"
                   ></v-checkbox>
-                  <v-btn
-                    class="ms-2"
-                    icon
-                    v-on:click="zoomToLayer('samplePolygons')"
-                  >
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('samplePolygons')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
                 </div>
               </td>
             </tr>
@@ -189,13 +239,20 @@
                     v-on:click="switchLayer('suggestion')"
                     color="primary"
                   ></v-checkbox>
-                  <v-btn
-                    class="ms-2"
-                    icon
-                    v-on:click="zoomToLayer('suggestion')"
-                  >
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('suggestion')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
                   <v-btn
                     class="ms-2"
                     icon
