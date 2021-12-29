@@ -8,6 +8,8 @@
       Heisenbergstraße 2<br />
       48149 Münster<br />
     </p>
-    <a href="https://github.com/digital-peaks"> Visit us on Github </a>
+    <v-btn icon href="https://github.com/digital-peaks" target="_blank">
+      <v-icon>mdi-github</v-icon> Github Repository Digital Peaks
+    </v-btn>
   </div>
 </template>
