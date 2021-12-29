@@ -27,11 +27,20 @@
               </td>
               <td class="check justify-center align-start">
                 <div class="d-flex align-items-center">
-                  <v-checkbox
-                    id="aoi"
-                    v-on:click="switchLayer('aoi')"
-                    color="primary"
-                  ></v-checkbox>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="aoi"
+                        v-on:click="switchLayer('aoi')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="aoiCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -63,11 +72,20 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-checkbox
-                    id="di"
-                    v-on:click="switchLayer('di')"
-                    color="primary"
-                  ></v-checkbox>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="di"
+                        v-on:click="switchLayer('di')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="diCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -113,11 +131,20 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-checkbox
-                    id="pred"
-                    v-on:click="switchLayer('pred')"
-                    color="primary"
-                  ></v-checkbox>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="pred"
+                        v-on:click="switchLayer('pred')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="predCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -167,14 +194,22 @@
                   :fixed="0"
                 />
               </td>
-
               <td>
                 <div class="d-flex align-items-center">
-                  <v-checkbox
-                    id="aoa"
-                    v-on:click="switchLayer('aoa')"
-                    color="primary"
-                  ></v-checkbox>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="aoa"
+                        v-on:click="switchLayer('aoa')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="aoaCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -228,11 +263,20 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-checkbox
-                    id="samplePolygons"
-                    v-on:click="switchLayer('samplePolygons')"
-                    color="primary"
-                  ></v-checkbox>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="samplePolygons"
+                        v-on:click="switchLayer('samplePolygons')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="samplePolygonsCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -254,14 +298,22 @@
               <td id="td_elements_with_slider">
                 Suggested locations for training polygons
               </td>
-
               <td>
                 <div class="d-flex align-items-center">
-                  <v-checkbox
-                    id="suggestion"
-                    v-on:click="switchLayer('suggestion')"
-                    color="primary"
-                  ></v-checkbox>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="suggestion"
+                        v-on:click="switchLayer('suggestion')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="suggestionCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -345,28 +397,34 @@ export default {
     tileLayer: null,
     earthLayer: null,
     // Everything needed to visualize the aoi.geojson.
+    aoiCheckbox: false,
     aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
     aoiLayer: null,
     aoiTransparency: 50,
     aoiLineThickness: 1,
     // Everything needed to visualize the aoi_di.tif.
+    diCheckbox: false,
     diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
     diLayer: null,
     diTransparency: 100,
     // Everything needed to visualize the pred.tif.
+    predCheckbox: false,
     predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
     predLayer: null,
     predTransparency: 100,
     // Everything needed to visualize the aoi_aoa.tif.
+    aoaCheckbox: false,
     aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
     aoaLayer: null,
     aoaTransparency: 100,
     // Everything needed to visualize the samplePolygons.geojson.
+    samplePolygonsCheckbox: false,
     samplePolygonsJson: `${process.env.BASE_URL}geotiffs_test/samplePolygons.geojson`,
     samplePolygonsLayer: null,
     samplePolygonsTransparency: 50,
     samplePolygonsLineThickness: 1,
     // Everything needed to visualize the suggestion.geojson.
+    suggestionCheckbox: false,
     suggestionJson: `${process.env.BASE_URL}geotiffs_test/suggestion.geojson`,
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
@@ -486,53 +544,58 @@ export default {
      * @param {string} id - The id is needed to know which layer got triggered.
      */
     switchLayer: function (id) {
-      let tempLayer = null;
-      let checked = document.getElementById(id).checked;
-      if (!checked) checked = true;
-      // This line and the following one convert the value because vuetify uses switched values.
-      else checked = false;
-      if (checked) {
-        // In case the checkbox is after clicking it checked the layer gets activated.
-        if (id == "aoi") {
-          tempLayer = this.aoiLayer;
-          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "di") {
-          tempLayer = this.diLayer;
-          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "pred") {
-          tempLayer = this.predLayer;
-          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "aoa") {
-          tempLayer = this.aoaLayer;
-          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "samplePolygons") {
-          tempLayer = this.samplePolygonsLayer;
-          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        } else if (id == "suggestion") {
-          tempLayer = this.suggestionLayer;
-          if (!this.checkLayerGetsFoundWithMessage(tempLayer))
-            throw "ERROR - Dieser Layer exisitiert nicht!";
-        }
-        tempLayer.addTo(this.map);
-        this.map.fitBounds(tempLayer.getBounds());
-      } else if (!checked) {
-        // In case the checkbox is after clicking it unchecked the layer gets deactivated.
-        if (id == "aoi") {
+      if (id == "aoi") {
+        if (!this.checkLayerGetsFoundWithMessage(this.aoiLayer))
+          throw "ERROR - Dieser Layer exisitiert nicht!";
+        if (this.aoiCheckbox == true) {
+          this.aoiLayer.addTo(this.map);
+          this.map.fitBounds(this.aoiLayer.getBounds());
+        } else if (this.aoiCheckbox == false) {
           this.map.removeLayer(this.aoiLayer);
-        } else if (id == "di") {
+        }
+      } else if (id == "di") {
+        if (!this.checkLayerGetsFoundWithMessage(this.diLayer))
+          throw "ERROR - Dieser Layer exisitiert nicht!";
+        if (this.diCheckbox == true) {
+          this.diLayer.addTo(this.map);
+          this.map.fitBounds(this.diLayer.getBounds());
+        } else if (this.diCheckbox == false) {
           this.map.removeLayer(this.diLayer);
-        } else if (id == "pred") {
+        }
+      } else if (id == "pred") {
+        if (!this.checkLayerGetsFoundWithMessage(this.predLayer))
+          throw "ERROR - Dieser Layer exisitiert nicht!";
+        if (this.predCheckbox == true) {
+          this.predLayer.addTo(this.map);
+          this.map.fitBounds(this.predLayer.getBounds());
+        } else if (this.predCheckbox == false) {
           this.map.removeLayer(this.predLayer);
-        } else if (id == "aoa") {
+        }
+      } else if (id == "aoa") {
+        if (!this.checkLayerGetsFoundWithMessage(this.aoaLayer))
+          throw "ERROR - Dieser Layer exisitiert nicht!";
+        if (this.aoaCheckbox == true) {
+          this.aoaLayer.addTo(this.map);
+          this.map.fitBounds(this.aoaLayer.getBounds());
+        } else if (this.aoaCheckbox == false) {
           this.map.removeLayer(this.aoaLayer);
-        } else if (id == "samplePolygons") {
+        }
+      } else if (id == "samplePolygons") {
+        if (!this.checkLayerGetsFoundWithMessage(this.samplePolygonsLayer))
+          throw "ERROR - Dieser Layer exisitiert nicht!";
+        if (this.samplePolygonsCheckbox == true) {
+          this.samplePolygonsLayer.addTo(this.map);
+          this.map.fitBounds(this.samplePolygonsLayer.getBounds());
+        } else if (this.samplePolygonsCheckbox == false) {
           this.map.removeLayer(this.samplePolygonsLayer);
-        } else if (id == "suggestion") {
+        }
+      } else if (id == "suggestion") {
+        if (!this.checkLayerGetsFoundWithMessage(this.suggestionLayer))
+          throw "ERROR - Dieser Layer exisitiert nicht!";
+        if (this.suggestionCheckbox == true) {
+          this.suggestionLayer.addTo(this.map);
+          this.map.fitBounds(this.suggestionLayer.getBounds());
+        } else if (this.suggestionCheckbox == false) {
           this.map.removeLayer(this.suggestionLayer);
         }
       }
