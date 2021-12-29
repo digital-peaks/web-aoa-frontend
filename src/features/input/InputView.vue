@@ -75,10 +75,9 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >The Area of Interest describes <br />
-            the area the trained model should <br />
-            be tested on. A rectangle has to <br />
-            be drawn in the given map.</span
+            >The Area of Interest describes the area the trained model should
+            <br />
+            be tested on. A rectangle has to be drawn in the given map.</span
           >
         </v-tooltip>
       </div>
@@ -111,7 +110,12 @@
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
-          <span>A description is still required!</span>
+          <span
+            >A <b>timeframe</b> for Sentinel-2 data that should be used can be
+            edited. As default value the past six month will be used. <br />
+            Also a <b>resolution</b> for the used imagery can be choosen as well
+            as the <b>cloud coverage</b>.</span
+          >
         </v-tooltip>
       </div>
 
@@ -171,7 +175,10 @@
             <template v-slot:activator="{ on }">
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
-            <span>A description is still required!</span>
+            <span
+              >In case no existing model should be used, <br />
+              points or polygons to train a model are required.</span
+            >
           </v-tooltip>
         </div>
 
@@ -216,7 +223,10 @@
             <template v-slot:activator="{ on }">
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
-            <span>A description is still required!</span>
+            <span
+              >Optional: A computional model can be<br />
+              used to classify Sentinel-2 imagery.</span
+            >
           </v-tooltip>
         </div>
 
@@ -254,7 +264,10 @@
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
-          <span>A description is still required!</span>
+          <span
+            >An alogithm to train a<br />
+            new model for prediction.</span
+          >
         </v-tooltip>
       </div>
 
