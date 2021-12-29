@@ -22,7 +22,7 @@ export default new Vuex.Store({
   state: {
     /** "loading", "loaded", "error"  */
     jobsState: "loading",
-    jobs: [],
+    jobs: {},
   },
   mutations: {
     setJobsState(state, value) {
@@ -30,6 +30,10 @@ export default new Vuex.Store({
     },
     getJobs(state, data = []) {
       state.jobs = arrayToMap(data);
+      state.jobsState = "loaded";
+    },
+    getJobById(state, data) {
+      state.jobs = { ...state.jobs, [data.id]: { ...data } };
       state.jobsState = "loaded";
     },
   },
@@ -45,6 +49,16 @@ export default new Vuex.Store({
         context.commit("getJobs", data);
       } catch (err) {
         console.error("Unable to load jobs", err);
+        context.commit("setJobsState", "error");
+      }
+    },
+    async getJobById(context, jobId) {
+      context.commit("setJobsState", "loaded");
+      try {
+        const { data } = await API.getJobById(jobId);
+        context.commit("getJobById", data);
+      } catch (err) {
+        console.error("Unable to load job", err);
         context.commit("setJobsState", "error");
       }
     },

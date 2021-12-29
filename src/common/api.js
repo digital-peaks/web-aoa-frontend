@@ -9,6 +9,13 @@ const api = axios.create({
 export const getJobs = () => api.get("/jobs");
 
 /**
+ * Get job by id.
+ * @param {string} id Job id
+ * @returns
+ */
+export const getJobById = (id) => api.get(`/jobs/${id}`);
+
+/**
  * Create job.
  *
  * @param {object} data
@@ -30,3 +37,20 @@ export const createJob = ({ samples, model, job }) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+/**
+ * Get the file by job id.
+ *
+ * Get json (will be parse to json by default):
+ * `getJobsFile("155h565734r", "samplePolygons.geojson")`
+ *
+ * Get array buffer:
+ * `getJobsFile("155h565734r", "pred.tif", { responseType: "arraybuffer" })`
+ *
+ * @param {string} jobId
+ * @param {string} name
+ * @param {object} options See https://axios-http.com/docs/req_config
+ * @param {string} options.responseType Default "json"
+ */
+export const getJobFile = (jobId, name, options) =>
+  api.get(`/jobs/${jobId}/files/${name}`, options);
