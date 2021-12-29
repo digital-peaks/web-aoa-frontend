@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">{{ job.name || "Job xy" }}</div>
+      <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -75,7 +75,7 @@
             </tr>
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Prediciton / Classification
+                Prediction / Classification
                 <vue-slider
                   v-model="predTransparency"
                   v-on:change="changeOpacity('pred')"
@@ -236,6 +236,7 @@ import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
 import axios from "axios";
+import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
@@ -244,55 +245,46 @@ import chroma from "chroma-js";
 
 import markerPng from "@/assets/markerIconRedCrossWithBlackEvenThicker.png";
 
-//import * as API from "@/common/api";
-
 export default {
   name: "Output",
   computed: mapState({
+    jobId() {
+      // Getting job based on the router parameter (see vue-router):
+      const { jobId = "" } = this.$route.params;
+      return jobId;
+    },
     job(state) {
-      // Getting job based on the router parameter:
-      const { jobId } = this.$route.params;
-      //NEEDS TO BE CHANGED IF IT WORKS
-      this.id = jobId;
-      return state.jobs[jobId] || {};
+      return state.jobs[this.jobId] || {};
     },
   }),
   data: () => ({
     map: null,
-    id: null,
     tileLayer: null,
     earthLayer: null,
     // Everything needed to visualize the aoi.geojson.
-    aoiJson: `${process.env.BASE_URL}geotiffs_test/aoi.geojson`,
-    //aoiJson: `http://localhost:9000/jobs/${this.id}/aoi.geojson`,
-    //aoiJson: null,
+    aoiJson: "aoi.geojson",
     aoiLayer: null,
     aoiTransparency: 50,
     aoiLineThickness: 1,
     // Everything needed to visualize the aoi_di.tif.
-    diUrl: `${process.env.BASE_URL}geotiffs_test/aoa_di.tif`,
-    //diUrl: `http://localhost:9000/jobs/${this.job.id}/aoa_di.tif`,
+    diUrl: "aoa_di.tif",
     diLayer: null,
     diTransparency: 100,
     // Everything needed to visualize the pred.tif.
-    predUrl: `${process.env.BASE_URL}geotiffs_test/pred.tif`,
-    //predUrl: `http://localhost:9000/jobs/${this.job.id}/pred.tif`,
+    predUrl: "pred.tif",
     predLayer: null,
     predTransparency: 100,
     // Everything needed to visualize the aoi_aoa.tif.
-    aoaUrl: `${process.env.BASE_URL}geotiffs_test/aoa_aoa.tif`,
-    //aoaUrl: `http://localhost:9000/jobs/${this.job.id}/aoa_aoa.tif`,
+    aoaUrl: "aoa_aoa.tif",
     aoaLayer: null,
     aoaTransparency: 100,
     // Everything needed to visualize the samplePolygons.geojson.
-    samplePolygonsJson: `${process.env.BASE_URL}geotiffs_test/samplePolygons.geojson`,
-    //samplePolygonsJson: `http://localhost:9000/jobs/${this.job.id}/samplePolgons.geojson`,
+    samplePolygonsJson: "samples.geojson",
     samplePolygonsLayer: null,
     samplePolygonsTransparency: 50,
     samplePolygonsLineThickness: 1,
     // Everything needed to visualize the suggestion.geojson.
-    suggestionJson: `${process.env.BASE_URL}geotiffs_test/suggestion.geojson`,
-    //suggestionsJson: `http://localhost:9000/jobs/${this.job.id}/suggestion.geojson`,
+    suggestionJson: "suggestion.geojson",
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
@@ -495,99 +487,136 @@ export default {
         pointToLayer: this.createCustomIcon,
       };
 
-      console.log("id: ", this.id);
+      let responseAoi = null;
+      let responseSamplePolygons = null;
+      let responseSuggestion = null;
 
-      //this.aoiJson = `http://localhost:9000/jobs/${this.id}/aoi.geojson`;
-      //console.log("aoiJson: ", this.aoiJson);
+      try {
+        responseAoi = await API.getJobFile(this.jobId, this.aoiJson);
+      } catch (err) {
+        console.warn("Unable to load file:", this.aoiJson);
+      }
+      try {
+        responseSamplePolygons = await API.getJobFile(
+          this.jobId,
+          this.samplePolygonsJson
+        );
+      } catch (err) {
+        console.warn("Unable to load file:", this.samplePolygonsJson);
+      }
+      try {
+        responseSuggestion = await API.getJobFile(
+          this.jobId,
+          this.suggestionJson
+        );
+      } catch (err) {
+        console.warn("Unable to load file:", this.suggestionJson);
+      }
 
-      const responseAoi = await fetch(this.aoiJson);
-      //console.log(responseAoi);
-      const responseSamplePolygons = await fetch(this.samplePolygonsJson);
-      const responseSuggestion = await fetch(this.suggestionJson);
-
-      const aoi = await responseAoi.json();
-      const samplePolygons = await responseSamplePolygons.json();
-      const suggestion = await responseSuggestion.json();
-
-      this.aoiLayer = L.geoJson(aoi);
-      this.samplePolygonsLayer = L.geoJson(samplePolygons);
-      this.suggestionLayer = L.geoJson(suggestion, myLayerOptions);
+      if (responseAoi) {
+        this.aoiLayer = L.geoJson(responseAoi.data);
+      }
+      if (responseSamplePolygons) {
+        this.samplePolygonsLayer = L.geoJson(responseSamplePolygons.data);
+      }
+      if (responseSuggestion) {
+        this.suggestionLayer = L.geoJson(
+          responseSuggestion.data,
+          myLayerOptions
+        );
+      }
     },
     /**
      * This function builds layers for all .tif files.
      */
     showTif1Band: async function () {
-      const responseDi = await fetch(this.diUrl);
-      const responseAoa = await fetch(this.aoaUrl);
-      const responsePred = await fetch(this.predUrl);
+      let responseDi = null;
+      let responseAoa = null;
+      let responsePred = null;
 
-      const arrayBufferDi = await responseDi.arrayBuffer();
-      const arrayBufferAoa = await responseAoa.arrayBuffer();
-      const arrayBufferPred = await responsePred.arrayBuffer();
-
-      const georasterDi = await parseGeoraster(arrayBufferDi);
-      const georasterAoa = await parseGeoraster(arrayBufferAoa);
-      const georasterPred = await parseGeoraster(arrayBufferPred);
-
-      const minDi = georasterDi.mins[0];
-      const rangeDi = georasterDi.ranges[0];
-
-      const scaleViridis = chroma.scale("Viridis");
-
-      this.diLayer = new GeoRasterLayer({
-        georaster: georasterDi,
-        opacity: this.diTransparency,
-        pixelValuesToColorFn: function (pixelValues) {
-          const [pixelValue] = pixelValues; // there's just one band in this raster
-          // if there's zero wind, don't return a color
-          if (pixelValue === 0) return null;
-          // scale to 0 - 1 used by chroma
-          const scaledPixelValue = (pixelValue - minDi) / rangeDi;
-
-          const color = scaleViridis(scaledPixelValue).hex();
-
-          return color;
-        },
-        resolution: 256,
-      });
-
-      this.aoaLayer = new GeoRasterLayer({
-        georaster: georasterAoa,
-        opacity: this.aoaTransparency,
-        pixelValuesToColorFn: function (pixelValues) {
-          const pixelValue = pixelValues[0];
-          // if there's zero wind, don't return a color
-          if (pixelValue === 1) {
-            return null;
-          }
-          return "#cf1f8f";
-        },
-        resolution: 256,
-      });
-
-      this.predLayer = new GeoRasterLayer({
-        georaster: georasterPred,
-        opacity: this.predTransparency,
-        resolution: 256,
-      });
-    },
-    test: async function () {
       try {
-        //const a = await API.getJobById(this.jobId);
-        const a = await fetch(`http://localhost:9000/jobs/${this.job.id}`);
-        console.log(a);
+        responseDi = await API.getJobFile(this.jobId, this.diUrl, {
+          responseType: "arraybuffer",
+        });
       } catch (err) {
-        console.log(err);
+        console.warn("Unable to load file:", this.diUrl);
+      }
+      try {
+        responseAoa = await API.getJobFile(this.jobId, this.aoaUrl, {
+          responseType: "arraybuffer",
+        });
+      } catch (err) {
+        console.warn("Unable to load file:", this.aoaUrl);
+      }
+      try {
+        responsePred = await API.getJobFile(this.jobId, this.predUrl, {
+          responseType: "arraybuffer",
+        });
+      } catch (err) {
+        console.warn("Unable to load file:", this.predUrl);
+      }
+
+      if (responseDi) {
+        const georasterDi = await parseGeoraster(responseDi.data);
+
+        const minDi = georasterDi.mins[0];
+        const rangeDi = georasterDi.ranges[0];
+
+        const scaleViridis = chroma.scale("Viridis");
+
+        this.diLayer = new GeoRasterLayer({
+          georaster: georasterDi,
+          opacity: this.diTransparency,
+          pixelValuesToColorFn: function (pixelValues) {
+            const [pixelValue] = pixelValues; // there's just one band in this raster
+            // if there's zero wind, don't return a color
+            if (pixelValue === 0) return null;
+            // scale to 0 - 1 used by chroma
+            const scaledPixelValue = (pixelValue - minDi) / rangeDi;
+
+            const color = scaleViridis(scaledPixelValue).hex();
+
+            return color;
+          },
+          resolution: 256,
+        });
+      }
+
+      if (responseAoa) {
+        const georasterAoa = await parseGeoraster(responseAoa.data);
+
+        this.aoaLayer = new GeoRasterLayer({
+          georaster: georasterAoa,
+          opacity: this.aoaTransparency,
+          pixelValuesToColorFn: function (pixelValues) {
+            const pixelValue = pixelValues[0];
+            // if there's zero wind, don't return a color
+            if (pixelValue === 1) {
+              return null;
+            }
+            return "#cf1f8f";
+          },
+          resolution: 256,
+        });
+      }
+
+      if (responsePred) {
+        const georasterPred = await parseGeoraster(responsePred.data);
+
+        this.predLayer = new GeoRasterLayer({
+          georaster: georasterPred,
+          opacity: this.predTransparency,
+          resolution: 256,
+        });
       }
     },
   },
   mounted() {
+    this.$store.dispatch("getJobById", this.jobId);
+
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
-    console.log(this.job.name);
-    //this.test();
-    //this.$store.dispatch("getJobById", {id: this.$route.params.id});
   },
   beforeUnmount() {
     if (this.map) {
