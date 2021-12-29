@@ -179,7 +179,7 @@
               </tr>
             </template>
             <template v-if="diLayer === null">
-              <v-tooltip right color="error">
+              <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
                     <td id="td_elements_with_slider" style="color: #a7a7a7">
@@ -308,7 +308,7 @@
               </tr>
             </template>
             <template v-if="predLayer === null">
-              <v-tooltip right color="error">
+              <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
                     <td id="td_elements_with_slider" style="color: #a7a7a7">
@@ -437,7 +437,7 @@
               </tr>
             </template>
             <template v-if="aoaLayer === null">
-              <v-tooltip right color="error">
+              <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
                     <td id="td_elements_with_slider" style="color: #a7a7a7">
@@ -561,7 +561,7 @@
               </tr>
             </template>
             <template v-if="samplePolygonsLayer === null">
-              <v-tooltip right color="error">
+              <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="last_td" v-on="on">
                     <td id="td_elements_with_slider" style="color: #a7a7a7">
@@ -673,7 +673,7 @@
               </tr>
             </template>
             <template v-if="suggestionLayer === null">
-              <v-tooltip right color="error">
+              <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
                     <td id="td_elements_with_slider" style="color: #a7a7a7">
