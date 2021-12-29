@@ -70,6 +70,16 @@
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Area of Interest (AOI)</span>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span
+            >The Area of Interest describes the area the trained model should
+            <br />
+            be tested on. A rectangle has to be drawn in the given map.</span
+          >
+        </v-tooltip>
       </div>
 
       <v-row class="mb-3">
@@ -94,7 +104,20 @@
         </v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><span class="text-h6">Sentinel-2</span></div>
+      <div class="mt-3 mb-2">
+        <span class="text-h6">Sentinel-2</span>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span
+            >A <b>timeframe</b> for Sentinel-2 data that should be used can be
+            edited. As default value the past six month will be used. <br />
+            Also a <b>resolution</b> for the used imagery can be choosen as well
+            as the <b>cloud coverage</b>.</span
+          >
+        </v-tooltip>
+      </div>
 
       <v-row>
         <v-col cols="6">
@@ -146,7 +169,18 @@
       </v-row>
 
       <template v-if="formData.use_pretrained_model === false">
-        <div class="mt-3 mb-2"><span class="text-h6">Samples</span></div>
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Samples</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span
+              >In case no existing model should be used, <br />
+              points or polygons to train a model are required.</span
+            >
+          </v-tooltip>
+        </div>
 
         <v-row>
           <v-col cols="6">
@@ -183,7 +217,18 @@
       </template>
 
       <template v-if="formData.use_pretrained_model === true">
-        <div class="mt-3 mb-2"><span class="text-h6">Model</span></div>
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Model</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span
+              >Optional: A computional model can be<br />
+              used to classify Sentinel-2 imagery.</span
+            >
+          </v-tooltip>
+        </div>
 
         <v-row>
           <v-col cols="6">
@@ -209,11 +254,22 @@
           <v-switch
             v-model="formData.use_pretrained_model"
             label="Use existing model"
-          ></v-switch>
-        </v-col>
+          ></v-switch
+        ></v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><span class="text-h6">Algorithm</span></div>
+      <div class="mt-3 mb-2">
+        <span class="text-h6">Algorithm</span
+        ><v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span
+            >An alogithm to train a<br />
+            new model for prediction.</span
+          >
+        </v-tooltip>
+      </div>
 
       <div class="row mb-3">
         <div class="col-6">
