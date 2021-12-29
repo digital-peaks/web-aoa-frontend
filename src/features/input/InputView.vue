@@ -70,6 +70,17 @@
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Area of Interest (AOI)</span>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span
+            >The Area of Interest describes <br />
+            the area the trained model should <br />
+            be tested on. A rectangle has to <br />
+            be drawn in the given map.</span
+          >
+        </v-tooltip>
       </div>
 
       <v-row class="mb-3">
@@ -94,7 +105,15 @@
         </v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><span class="text-h6">Sentinel-2</span></div>
+      <div class="mt-3 mb-2">
+        <span class="text-h6">Sentinel-2</span>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span>A description is still required!</span>
+        </v-tooltip>
+      </div>
 
       <v-row>
         <v-col cols="6">
@@ -146,7 +165,15 @@
       </v-row>
 
       <template v-if="formData.use_pretrained_model === false">
-        <div class="mt-3 mb-2"><span class="text-h6">Samples</span></div>
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Samples</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span>A description is still required!</span>
+          </v-tooltip>
+        </div>
 
         <v-row>
           <v-col cols="6">
@@ -183,7 +210,15 @@
       </template>
 
       <template v-if="formData.use_pretrained_model === true">
-        <div class="mt-3 mb-2"><span class="text-h6">Model</span></div>
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Model</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span>A description is still required!</span>
+          </v-tooltip>
+        </div>
 
         <v-row>
           <v-col cols="6">
@@ -209,11 +244,19 @@
           <v-switch
             v-model="formData.use_pretrained_model"
             label="Use existing model"
-          ></v-switch>
-        </v-col>
+          ></v-switch
+        ></v-col>
       </v-row>
 
-      <div class="mt-3 mb-2"><span class="text-h6">Algorithm</span></div>
+      <div class="mt-3 mb-2">
+        <span class="text-h6">Algorithm</span
+        ><v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span>A description is still required!</span>
+        </v-tooltip>
+      </div>
 
       <div class="row mb-3">
         <div class="col-6">
