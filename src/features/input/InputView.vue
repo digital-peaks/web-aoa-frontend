@@ -72,7 +72,7 @@
         <span class="text-h6">Area of Interest (AOI)</span>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+            <v-icon class="pb-3" x-small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
             >The Area of Interest describes <br />
@@ -109,7 +109,7 @@
         <span class="text-h6">Sentinel-2</span>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+            <v-icon class="pb-3" x-small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span>A description is still required!</span>
         </v-tooltip>
@@ -169,7 +169,7 @@
           <span class="text-h6">Samples</span
           ><v-tooltip right>
             <template v-slot:activator="{ on }">
-              <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+              <v-icon class="pb-3" x-small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span>A description is still required!</span>
           </v-tooltip>
@@ -214,7 +214,7 @@
           <span class="text-h6">Model</span
           ><v-tooltip right>
             <template v-slot:activator="{ on }">
-              <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+              <v-icon class="pb-3" x-small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span>A description is still required!</span>
           </v-tooltip>
@@ -252,7 +252,7 @@
         <span class="text-h6">Algorithm</span
         ><v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon x-small v-on="on">mdi-help-circle</v-icon>
+            <v-icon class="pb-3" x-small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span>A description is still required!</span>
         </v-tooltip>
