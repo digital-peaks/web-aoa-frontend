@@ -61,7 +61,7 @@
               </tr>
             </template>
             <template v-if="aoiLayer === null">
-              <v-tooltip right color="error">
+              <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
                     <td id="td_elements_with_slider" style="color: #a7a7a7">
