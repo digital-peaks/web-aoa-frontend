@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
 import OutputView from "../features/output/OutputView.vue";
+import ImpressumView from "../features/impressum/ImpressumView.vue";
 
 Vue.use(VueRouter);
 
@@ -11,6 +12,11 @@ const routes = [
     path: "/input",
     name: "Input",
     component: InputView,
+  },
+  {
+    path: "/impressum",
+    name: "Impressum",
+    component: ImpressumView,
   },
   {
     path: "/",
