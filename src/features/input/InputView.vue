@@ -295,9 +295,7 @@
               filled
               :items="[200, 500, 800]"
               label="N-Tree"
-              v-model="
-                formData.procedure.support_vector_machine.cross_validation_folds
-              "
+              v-model="formData.procedure.support_vector_machine.n_tree"
             ></v-select>
           </v-col>
           <v-col cols="6">
