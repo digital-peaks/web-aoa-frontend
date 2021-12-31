@@ -230,20 +230,6 @@
           </v-tooltip>
         </div>
 
-        <!--<template v-if="formData.use_pretrained_model === true">
-        <div class="mt-3 mb-2">
-          <span class="text-h6">Model</span
-          ><v-tooltip right>
-            <template v-slot:activator="{ on }">
-              <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
-            </template>
-            <span
-              >Optional: A computional model can be<br />
-              used to classify Sentinel-2 imagery.</span
-            >
-          </v-tooltip>
-        </div>-->
-
         <v-row>
           <v-col cols="6">
             <v-file-input
@@ -293,12 +279,53 @@
             :items="mlDropdown"
             item-text="value"
             label="Algorithm"
-            value="test"
             return-object
-            v-on:change="test"
           ></v-select>
         </div>
       </div>
+
+      <!--FUNKTIONIERT NICHT ----------------------------------------------------------------->
+
+      <template v-if="selectedAlgorithm.algorithm === 'rf'">
+        <v-text-field
+          filled
+          type="string"
+          label="n_tree"
+          persistent-hint
+          hint="This parameter describes n_tree."
+          v-model="formData.procedure.randorm_forrest.n_tree"
+          :error-messages="
+            v$.formData.procedure.randorm_forrest.n_tree.$error
+              ? ['This field is required']
+              : []
+          "
+        />
+      </template>
+
+      <template v-if="selectedAlgorithm.algorithm === 'svmradial'">
+        <v-text-field
+          filled
+          type="string"
+          label="Sigma"
+          hint="This parameter describes sigma."
+          v-model="formData.procedure.support_vector_machine.sigma"
+          :error-messages="
+            v$.formData.procedure.support_vector_machine.sigma.$error
+              ? ['This field is required']
+              : []
+          "
+        />
+        <v-select
+          filled
+          :items="['10', '20', '60']"
+          label="Cross validation folds"
+          v-model="
+            formData.procedure.support_vector_machine.cross_validation_folds
+          "
+          suffix="meter"
+        ></v-select>
+      </template>
+      <!------------------------------------------------------------------------------------->
     </form>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -339,9 +366,15 @@ export default {
         samples_class: "class",
         use_pretrained_model: false,
         procedure: {
-          selected: "rf",
+          selected: "rf", // HIER IST EINE ÄNDERUNG NOTWENDIG
           randorm_forrest: {
+            // HIER IST EIN RECHTSCHREIBFEHLER
             n_tree: 800,
+            cross_validation_folds: 5,
+          },
+          support_vector_machine: {
+            sigma: 0.004385965,
+            c: 1,
             cross_validation_folds: 5,
           },
         },
@@ -369,7 +402,7 @@ export default {
         { value: "Random Forest", algorithm: "rf" },
         { value: "Support Vector Machines", algorithm: "svmradial" },
       ],
-      selectedAlgorithm: null,
+      selectedAlgorithm: "rf",
     };
   },
   validations() {
