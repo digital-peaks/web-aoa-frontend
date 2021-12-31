@@ -289,10 +289,13 @@
         <div class="col-6">
           <v-select
             filled
-            :items="['Random Forest', 'Support Vector Machines']"
-            :item-value="['rf','svm']"
+            v-model="selectedAlgorithm"
+            :items="mlDropdown"
+            item-text="value"
             label="Algorithm"
             value="test"
+            return-object
+            v-on:change="test"
           ></v-select>
         </div>
       </div>
@@ -362,6 +365,11 @@ export default {
       drawnItem: null,
       // size in meters^2
       aoiSize: 0,
+      mlDropdown: [
+        { value: "Random Forest", algorithm: "rf" },
+        { value: "Support Vector Machines", algorithm: "svmradial" },
+      ],
+      selectedAlgorithm: null,
     };
   },
   validations() {
@@ -488,6 +496,7 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
         use_pretrained_model: this.formData.use_pretrained_model,
+        // mlAlgorithm: this.selectedAlgorithm.algorithm,
         procedure: {
           selected: "rf",
           randorm_forrest: {
