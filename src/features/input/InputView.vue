@@ -230,6 +230,20 @@
           </v-tooltip>
         </div>
 
+        <!--<template v-if="formData.use_pretrained_model === true">
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Model</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span
+              >Optional: A computional model can be<br />
+              used to classify Sentinel-2 imagery.</span
+            >
+          </v-tooltip>
+        </div>-->
+
         <v-row>
           <v-col cols="6">
             <v-file-input
@@ -265,7 +279,7 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >An alogithm to train a<br />
+            >An algorithm to train a<br />
             new model for prediction.</span
           >
         </v-tooltip>
@@ -275,9 +289,10 @@
         <div class="col-6">
           <v-select
             filled
-            :items="['Random Forest']"
+            :items="['Random Forest', 'Support Vector Machines']"
+            :item-value="['rf','svm']"
             label="Algorithm"
-            value="Random Forest"
+            value="test"
           ></v-select>
         </div>
       </div>
@@ -320,6 +335,13 @@ export default {
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
         use_pretrained_model: false,
+        procedure: {
+          selected: "rf",
+          randorm_forrest: {
+            n_tree: 800,
+            cross_validation_folds: 5,
+          },
+        },
       },
       // Sentinel-2B start:
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
@@ -466,6 +488,13 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
         use_pretrained_model: this.formData.use_pretrained_model,
+        procedure: {
+          selected: "rf",
+          randorm_forrest: {
+            n_tree: 800,
+            cross_validation_folds: 5,
+          },
+        },
       };
 
       const data = { job };
