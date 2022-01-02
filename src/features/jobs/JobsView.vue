@@ -17,6 +17,7 @@
       </div>
     </div>
     <v-card elevation="3">
+      <!-- Woher kommt die Variable "loading"? Weil sie in dieser Datei nicht weiter definiert ist, kommt es hier zu einer Warnung -->
       <v-list v-if="!loading">
         <!-- Kann 'v-model="selected"' entfernt werden? Die Zeile führt zu einer Warnung auf der JobsView Seite und die Variable wird sonst nirgendwo verwendet denke ich. Aber sicher bin ich nicht. -->
         <v-list-item-group
