@@ -25,6 +25,7 @@
           active-class="pink--text"
           multiple
         >
+          <!-- Ich bekomme außerdem eine Warnung bzgl. duplizierter IDs. Hast du eine Idee, woher das kommen kann? -->
           <template v-for="(job, index) in Object.values(jobs)">
             <v-list-item link :to="'/output/' + job.id" :key="job.id">
               <v-list-item-content style="flex: 1">{{
