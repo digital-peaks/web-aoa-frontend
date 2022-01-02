@@ -18,6 +18,7 @@
     </div>
     <v-card elevation="3">
       <v-list v-if="!loading">
+        <!-- Kann 'v-model="selected"' entfernt werden? Die Zeile führt zu einer Warnung auf der JobsView Seite und die Variable wird sonst nirgendwo verwendet denke ich. Aber sicher bin ich nicht. -->
         <v-list-item-group
           v-model="selected"
           active-class="pink--text"
