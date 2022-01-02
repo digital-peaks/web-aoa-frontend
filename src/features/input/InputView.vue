@@ -441,10 +441,9 @@ export default {
     };
   },
   methods: {
-    test: function () {
-      console.log(this.formData.procedure.selected);
-      console.log(this.formData.procedure.support_vector_machine.sigma);
-    },
+    /**
+     * This function initializes the leaflet map with an osm tile layer and focused on Münster.
+     */
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
