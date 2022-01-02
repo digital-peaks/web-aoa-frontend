@@ -283,7 +283,6 @@
             item-text="algorithm"
             item-value="selected"
             label="Algorithm"
-            v-on:change="test"
           ></v-select>
         </v-col>
       </v-row>
