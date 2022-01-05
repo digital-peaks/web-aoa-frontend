@@ -265,22 +265,83 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >An alogithm to train a<br />
+            >An algorithm to train a<br />
             new model for prediction.</span
           >
         </v-tooltip>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-6">
+      <v-row>
+        <v-col cols="12">
           <v-select
             filled
-            :items="['Random Forest']"
+            v-model="formData.procedure.selected"
+            :items="[
+              { algorithm: 'Random Forest', selected: 'rf' },
+              { algorithm: 'Support Vector Machines', selected: 'svmradial' },
+            ]"
+            item-text="algorithm"
+            item-value="selected"
             label="Algorithm"
-            value="Random Forest"
           ></v-select>
-        </div>
-      </div>
+        </v-col>
+      </v-row>
+
+      <template v-if="formData.procedure.selected === 'rf'">
+        <v-row class="mb-3">
+          <v-col cols="6">
+            <v-select
+              filled
+              :items="[200, 500, 800]"
+              label="N-Tree"
+              v-model="formData.procedure.support_vector_machine.n_tree"
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              filled
+              :items="[1, 5, 10]"
+              label="Cross validation folds"
+              v-model="
+                formData.procedure.support_vector_machine.cross_validation_folds
+              "
+            ></v-select>
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-if="formData.procedure.selected === 'svmradial'">
+        <v-row class="mb-3">
+          <v-col cols="4">
+            <v-text-field
+              filled
+              type="string"
+              label="Sigma"
+              hint="This parameter describes sigma."
+              v-model="formData.procedure.support_vector_machine.sigma"
+            />
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              filled
+              type="string"
+              label="C"
+              hint="This parameter describes C."
+              v-model="formData.procedure.support_vector_machine.c"
+            />
+          </v-col>
+          <v-col cols="4">
+            <v-select
+              filled
+              :items="[1, 5, 10]"
+              label="Cross validation folds"
+              v-model="
+                formData.procedure.support_vector_machine.cross_validation_folds
+              "
+            ></v-select>
+          </v-col>
+        </v-row>
+      </template>
     </form>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -320,6 +381,19 @@ export default {
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
         use_pretrained_model: false,
+        procedure: {
+          selected: "rf", // HIER IST EINE ÄNDERUNG NOTWENDIG
+          randorm_forrest: {
+            // HIER IST EIN RECHTSCHREIBFEHLER
+            n_tree: 800,
+            cross_validation_folds: 5,
+          },
+          support_vector_machine: {
+            sigma: 0.004385965,
+            c: 1,
+            cross_validation_folds: 5,
+          },
+        },
       },
       // Sentinel-2B start:
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
@@ -366,6 +440,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * This function initializes the leaflet map with an osm tile layer and focused on Münster.
+     */
     initMap: function () {
       this.map = L.map("map-container").setView([51.966, 7.633], 10);
       this.tileLayer = L.tileLayer(
@@ -466,6 +543,36 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
         use_pretrained_model: this.formData.use_pretrained_model,
+        /*procedure: {
+          selected: "rf",
+          randorm_forrest: {
+            // RECHTSCHREIBFEHLER
+            n_tree: 800,
+            cross_validation_folds: 5,
+          },
+          support_vector_machine: {
+            sigma: 0.004385965,
+            c: 1,
+            cross_validation_folds: 5,
+          },
+        },*/
+        procedure: {
+          selected: this.formData.procedure.selected,
+          randorm_forrest: {
+            // RECHTSCHREIBFEHLER
+            n_tree: this.formData.procedure.randorm_forrest.n_tree,
+            cross_validation_folds:
+              this.formData.procedure.randorm_forrest.cross_validation_folds,
+          },
+          support_vector_machine: {
+            // HIER HABE ICH WAS GEÄNDERT
+            sigma: this.formData.procedure.support_vector_machine.sigma,
+            c: this.formData.procedure.support_vector_machine.c,
+            cross_validation_folds:
+              this.formData.procedure.support_vector_machine
+                .cross_validation_folds,
+          },
+        },
       };
 
       const data = { job };
