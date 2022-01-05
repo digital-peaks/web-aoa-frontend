@@ -16,8 +16,8 @@
         <v-btn to="/input" color="primary">Create new job</v-btn>
       </div>
     </div>
-    <v-card elevation="3">
-      <v-list v-if="!loading">
+    <v-card elevation="3" v-if="!loading && Object.keys(jobs).length > 0">
+      <v-list>
         <v-list-item-group
           v-model="selected"
           active-class="pink--text"

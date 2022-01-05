@@ -6,6 +6,34 @@ const api = axios.create({
   baseURL: config.apiURL,
 });
 
+/**
+ * Set bearer token for API requests.
+ * @param {string} token
+ */
+export const setBearerToken = (token) => {
+  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+};
+
+/**
+ * Clear bearer token for API requests.
+ */
+export const clearBearerToken = () => {
+  api.defaults.headers.common["Authorization"] = undefined;
+};
+
+/**
+ * Login
+ * @param {Object} body
+ * @param {string} body.email
+ * @param {string} body.password
+ */
+export const userLogin = (body) => api.post("/users/login", body);
+
+/**
+ * Get current user
+ */
+export const userMe = () => api.get("/users/me");
+
 export const getJobs = () => api.get("/jobs");
 
 /**

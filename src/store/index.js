@@ -2,7 +2,15 @@ import Vue from "vue";
 import Vuex from "vuex";
 import * as API from "@/common/api";
 
+const STORAGE_USER_TOKEN_KEY = "user_token";
+
 Vue.use(Vuex);
+
+const restoredToken = window.localStorage.getItem(STORAGE_USER_TOKEN_KEY) || "";
+
+if (restoredToken) {
+  API.setBearerToken(restoredToken);
+}
 
 /**
  * Helper to transform an array to a map:
@@ -20,11 +28,19 @@ const arrayToMap = (data = []) => {
 
 export default new Vuex.Store({
   state: {
+    token: restoredToken,
+    user: {},
     /** "loading", "loaded", "error"  */
     jobsState: "loading",
     jobs: {},
   },
   mutations: {
+    setToken(state, value) {
+      state.token = value;
+    },
+    setUser(state, value) {
+      state.user = { ...value };
+    },
     setJobsState(state, value) {
       state.jobsState = value;
     },
@@ -38,6 +54,24 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    /**
+     * Set user token.
+     * @param context
+     * @param {string} token
+     */
+    async setToken(context, token) {
+      window.localStorage.setItem(STORAGE_USER_TOKEN_KEY, token);
+      API.setBearerToken(token);
+      context.commit("setToken", token);
+    },
+    /**
+     * Set user.
+     * @param context
+     * @param {User} user
+     */
+    async setUser(context, user) {
+      context.commit("setUser", user);
+    },
     /**
      * Get jobs from API.
      * @param context
