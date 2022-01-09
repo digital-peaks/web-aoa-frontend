@@ -6,9 +6,9 @@
 
 There are a few environment variables that can be set to configure the frontend dynamically.
 
-| Variable          | Default                 | Description |
-| ----------------- | ----------------------- | ----------- |
-| `VUE_APP_API_URL` | `http://localhost:9000` | API URL.    |
+| Variable          | Default                | Description |
+| ----------------- | ---------------------- | ----------- |
+| `VUE_APP_API_URL` | `http://localhost/api` | API URL.    |
 
 > For the Docker container you don't need to pass the `VUE_APP_` prefix.
 > E.g.: `docker run -e API_URL=https://example.com ...`

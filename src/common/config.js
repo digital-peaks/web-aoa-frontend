@@ -1,5 +1,5 @@
 const DEFAULT_CONFIG = {
-  API_URL: "http://localhost:9000",
+  API_URL: "http://localhost/api",
 };
 
 /**
