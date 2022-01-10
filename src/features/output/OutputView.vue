@@ -734,14 +734,18 @@
         >
       </v-simple-table>
       <template v-if="false">
-        <v-row justify="center">
-          <v-expansion-panels accordion disabled>
-            <v-expansion-panel>
-              <v-expansion-panel-header>Details</v-expansion-panel-header>
-              <v-expansion-panel-content> </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-row>
+        <v-tooltip left color="error">
+          <template v-slot:activator="{ on }">
+            <v-row justify="center" v-on="on">
+              <v-expansion-panels accordion disabled>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>Details</v-expansion-panel-header>
+                  <v-expansion-panel-content> </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels> </v-row
+          ></template>
+          <span>This Layer is not available</span>
+        </v-tooltip>
       </template>
       <template v-if="true">
         <v-row justify="center">
