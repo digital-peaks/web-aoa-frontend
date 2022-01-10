@@ -748,20 +748,20 @@
         </v-tooltip>
       </template>
       <template v-if="true">
-        <v-row justify="center">
-          <v-expansion-panels accordion>
-            <v-expansion-panel>
-              <v-expansion-panel-header>Details</v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-row>Accuracy: {{ accuracy }}</v-row
-                ><br />
-                <v-row>Kappa Index: {{ kappaIndex }}</v-row>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-row>
+        <v-expansion-panels flat accordion class="mb-1">
+          <v-expansion-panel>
+            <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+              >Details</v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+              <div class="mb-1" style="font-size: 14px">
+                Accuracy: {{ accuracy }}
+              </div>
+              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </template>
-      <br />
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
