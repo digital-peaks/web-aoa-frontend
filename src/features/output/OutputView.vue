@@ -730,11 +730,40 @@
                 <span>This Layer is not available</span>
               </v-tooltip>
             </template>
-          </tbody>
-
-          <tbody></tbody
-        ></template>
+          </tbody></template
+        >
       </v-simple-table>
+      <template v-if="false">
+        <v-row justify="center">
+          <v-expansion-panels accordion disabled>
+            <v-expansion-panel>
+              <v-expansion-panel-header>Item</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-row>
+      </template>
+      <template v-if="true">
+        <v-row justify="center">
+          <v-expansion-panels accordion>
+            <v-expansion-panel>
+              <v-expansion-panel-header>Item</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-row>
+      </template>
+      <br />
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -1185,9 +1214,6 @@ tr#last_td {
   flex-wrap: nowrap;
   position: relative;
 }
-#zoom_button {
-}
-
 #control.table {
   display: block;
   /* DOENST WORK BUT THE TARGET WAS A CENTER ALIGNED LAYER CONTROL FOR THE RESPONSIVE DESIGN */
