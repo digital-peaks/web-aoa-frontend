@@ -4,10 +4,16 @@ import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
 import OutputView from "../features/output/OutputView.vue";
 import ImpressumView from "../features/impressum/ImpressumView.vue";
+import LoginView from "../features/login/LoginView.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginView,
+  },
   {
     path: "/input",
     name: "Input",
