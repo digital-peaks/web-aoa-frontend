@@ -1180,8 +1180,8 @@ export default {
       }
 
       if (responseResult) {
-        this.kappaIndex = responseResult[1];
-        this.accuracy = responseResult[2];
+        this.accuracy = responseResult.data[1];
+        this.kappaIndex = responseResult.data[2];
       }
     },
   },
