@@ -287,7 +287,7 @@
         </v-col>
       </v-row>
 
-      <!--<template v-if="selectedML === 'rf'">
+      <template v-if="selectedML === 'rf'">
         <v-row class="mb-3">
           <v-col cols="6">
             <v-select
@@ -337,7 +337,7 @@
             ></v-select>
           </v-col>
         </v-row>
-      </template>-->
+      </template>
     </form>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
