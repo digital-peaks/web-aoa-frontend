@@ -287,14 +287,14 @@
         </v-col>
       </v-row>
 
-      <template v-if="selectedML === 'rf'">
+      <!--<template v-if="selectedML === 'rf'">
         <v-row class="mb-3">
           <v-col cols="6">
             <v-select
               filled
               :items="[200, 500, 800]"
               label="N-Tree"
-              v-model="formData.procedure.support_vector_machine.n_tree"
+              v-model="formData.random_forrest.n_tree"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -302,9 +302,7 @@
               filled
               :items="[1, 5, 10]"
               label="Cross validation folds"
-              v-model="
-                formData.procedure.support_vector_machine.cross_validation_folds
-              "
+              v-model="formData.random_forrest.cross_validation_folds"
             ></v-select>
           </v-col>
         </v-row>
@@ -318,7 +316,7 @@
               type="string"
               label="Sigma"
               hint="This parameter describes sigma."
-              v-model="formData.procedure.support_vector_machine.sigma"
+              v-model="formData.support_vector_machine.sigma"
             />
           </v-col>
           <v-col cols="4">
@@ -335,13 +333,11 @@
               filled
               :items="[1, 5, 10]"
               label="Cross validation folds"
-              v-model="
-                formData.procedure.support_vector_machine.cross_validation_folds
-              "
+              v-model="formData.support_vector_machine.cross_validation_folds"
             ></v-select>
           </v-col>
         </v-row>
-      </template>
+      </template>-->
     </form>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -381,7 +377,15 @@ export default {
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
         use_pretrained_model: false,
-        selected: "rf",
+        random_forrest: {
+          n_tree: 800,
+          cross_validation_folds: 5,
+        },
+        support_vector_machine: {
+          sigma: 0.004385965,
+          c: 1,
+          cross_validation_folds: 5,
+        },
       },
       // Sentinel-2B start:
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
@@ -402,6 +406,7 @@ export default {
       drawnItem: null,
       // size in meters^2
       aoiSize: 0,
+      selected: "rf",
     };
   },
   validations() {
@@ -531,32 +536,19 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
         use_pretrained_model: this.formData.use_pretrained_model,
-        /*procedure: {
-          selected: "rf",
-          randorm_forrest: {
-            // RECHTSCHREIBFEHLER
-            n_tree: 800,
-            cross_validation_folds: 5,
-          },
-          support_vector_machine: {
-            sigma: 0.004385965,
-            c: 1,
-            cross_validation_folds: 5,
-          },
-        },*/
         random_forrest: {
-          n_tree: this.formData.procedure.randorm_forrest.n_tree,
+          n_tree: this.formData.random_forrest.n_tree,
           cross_validation_folds:
-            this.formData.procedure.randorm_forrest.cross_validation_folds,
+            this.formData.random_forrest.cross_validation_folds,
         },
         support_vector_machine: {
-          sigma: this.formData.procedure.support_vector_machine.sigma,
-          c: this.formData.procedure.support_vector_machine.c,
+          sigma: this.formData.support_vector_machine.sigma,
+          c: this.formData.support_vector_machine.c,
           cross_validation_folds:
-            this.formData.procedure.support_vector_machine
-              .cross_validation_folds,
+            this.formData.support_vector_machine.cross_validation_folds,
         },
       };
+      console.log("job: ", job);
 
       const data = { job };
 
