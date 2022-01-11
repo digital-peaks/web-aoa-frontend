@@ -735,6 +735,37 @@
           <tbody></tbody
         ></template>
       </v-simple-table>
+      <template v-if="kappaIndex === null">
+        <v-tooltip left color="error">
+          <template v-slot:activator="{ on }">
+            <v-row justify="center" v-on="on">
+              <v-expansion-panels accordion disabled class="mb-1">
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                    >Details</v-expansion-panel-header
+                  >
+                  <v-expansion-panel-content> </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels> </v-row
+          ></template>
+          <span>These informations are not available</span>
+        </v-tooltip>
+      </template>
+      <template v-if="true">
+        <v-expansion-panels flat accordion class="mb-1">
+          <v-expansion-panel>
+            <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+              >Details</v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+              <div class="mb-1" style="font-size: 14px">
+                Accuracy: {{ accuracy }}
+              </div>
+              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -1138,6 +1169,22 @@ export default {
           opacity: this.predTransparency,
           resolution: 256,
         });
+      }
+    },
+    loadResultJson: async function () {
+      let responseResult = null;
+      console.log("load result json");
+      try {
+        responseResult = await API.getJobFile(this.jobId, this.resultJson);
+        console.log("response: ", responseResult.data);
+      } catch (err) {
+        console.warn("Unable to load file:", this.resultJson);
+      }
+
+      if (responseResult) {
+        this.kappaIndex = responseResult[1];
+        this.accuracy = responseResult[2];
+        console.log("kappa: ", this.kappaIndex, ", acc: ", this.accuracy);
       }
     },
   },
