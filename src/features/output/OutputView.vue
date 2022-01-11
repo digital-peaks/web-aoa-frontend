@@ -2,6 +2,7 @@
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
+      AAAA
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -840,6 +841,7 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
+    resultJson: "result.json",
     kappaIndex: null,
     accuracy: null,
   }),
@@ -1029,8 +1031,7 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    // eslint-disable-next-line
-    createCustomIcon: function (feature, latlng) {
+    createCustomIcon: function (latlng) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
@@ -1169,6 +1170,20 @@ export default {
         });
       }
     },
+    loadResultJson: async function () {
+      let responseResult = null;
+
+      try {
+        responseResult = await API.getJobFile(this.jobId, this.resultJson);
+      } catch (err) {
+        console.warn("Unable to load file:", this.resultJson);
+      }
+
+      if (responseResult) {
+        this.kappaIndex = responseResult[1];
+        this.accuracy = responseResult[2];
+      }
+    },
   },
   mounted() {
     this.$store.dispatch("getJobById", this.jobId);
@@ -1176,6 +1191,7 @@ export default {
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
+    this.loadResultJson();
 
     console.log(this.aoiLayer === null);
   },
