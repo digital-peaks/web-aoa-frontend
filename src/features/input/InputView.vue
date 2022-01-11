@@ -287,7 +287,7 @@
         </v-col>
       </v-row>
 
-      <template v-if="formData.procedure.selected === 'rf'">
+      <template v-if="selectedML === 'rf'">
         <v-row class="mb-3">
           <v-col cols="6">
             <v-select
@@ -310,7 +310,7 @@
         </v-row>
       </template>
 
-      <template v-if="formData.procedure.selected === 'svmradial'">
+      <template v-if="selectedML === 'svmradial'">
         <v-row class="mb-3">
           <v-col cols="4">
             <v-text-field
@@ -327,7 +327,7 @@
               type="string"
               label="C"
               hint="This parameter describes C."
-              v-model="formData.procedure.support_vector_machine.c"
+              v-model="formData.support_vector_machine.c"
             />
           </v-col>
           <v-col cols="4">
@@ -381,19 +381,7 @@ export default {
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
         use_pretrained_model: false,
-        procedure: {
-          selected: "rf", // HIER IST EINE ÄNDERUNG NOTWENDIG
-          randorm_forrest: {
-            // HIER IST EIN RECHTSCHREIBFEHLER
-            n_tree: 800,
-            cross_validation_folds: 5,
-          },
-          support_vector_machine: {
-            sigma: 0.004385965,
-            c: 1,
-            cross_validation_folds: 5,
-          },
-        },
+        selected: "rf",
       },
       // Sentinel-2B start:
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
@@ -556,22 +544,17 @@ export default {
             cross_validation_folds: 5,
           },
         },*/
-        procedure: {
-          selected: this.formData.procedure.selected,
-          randorm_forrest: {
-            // RECHTSCHREIBFEHLER
-            n_tree: this.formData.procedure.randorm_forrest.n_tree,
-            cross_validation_folds:
-              this.formData.procedure.randorm_forrest.cross_validation_folds,
-          },
-          support_vector_machine: {
-            // HIER HABE ICH WAS GEÄNDERT
-            sigma: this.formData.procedure.support_vector_machine.sigma,
-            c: this.formData.procedure.support_vector_machine.c,
-            cross_validation_folds:
-              this.formData.procedure.support_vector_machine
-                .cross_validation_folds,
-          },
+        random_forrest: {
+          n_tree: this.formData.procedure.randorm_forrest.n_tree,
+          cross_validation_folds:
+            this.formData.procedure.randorm_forrest.cross_validation_folds,
+        },
+        support_vector_machine: {
+          sigma: this.formData.procedure.support_vector_machine.sigma,
+          c: this.formData.procedure.support_vector_machine.c,
+          cross_validation_folds:
+            this.formData.procedure.support_vector_machine
+              .cross_validation_folds,
         },
       };
 
