@@ -2,8 +2,6 @@
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
-      AAAA
-
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
