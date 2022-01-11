@@ -275,13 +275,13 @@
         <v-col cols="12">
           <v-select
             filled
-            v-model="formData.procedure.selected"
+            v-model="selectedML"
             :items="[
-              { algorithm: 'Random Forest', selected: 'rf' },
-              { algorithm: 'Support Vector Machines', selected: 'svmradial' },
+              { algorithm: 'Random Forrest', selectedML: 'rf' },
+              { algorithm: 'Support Vector Machines', selectedML: 'svmradial' },
             ]"
             item-text="algorithm"
-            item-value="selected"
+            item-value="selectedML"
             label="Algorithm"
           ></v-select>
         </v-col>
@@ -406,7 +406,7 @@ export default {
       drawnItem: null,
       // size in meters^2
       aoiSize: 0,
-      selected: "rf",
+      selectedML: "rf",
     };
   },
   validations() {
@@ -478,7 +478,6 @@ export default {
           this.rectangleLayer.removeLayer(this.drawnItem);
         }
         this.drawnItem = e.layer;
-        console.log("drawnItem: ", this.drawnItem);
 
         // Get the first element
         const [rectangle] = this.drawnItem.getLatLngs();
@@ -502,7 +501,6 @@ export default {
             name: "AOI",
           },
         };
-        console.log("form data: ", this.formData);
 
         // This variable contains the size of the entered aoi in m2.
         this.aoiSize = L.GeometryUtil.geodesicArea(rectangle);
