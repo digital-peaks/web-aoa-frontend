@@ -734,21 +734,23 @@
           </tbody></template
         >
       </v-simple-table>
-      <template v-if="false">
+      <template v-if="kappaIndex === null">
         <v-tooltip left color="error">
           <template v-slot:activator="{ on }">
             <v-row justify="center" v-on="on">
-              <v-expansion-panels accordion disabled>
+              <v-expansion-panels accordion disabled class="mb-1">
                 <v-expansion-panel>
-                  <v-expansion-panel-header>Details</v-expansion-panel-header>
+                  <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                    >Details</v-expansion-panel-header
+                  >
                   <v-expansion-panel-content> </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels> </v-row
           ></template>
-          <span>This Layer is not available</span>
+          <span>These informations are not available</span>
         </v-tooltip>
       </template>
-      <template v-if="true">
+      <template v-if="kappaIndex != null">
         <v-expansion-panels flat accordion class="mb-1">
           <v-expansion-panel>
             <v-expansion-panel-header class="pl-4" style="font-size: 14px"
