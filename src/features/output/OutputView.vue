@@ -2,7 +2,6 @@
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
-
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
@@ -730,10 +729,8 @@
                 <span>This Layer is not available</span>
               </v-tooltip>
             </template>
-          </tbody>
-
-          <tbody></tbody
-        ></template>
+          </tbody></template
+        >
       </v-simple-table>
       <template v-if="kappaIndex === null">
         <v-tooltip left color="error">
@@ -751,7 +748,7 @@
           <span>These informations are not available</span>
         </v-tooltip>
       </template>
-      <template v-if="true">
+      <template v-if="kappaIndex != null">
         <v-expansion-panels flat accordion class="mb-1">
           <v-expansion-panel>
             <v-expansion-panel-header class="pl-4" style="font-size: 14px"
@@ -844,6 +841,9 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
+    resultJson: "result.json",
+    kappaIndex: null,
+    accuracy: null,
   }),
   components: {
     VueSlider,
@@ -1031,8 +1031,7 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    // eslint-disable-next-line
-    createCustomIcon: function (feature, latlng) {
+    createCustomIcon: function (latlng) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
@@ -1173,18 +1172,16 @@ export default {
     },
     loadResultJson: async function () {
       let responseResult = null;
-      console.log("load result json");
+
       try {
         responseResult = await API.getJobFile(this.jobId, this.resultJson);
-        console.log("response: ", responseResult.data);
       } catch (err) {
         console.warn("Unable to load file:", this.resultJson);
       }
 
       if (responseResult) {
-        this.kappaIndex = responseResult[1];
-        this.accuracy = responseResult[2];
-        console.log("kappa: ", this.kappaIndex, ", acc: ", this.accuracy);
+        this.accuracy = responseResult.data[1];
+        this.kappaIndex = responseResult.data[2];
       }
     },
   },
@@ -1194,6 +1191,7 @@ export default {
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
+    this.loadResultJson();
 
     console.log(this.aoiLayer === null);
   },
@@ -1232,9 +1230,6 @@ tr#last_td {
   flex-wrap: nowrap;
   position: relative;
 }
-#zoom_button {
-}
-
 #control.table {
   display: block;
   /* DOENST WORK BUT THE TARGET WAS A CENTER ALIGNED LAYER CONTROL FOR THE RESPONSIVE DESIGN */
