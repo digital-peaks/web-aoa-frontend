@@ -41,14 +41,14 @@
                   }"
                 ></div>
               </v-list-item-action>
-              <v-list-item-action class="ml-1" :key="job.id">
+              <v-list-item-action class="ml-1">
                 <v-btn icon v-on:click.prevent="dialog = true">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-dialog v-model="dialog" :key="job.id" max-width="350">
                   <v-card>
                     <v-card-title class="text-h5">
-                      Are you sure your want to delete "{{ job.name }}"?
+                      Are you sure you want to delete "{{ job.name }}"?
                       {{ job.id }}
                     </v-card-title>
 
@@ -60,7 +60,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
 
-                      <v-btn color="primry" @click="dialog = false">
+                      <v-btn color="primary" @click="dialog = false">
                         Cancel
                       </v-btn>
 
@@ -72,17 +72,6 @@
                 </v-dialog>
               </v-list-item-action>
             </v-list-item>
-            <!--<v-list-item-icon :key="job.id">
-              <div>
-                <v-alert :value="alert" type="info">
-                  Should this job (namen ergänzen) actually be deleted?
-                  <v-row>
-                    <v-btn v-on:click="deleteJob(job.id)"> Yes </v-btn>
-                    <v-btn> No </v-btn>
-                  </v-row>
-                </v-alert>
-              </div>
-            </v-list-item-icon>-->
             <v-divider
               v-if="index < Object.keys(jobs).length - 1"
               :key="job.id"
