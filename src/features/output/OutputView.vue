@@ -760,7 +760,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
@@ -876,8 +876,9 @@ export default {
      * @param {string} label - Contains the label the downloaded file should get.
      */
     downloadItem: async function (urlLink, label) {
-      const url = API.getJobFile(this.jobId, urlLink);
-      let response = await axios.get(url, { responseType: "blob" });
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
       const blob = new Blob([response.data], { type: "image/tiff" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -1170,8 +1171,6 @@ export default {
     this.showTif1Band();
     this.showGeoJson();
     this.loadResultJson();
-
-    console.log(this.aoiLayer === null);
   },
   beforeUnmount() {
     if (this.map) {
