@@ -547,11 +547,6 @@ export default {
             cross_validation_folds:
               this.formData.random_forrest.cross_validation_folds,
           },
-          support_vector_machine: {
-            sigma: null,
-            c: null,
-            cross_validation_folds: null,
-          },
         };
       } else if (this.selectedML == "svmradial") {
         console.log("svm");
@@ -566,10 +561,6 @@ export default {
           samples_class: this.formData.samples_class,
           sampling_strategy: "regular",
           use_pretrained_model: this.formData.use_pretrained_model,
-          random_forrest: {
-            n_tree: null,
-            cross_validation_folds: null,
-          },
           support_vector_machine: {
             sigma: this.formData.support_vector_machine.sigma,
             c: this.formData.support_vector_machine.c,
