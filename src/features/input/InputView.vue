@@ -280,6 +280,7 @@
               { algorithm: 'Random Forrest', selectedML: 'rf' },
               { algorithm: 'Support Vector Machines', selectedML: 'svmradial' },
             ]"
+            v-on:change="changeML"
             item-text="algorithm"
             item-value="selectedML"
             label="Algorithm"
@@ -378,13 +379,13 @@ export default {
         samples_class: "class",
         use_pretrained_model: false,
         random_forrest: {
-          n_tree: 800,
-          cross_validation_folds: 5,
+          n_tree: null,
+          cross_validation_folds: null,
         },
         support_vector_machine: {
-          sigma: 0.004385965,
-          c: 1,
-          cross_validation_folds: 5,
+          sigma: null,
+          c: null,
+          cross_validation_folds: null,
         },
       },
       // Sentinel-2B start:
@@ -546,7 +547,6 @@ export default {
             this.formData.support_vector_machine.cross_validation_folds,
         },
       };
-      console.log("job: ", job);
 
       const data = { job };
 
@@ -586,6 +586,19 @@ export default {
         return;
       }
       new L.Draw.Rectangle(this.map).enable();
+    },
+    /**
+     * Sets default values into the inputform to ease UX.
+     */
+    changeML() {
+      if (this.selectedML === "rf") {
+        this.formData.random_forrest.n_tree = 800;
+        this.formData.random_forrest.cross_validation_folds = 5;
+      } else {
+        this.formData.support_vector_machine.sigma = 0.004385965;
+        this.formData.support_vector_machine.c = 1;
+        this.formData.support_vector_machine.cross_validation_folds = 5;
+      }
     },
   },
   mounted() {
