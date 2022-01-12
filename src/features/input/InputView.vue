@@ -280,7 +280,6 @@
               { algorithm: 'Random Forrest', selectedML: 'rf' },
               { algorithm: 'Support Vector Machines', selectedML: 'svmradial' },
             ]"
-            v-on:change="changeML"
             item-text="algorithm"
             item-value="selectedML"
             label="Algorithm"
@@ -379,13 +378,13 @@ export default {
         samples_class: "class",
         use_pretrained_model: false,
         random_forrest: {
-          n_tree: null,
-          cross_validation_folds: null,
+          n_tree: 800,
+          cross_validation_folds: 5,
         },
         support_vector_machine: {
-          sigma: null,
-          c: null,
-          cross_validation_folds: null,
+          sigma: 0.004385965,
+          c: 1,
+          cross_validation_folds: 5,
         },
       },
       // Sentinel-2B start:
@@ -515,6 +514,7 @@ export default {
      */
     async onSubmitForm(e) {
       // prevent that the form is send:
+      console.log("submitted");
       e.preventDefault();
 
       const isFormCorrect = await this.v$.$validate();
@@ -523,30 +523,61 @@ export default {
         return;
       }
 
+      let job = null;
+      console.log(this.selectedML);
+      console.log(this.selectedML == "rf");
+
+      console.log(this.selectedML == "svmradial");
       // create job object for the api
-      const job = {
-        name: this.formData.name,
-        area_of_interest: this.formData.area_of_interest,
-        use_lookup: false,
-        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
-        cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
-        start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
-        end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
-        samples_class: this.formData.samples_class,
-        sampling_strategy: "regular",
-        use_pretrained_model: this.formData.use_pretrained_model,
-        random_forrest: {
-          n_tree: this.formData.random_forrest.n_tree,
-          cross_validation_folds:
-            this.formData.random_forrest.cross_validation_folds,
-        },
-        support_vector_machine: {
-          sigma: this.formData.support_vector_machine.sigma,
-          c: this.formData.support_vector_machine.c,
-          cross_validation_folds:
-            this.formData.support_vector_machine.cross_validation_folds,
-        },
-      };
+      if (this.selectedML == "rf") {
+        console.log("rf");
+        job = {
+          name: this.formData.name,
+          area_of_interest: this.formData.area_of_interest,
+          use_lookup: false,
+          resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+          cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
+          start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
+          end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
+          samples_class: this.formData.samples_class,
+          sampling_strategy: "regular",
+          use_pretrained_model: this.formData.use_pretrained_model,
+          random_forrest: {
+            n_tree: this.formData.random_forrest.n_tree,
+            cross_validation_folds:
+              this.formData.random_forrest.cross_validation_folds,
+          },
+          support_vector_machine: {
+            sigma: null,
+            c: null,
+            cross_validation_folds: null,
+          },
+        };
+      } else if (this.selectedML == "svmradial") {
+        console.log("svm");
+        job = {
+          name: this.formData.name,
+          area_of_interest: this.formData.area_of_interest,
+          use_lookup: false,
+          resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+          cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
+          start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
+          end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
+          samples_class: this.formData.samples_class,
+          sampling_strategy: "regular",
+          use_pretrained_model: this.formData.use_pretrained_model,
+          random_forrest: {
+            n_tree: null,
+            cross_validation_folds: null,
+          },
+          support_vector_machine: {
+            sigma: this.formData.support_vector_machine.sigma,
+            c: this.formData.support_vector_machine.c,
+            cross_validation_folds:
+              this.formData.support_vector_machine.cross_validation_folds,
+          },
+        };
+      }
 
       const data = { job };
 
@@ -586,24 +617,6 @@ export default {
         return;
       }
       new L.Draw.Rectangle(this.map).enable();
-    },
-    /**
-     * Sets default values into the inputform to ease UX.
-     */
-    changeML() {
-      if (this.selectedML === "rf") {
-        this.formData.random_forrest.n_tree = 800;
-        this.formData.random_forrest.cross_validation_folds = 5;
-        this.formData.support_vector_machine.sigma = null;
-        this.formData.support_vector_machine.c = null;
-        this.formData.support_vector_machine.cross_validation_folds = null;
-      } else {
-        this.formData.support_vector_machine.sigma = 0.004385965;
-        this.formData.support_vector_machine.c = 1;
-        this.formData.support_vector_machine.cross_validation_folds = 5;
-        this.formData.random_forrest.n_tree = null;
-        this.formData.random_forrest.cross_validation_folds = null;
-      }
     },
   },
   mounted() {
