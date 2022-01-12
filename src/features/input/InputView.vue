@@ -275,26 +275,26 @@
         <v-col cols="12">
           <v-select
             filled
-            v-model="formData.procedure.selected"
+            v-model="selectedML"
             :items="[
-              { algorithm: 'Random Forest', selected: 'rf' },
-              { algorithm: 'Support Vector Machines', selected: 'svmradial' },
+              { algorithm: 'Random Forrest', selectedML: 'rf' },
+              { algorithm: 'Support Vector Machines', selectedML: 'svmradial' },
             ]"
             item-text="algorithm"
-            item-value="selected"
+            item-value="selectedML"
             label="Algorithm"
           ></v-select>
         </v-col>
       </v-row>
 
-      <template v-if="formData.procedure.selected === 'rf'">
+      <template v-if="selectedML === 'rf'">
         <v-row class="mb-3">
           <v-col cols="6">
             <v-select
               filled
               :items="[200, 500, 800]"
               label="N-Tree"
-              v-model="formData.procedure.support_vector_machine.n_tree"
+              v-model="formData.random_forrest.n_tree"
             ></v-select>
           </v-col>
           <v-col cols="6">
@@ -302,15 +302,13 @@
               filled
               :items="[1, 5, 10]"
               label="Cross validation folds"
-              v-model="
-                formData.procedure.support_vector_machine.cross_validation_folds
-              "
+              v-model="formData.random_forrest.cross_validation_folds"
             ></v-select>
           </v-col>
         </v-row>
       </template>
 
-      <template v-if="formData.procedure.selected === 'svmradial'">
+      <template v-if="selectedML === 'svmradial'">
         <v-row class="mb-3">
           <v-col cols="4">
             <v-text-field
@@ -318,7 +316,7 @@
               type="string"
               label="Sigma"
               hint="This parameter describes sigma."
-              v-model="formData.procedure.support_vector_machine.sigma"
+              v-model="formData.support_vector_machine.sigma"
             />
           </v-col>
           <v-col cols="4">
@@ -327,7 +325,7 @@
               type="string"
               label="C"
               hint="This parameter describes C."
-              v-model="formData.procedure.support_vector_machine.c"
+              v-model="formData.support_vector_machine.c"
             />
           </v-col>
           <v-col cols="4">
@@ -335,9 +333,7 @@
               filled
               :items="[1, 5, 10]"
               label="Cross validation folds"
-              v-model="
-                formData.procedure.support_vector_machine.cross_validation_folds
-              "
+              v-model="formData.support_vector_machine.cross_validation_folds"
             ></v-select>
           </v-col>
         </v-row>
@@ -381,18 +377,14 @@ export default {
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
         use_pretrained_model: false,
-        procedure: {
-          selected: "rf", // HIER IST EINE ÄNDERUNG NOTWENDIG
-          randorm_forrest: {
-            // HIER IST EIN RECHTSCHREIBFEHLER
-            n_tree: 800,
-            cross_validation_folds: 5,
-          },
-          support_vector_machine: {
-            sigma: 0.004385965,
-            c: 1,
-            cross_validation_folds: 5,
-          },
+        random_forrest: {
+          n_tree: 800,
+          cross_validation_folds: 5,
+        },
+        support_vector_machine: {
+          sigma: 0.004385965,
+          c: 1,
+          cross_validation_folds: 5,
         },
       },
       // Sentinel-2B start:
@@ -414,6 +406,7 @@ export default {
       drawnItem: null,
       // size in meters^2
       aoiSize: 0,
+      selectedML: "rf",
     };
   },
   validations() {
@@ -485,7 +478,6 @@ export default {
           this.rectangleLayer.removeLayer(this.drawnItem);
         }
         this.drawnItem = e.layer;
-        console.log("drawnItem: ", this.drawnItem);
 
         // Get the first element
         const [rectangle] = this.drawnItem.getLatLngs();
@@ -509,7 +501,6 @@ export default {
             name: "AOI",
           },
         };
-        console.log("form data: ", this.formData);
 
         // This variable contains the size of the entered aoi in m2.
         this.aoiSize = L.GeometryUtil.geodesicArea(rectangle);
@@ -531,8 +522,7 @@ export default {
         return;
       }
 
-      // create job object for the api
-      const job = {
+      let job = {
         name: this.formData.name,
         area_of_interest: this.formData.area_of_interest,
         use_lookup: false,
@@ -543,37 +533,23 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: "regular",
         use_pretrained_model: this.formData.use_pretrained_model,
-        /*procedure: {
-          selected: "rf",
-          randorm_forrest: {
-            // RECHTSCHREIBFEHLER
-            n_tree: 800,
-            cross_validation_folds: 5,
-          },
-          support_vector_machine: {
-            sigma: 0.004385965,
-            c: 1,
-            cross_validation_folds: 5,
-          },
-        },*/
-        procedure: {
-          selected: this.formData.procedure.selected,
-          randorm_forrest: {
-            // RECHTSCHREIBFEHLER
-            n_tree: this.formData.procedure.randorm_forrest.n_tree,
-            cross_validation_folds:
-              this.formData.procedure.randorm_forrest.cross_validation_folds,
-          },
-          support_vector_machine: {
-            // HIER HABE ICH WAS GEÄNDERT
-            sigma: this.formData.procedure.support_vector_machine.sigma,
-            c: this.formData.procedure.support_vector_machine.c,
-            cross_validation_folds:
-              this.formData.procedure.support_vector_machine
-                .cross_validation_folds,
-          },
-        },
       };
+
+      // create job object for the api
+      if (this.selectedML == "rf") {
+        job.random_forrest = {
+          n_tree: this.formData.random_forrest.n_tree,
+          cross_validation_folds:
+            this.formData.random_forrest.cross_validation_folds,
+        };
+      } else if (this.selectedML == "svmradial") {
+        job.support_vector_machine = {
+          sigma: this.formData.support_vector_machine.sigma,
+          c: this.formData.support_vector_machine.c,
+          cross_validation_folds:
+            this.formData.support_vector_machine.cross_validation_folds,
+        };
+      }
 
       const data = { job };
 

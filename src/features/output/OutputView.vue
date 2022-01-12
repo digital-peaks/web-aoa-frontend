@@ -2,7 +2,6 @@
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
-
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
@@ -163,9 +162,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                          "
+                          v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -225,12 +222,7 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/aoa_di.tif',
-                                  'aoa_di'
-                                )
-                              "
+                              v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -292,9 +284,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/pred.tif', 'pred')
-                          "
+                          v-on:click="downloadItem('pred.tif', 'pred')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -351,9 +341,7 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="
-                                downloadItem('geotiffs_test/pred.tif', 'pred')
-                              "
+                              v-on:click="downloadItem('pred.tif', 'pred')"
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -421,9 +409,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                          "
+                          v-on:click="downloadItem('aoa_aoa.tif', 'aoa_aoa')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -487,10 +473,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/aoa_aoa.tif',
-                                  'aoa_aoa'
-                                )
+                                downloadItem('aoa_aoa.tif', 'aoa_aoa')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -655,10 +638,7 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem(
-                              'geotiffs_test/suggestion.geojson',
-                              'suggestion'
-                            )
+                            downloadItem('suggestion.geojson', 'suggestion')
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -710,10 +690,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/suggestion.geojson',
-                                  'suggestion'
-                                )
+                                downloadItem('suggestion.geojson', 'suggestion')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -730,11 +707,41 @@
                 <span>This Layer is not available</span>
               </v-tooltip>
             </template>
-          </tbody>
-
-          <tbody></tbody
-        ></template>
+          </tbody></template
+        >
       </v-simple-table>
+      <v-divider light> </v-divider>
+      <template v-if="kappaIndex === null">
+        <v-tooltip left color="error">
+          <template v-slot:activator="{ on }">
+            <v-row justify="center" v-on="on">
+              <v-expansion-panels flat accordion disabled class="pb-7">
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                    >Details</v-expansion-panel-header
+                  >
+                  <v-expansion-panel-content> </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels> </v-row
+          ></template>
+          <span>These informations are not available</span>
+        </v-tooltip>
+      </template>
+      <template v-if="kappaIndex != null">
+        <v-expansion-panels flat accordion class="pb-7">
+          <v-expansion-panel>
+            <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+              >Details</v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+              <div class="mb-1" style="font-size: 14px">
+                Accuracy: {{ accuracy }}
+              </div>
+              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -754,7 +761,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
@@ -813,6 +820,9 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
+    resultJson: "result.json",
+    kappaIndex: null,
+    accuracy: null,
   }),
   components: {
     VueSlider,
@@ -867,8 +877,9 @@ export default {
      * @param {string} label - Contains the label the downloaded file should get.
      */
     downloadItem: async function (urlLink, label) {
-      const url = `${process.env.BASE_URL}` + urlLink;
-      let response = await axios.get(url, { responseType: "blob" });
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
       const blob = new Blob([response.data], { type: "image/tiff" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -1000,8 +1011,7 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    // eslint-disable-next-line
-    createCustomIcon: function (feature, latlng) {
+    createCustomIcon: function (latlng) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
@@ -1140,6 +1150,20 @@ export default {
         });
       }
     },
+    loadResultJson: async function () {
+      let responseResult = null;
+
+      try {
+        responseResult = await API.getJobFile(this.jobId, this.resultJson);
+      } catch (err) {
+        console.warn("Unable to load file:", this.resultJson);
+      }
+
+      if (responseResult) {
+        this.accuracy = responseResult.data[1];
+        this.kappaIndex = responseResult.data[2];
+      }
+    },
   },
   mounted() {
     this.$store.dispatch("getJobById", this.jobId);
@@ -1147,8 +1171,7 @@ export default {
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
-
-    console.log(this.aoiLayer === null);
+    this.loadResultJson();
   },
   beforeUnmount() {
     if (this.map) {
@@ -1169,11 +1192,10 @@ td {
   padding-bottom: 5px;
 }
 tr#not_last_td {
-  border-bottom: white;
+  border-bottom: grey;
 }
 tr#last_td {
   border-bottom: grey;
-  border-bottom-style: double;
 }
 
 #download_b {
@@ -1185,9 +1207,6 @@ tr#last_td {
   flex-wrap: nowrap;
   position: relative;
 }
-#zoom_button {
-}
-
 #control.table {
   display: block;
   /* DOENST WORK BUT THE TARGET WAS A CENTER ALIGNED LAYER CONTROL FOR THE RESPONSIVE DESIGN */
