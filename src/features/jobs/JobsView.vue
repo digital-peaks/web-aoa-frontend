@@ -41,14 +41,35 @@
                   }"
                 ></div>
               </v-list-item-action>
-              <v-list-item-action class="ml-1">
-                <v-btn
-                  :key="job.id"
-                  icon
-                  v-on:click.prevent="deleteJob(job.id)"
-                >
+              <v-list-item-action class="ml-1" :key="job.id">
+                <v-btn icon v-on:click.prevent="dialog = true">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
+                <v-dialog v-model="dialog" :key="job.id" max-width="350">
+                  <v-card>
+                    <v-card-title class="text-h5">
+                      Are you sure your want to delete "{{ job.name }}"?
+                      {{ job.id }}
+                    </v-card-title>
+
+                    <v-card-text>
+                      This item will be deleted immediately. You can't undo this
+                      action.
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn color="primry" @click="dialog = false">
+                        Cancel
+                      </v-btn>
+
+                      <v-btn color="primary" text @click="deleteJob(job.id)">
+                        Delete
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </v-list-item-action>
             </v-list-item>
             <!--<v-list-item-icon :key="job.id">
@@ -94,10 +115,17 @@ export default {
   components: {
     TimeAgo,
   },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
   // Map the state from store/index.js
   computed: mapState(["jobs", "jobsState"]),
   methods: {
     deleteJob(jobId) {
+      console.log(jobId);
+      this.dialog = false;
       API.deleteJobById(jobId);
       window.location.reload();
     },
