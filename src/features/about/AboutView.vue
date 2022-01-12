@@ -4,8 +4,7 @@
     <v-row justify="center">
       <v-expansion-panels accordion>
         <v-expansion-panel>
-          <v-expansion-panel-header
-            >What kind of website is this?</v-expansion-panel-header
+          <v-expansion-panel-header><h5>What kind of website is this?<h5></v-expansion-panel-header
           >
           <v-expansion-panel-content>
             This web application aims to implement the AOA method according to
@@ -15,7 +14,7 @@
         </v-expansion-panel>
 
         <v-expansion-panel>
-          <v-expansion-panel-header>Project reference</v-expansion-panel-header>
+          <v-expansion-panel-header> <h5>Project reference</h5></v-expansion-panel-header>
           <v-expansion-panel-content>
             Machine learning has become a popular method to classify remote
             sensing data. method for the classification of remote sensing data.
@@ -43,7 +42,7 @@
         </v-expansion-panel>
 
         <v-expansion-panel>
-          <v-expansion-panel-header>Who are we?</v-expansion-panel-header>
+          <v-expansion-panel-header> <h5>Who are we?</h5></v-expansion-panel-header>
           <v-expansion-panel-content>
             Our company is a five-person project team, which is specialized in
             the development of modern modern web applications with a focus on
