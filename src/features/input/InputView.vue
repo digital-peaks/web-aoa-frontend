@@ -594,10 +594,15 @@ export default {
       if (this.selectedML === "rf") {
         this.formData.random_forrest.n_tree = 800;
         this.formData.random_forrest.cross_validation_folds = 5;
+        this.formData.support_vector_machine.sigma = null;
+        this.formData.support_vector_machine.c = null;
+        this.formData.support_vector_machine.cross_validation_folds = null;
       } else {
         this.formData.support_vector_machine.sigma = 0.004385965;
         this.formData.support_vector_machine.c = 1;
         this.formData.support_vector_machine.cross_validation_folds = 5;
+        this.formData.random_forrest.n_tree = null;
+        this.formData.random_forrest.cross_validation_folds = null;
       }
     },
   },
