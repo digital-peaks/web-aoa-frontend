@@ -31,7 +31,7 @@
               <v-list-item-action class="text-caption text--secondary">
                 <time-ago :date="job.created" />
               </v-list-item-action>
-              <v-list-item-action>
+              <v-list-item-action class="ml-5">
                 <div
                   class="status-indicator"
                   v-bind:class="{
@@ -41,7 +41,7 @@
                   }"
                 ></div>
               </v-list-item-action>
-              <v-list-item-action>
+              <v-list-item-action class="ml-1">
                 <v-btn
                   :key="job.id"
                   icon
