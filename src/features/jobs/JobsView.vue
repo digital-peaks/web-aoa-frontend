@@ -43,9 +43,18 @@
               </v-list-item-action>
             </v-list-item>
             <v-list-item-icon :key="job.id">
-              <v-btn :key="job.id" icon v-on:click="deleteJob(job.id)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+              <div>
+                <v-btn :key="job.id" icon v-on:click="alert">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+                <v-alert :value="alert" type="info">
+                  Should this job actually be deleted?
+                  <v-row>
+                    <v-btn v-on:click="deleteJob(job.id)"> Yes </v-btn>
+                    <v-btn> No </v-btn>
+                  </v-row>
+                </v-alert>
+              </div>
             </v-list-item-icon>
             <v-divider
               v-if="index < Object.keys(jobs).length - 1"
