@@ -162,9 +162,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                          "
+                          v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -224,12 +222,7 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/aoa_di.tif',
-                                  'aoa_di'
-                                )
-                              "
+                              v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -291,9 +284,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/pred.tif', 'pred')
-                          "
+                          v-on:click="downloadItem('pred.tif', 'pred')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -350,9 +341,7 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="
-                                downloadItem('geotiffs_test/pred.tif', 'pred')
-                              "
+                              v-on:click="downloadItem('pred.tif', 'pred')"
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -420,9 +409,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                          "
+                          v-on:click="downloadItem('aoa_aoa.tif', 'aoa_aoa')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -486,10 +473,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/aoa_aoa.tif',
-                                  'aoa_aoa'
-                                )
+                                downloadItem('aoa_aoa.tif', 'aoa_aoa')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -654,10 +638,7 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem(
-                              'geotiffs_test/suggestion.geojson',
-                              'suggestion'
-                            )
+                            downloadItem('suggestion.geojson', 'suggestion')
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -709,10 +690,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/suggestion.geojson',
-                                  'suggestion'
-                                )
+                                downloadItem('suggestion.geojson', 'suggestion')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -898,7 +876,7 @@ export default {
      * @param {string} label - Contains the label the downloaded file should get.
      */
     downloadItem: async function (urlLink, label) {
-      const url = `${process.env.BASE_URL}` + urlLink;
+      const url = API.getJobFile(this.jobId, urlLink);
       let response = await axios.get(url, { responseType: "blob" });
       const blob = new Blob([response.data], { type: "image/tiff" });
       const link = document.createElement("a");
