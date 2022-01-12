@@ -162,9 +162,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
-                          "
+                          v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -224,12 +222,7 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/aoa_di.tif',
-                                  'aoa_di'
-                                )
-                              "
+                              v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -291,9 +284,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/pred.tif', 'pred')
-                          "
+                          v-on:click="downloadItem('pred.tif', 'pred')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -350,9 +341,7 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="
-                                downloadItem('geotiffs_test/pred.tif', 'pred')
-                              "
+                              v-on:click="downloadItem('pred.tif', 'pred')"
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -420,9 +409,7 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="
-                            downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
-                          "
+                          v-on:click="downloadItem('aoa_aoa.tif', 'aoa_aoa')"
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -486,10 +473,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/aoa_aoa.tif',
-                                  'aoa_aoa'
-                                )
+                                downloadItem('aoa_aoa.tif', 'aoa_aoa')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -654,10 +638,7 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem(
-                              'geotiffs_test/suggestion.geojson',
-                              'suggestion'
-                            )
+                            downloadItem('suggestion.geojson', 'suggestion')
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -709,10 +690,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem(
-                                  'geotiffs_test/suggestion.geojson',
-                                  'suggestion'
-                                )
+                                downloadItem('suggestion.geojson', 'suggestion')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -782,7 +760,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
@@ -898,8 +876,9 @@ export default {
      * @param {string} label - Contains the label the downloaded file should get.
      */
     downloadItem: async function (urlLink, label) {
-      const url = `${process.env.BASE_URL}` + urlLink;
-      let response = await axios.get(url, { responseType: "blob" });
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
       const blob = new Blob([response.data], { type: "image/tiff" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -1192,8 +1171,6 @@ export default {
     this.showTif1Band();
     this.showGeoJson();
     this.loadResultJson();
-
-    console.log(this.aoiLayer === null);
   },
   beforeUnmount() {
     if (this.map) {
