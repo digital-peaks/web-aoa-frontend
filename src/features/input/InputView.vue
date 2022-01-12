@@ -522,45 +522,32 @@ export default {
         return;
       }
 
-      let job = null;
+      let job = {
+        name: this.formData.name,
+        area_of_interest: this.formData.area_of_interest,
+        use_lookup: false,
+        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+        cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
+        start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
+        end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
+        samples_class: this.formData.samples_class,
+        sampling_strategy: "regular",
+        use_pretrained_model: this.formData.use_pretrained_model,
+      };
 
       // create job object for the api
       if (this.selectedML == "rf") {
-        job = {
-          name: this.formData.name,
-          area_of_interest: this.formData.area_of_interest,
-          use_lookup: false,
-          resolution: Number.parseInt(this.formData.resolution, 10) || 10,
-          cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
-          start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
-          end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
-          samples_class: this.formData.samples_class,
-          sampling_strategy: "regular",
-          use_pretrained_model: this.formData.use_pretrained_model,
-          random_forrest: {
-            n_tree: this.formData.random_forrest.n_tree,
-            cross_validation_folds:
-              this.formData.random_forrest.cross_validation_folds,
-          },
+        job.random_forrest = {
+          n_tree: this.formData.random_forrest.n_tree,
+          cross_validation_folds:
+            this.formData.random_forrest.cross_validation_folds,
         };
       } else if (this.selectedML == "svmradial") {
-        job = {
-          name: this.formData.name,
-          area_of_interest: this.formData.area_of_interest,
-          use_lookup: false,
-          resolution: Number.parseInt(this.formData.resolution, 10) || 10,
-          cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
-          start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
-          end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
-          samples_class: this.formData.samples_class,
-          sampling_strategy: "regular",
-          use_pretrained_model: this.formData.use_pretrained_model,
-          support_vector_machine: {
-            sigma: this.formData.support_vector_machine.sigma,
-            c: this.formData.support_vector_machine.c,
-            cross_validation_folds:
-              this.formData.support_vector_machine.cross_validation_folds,
-          },
+        job.support_vector_machine = {
+          sigma: this.formData.support_vector_machine.sigma,
+          c: this.formData.support_vector_machine.c,
+          cross_validation_folds:
+            this.formData.support_vector_machine.cross_validation_folds,
         };
       }
 
