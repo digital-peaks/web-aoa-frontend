@@ -1192,8 +1192,6 @@ export default {
     this.showTif1Band();
     this.showGeoJson();
     this.loadResultJson();
-
-    console.log(this.aoiLayer === null);
   },
   beforeUnmount() {
     if (this.map) {
