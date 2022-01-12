@@ -2,7 +2,6 @@
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
-
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
@@ -730,11 +729,40 @@
                 <span>This Layer is not available</span>
               </v-tooltip>
             </template>
-          </tbody>
-
-          <tbody></tbody
-        ></template>
+          </tbody></template
+        >
       </v-simple-table>
+      <template v-if="kappaIndex === null">
+        <v-tooltip left color="error">
+          <template v-slot:activator="{ on }">
+            <v-row justify="center" v-on="on">
+              <v-expansion-panels accordion disabled class="mb-1">
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                    >Details</v-expansion-panel-header
+                  >
+                  <v-expansion-panel-content> </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels> </v-row
+          ></template>
+          <span>These informations are not available</span>
+        </v-tooltip>
+      </template>
+      <template v-if="kappaIndex != null">
+        <v-expansion-panels flat accordion class="mb-1">
+          <v-expansion-panel>
+            <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+              >Details</v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+              <div class="mb-1" style="font-size: 14px">
+                Accuracy: {{ accuracy }}
+              </div>
+              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -813,6 +841,9 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
+    resultJson: "result.json",
+    kappaIndex: null,
+    accuracy: null,
   }),
   components: {
     VueSlider,
@@ -1000,8 +1031,7 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    // eslint-disable-next-line
-    createCustomIcon: function (feature, latlng) {
+    createCustomIcon: function (latlng) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
@@ -1140,6 +1170,20 @@ export default {
         });
       }
     },
+    loadResultJson: async function () {
+      let responseResult = null;
+
+      try {
+        responseResult = await API.getJobFile(this.jobId, this.resultJson);
+      } catch (err) {
+        console.warn("Unable to load file:", this.resultJson);
+      }
+
+      if (responseResult) {
+        this.accuracy = responseResult.data[1];
+        this.kappaIndex = responseResult.data[2];
+      }
+    },
   },
   mounted() {
     this.$store.dispatch("getJobById", this.jobId);
@@ -1147,6 +1191,7 @@ export default {
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
+    this.loadResultJson();
 
     console.log(this.aoiLayer === null);
   },
@@ -1185,9 +1230,6 @@ tr#last_td {
   flex-wrap: nowrap;
   position: relative;
 }
-#zoom_button {
-}
-
 #control.table {
   display: block;
   /* DOENST WORK BUT THE TARGET WAS A CENTER ALIGNED LAYER CONTROL FOR THE RESPONSIVE DESIGN */
