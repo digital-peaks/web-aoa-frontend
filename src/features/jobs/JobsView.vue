@@ -42,6 +42,11 @@
                 ></div>
               </v-list-item-action>
             </v-list-item>
+            <v-list-item-icon :key="job.id">
+              <v-btn :key="job.id" icon v-on:click="deleteJob(job.id)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-list-item-icon>
             <v-divider
               v-if="index < Object.keys(jobs).length - 1"
               :key="job.id"
@@ -67,6 +72,7 @@
 <script>
 import TimeAgo from "@/components/TimeAgo";
 import { mapState } from "vuex";
+import * as API from "@/common/api";
 
 export default {
   name: "JobsView",
@@ -75,6 +81,12 @@ export default {
   },
   // Map the state from store/index.js
   computed: mapState(["jobs", "jobsState"]),
+  methods: {
+    deleteJob(jobId) {
+      API.deleteJobById(jobId);
+      window.location.reload();
+    },
+  },
   mounted() {
     this.$store.dispatch("getJobs");
   },
