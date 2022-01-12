@@ -1,10 +1,38 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
+      <div id="job_number" class="m-3 text-h5 child">
+        {{ job.name || "-" }}
+      </div>
+
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
+            <template v-if="aoaLayer != null">
+              <tr id="not_last_td">
+                <td>Log File</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2 pl-50"
+                          icon
+                          v-on:click="
+                            downloadTextFile('output.log', 'output.log')
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </template>
             <template v-if="aoiLayer != null">
               <tr id="not_last_td">
                 <td id="td_elements_with_slider">
@@ -823,6 +851,7 @@ export default {
     resultJson: "result.json",
     kappaIndex: null,
     accuracy: null,
+    outputLogUrl: "output.log",
   }),
   components: {
     VueSlider,
@@ -881,6 +910,17 @@ export default {
         responseType: "blob",
       });
       const blob = new Blob([response.data], { type: "image/tiff" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
+    downloadTextFile: async function (urlLink, label) {
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
@@ -1196,6 +1236,9 @@ tr#not_last_td {
 }
 tr#last_td {
   border-bottom: grey;
+}
+.child {
+  display: inline-block;
 }
 
 #download_b {
