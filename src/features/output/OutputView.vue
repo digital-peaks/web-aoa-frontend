@@ -732,11 +732,12 @@
           </tbody></template
         >
       </v-simple-table>
+      <v-divider light> </v-divider>
       <template v-if="kappaIndex === null">
         <v-tooltip left color="error">
           <template v-slot:activator="{ on }">
             <v-row justify="center" v-on="on">
-              <v-expansion-panels flat accordion disabled class="mb-3">
+              <v-expansion-panels flat accordion disabled class="pb-7">
                 <v-expansion-panel>
                   <v-expansion-panel-header class="pl-4" style="font-size: 14px"
                     >Details</v-expansion-panel-header
@@ -749,7 +750,7 @@
         </v-tooltip>
       </template>
       <template v-if="kappaIndex != null">
-        <v-expansion-panels flat accordion class="mb-3">
+        <v-expansion-panels flat accordion class="pb-7">
           <v-expansion-panel>
             <v-expansion-panel-header class="pl-4" style="font-size: 14px"
               >Details</v-expansion-panel-header
@@ -1212,11 +1213,10 @@ td {
   padding-bottom: 5px;
 }
 tr#not_last_td {
-  border-bottom: white;
+  border-bottom: grey;
 }
 tr#last_td {
   border-bottom: grey;
-  border-bottom-style: double;
 }
 
 #download_b {
