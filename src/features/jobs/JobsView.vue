@@ -41,21 +41,27 @@
                   }"
                 ></div>
               </v-list-item-action>
-            </v-list-item>
-            <v-list-item-icon :key="job.id">
-              <div>
-                <v-btn :key="job.id" icon v-on:click="alert">
+              <v-list-item-action>
+                <v-btn
+                  :key="job.id"
+                  icon
+                  v-on:click.prevent="deleteJob(job.id)"
+                >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+            <!--<v-list-item-icon :key="job.id">
+              <div>
                 <v-alert :value="alert" type="info">
-                  Should this job actually be deleted?
+                  Should this job (namen ergänzen) actually be deleted?
                   <v-row>
                     <v-btn v-on:click="deleteJob(job.id)"> Yes </v-btn>
                     <v-btn> No </v-btn>
                   </v-row>
                 </v-alert>
               </div>
-            </v-list-item-icon>
+            </v-list-item-icon>-->
             <v-divider
               v-if="index < Object.keys(jobs).length - 1"
               :key="job.id"
