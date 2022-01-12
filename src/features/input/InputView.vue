@@ -514,7 +514,6 @@ export default {
      */
     async onSubmitForm(e) {
       // prevent that the form is send:
-      console.log("submitted");
       e.preventDefault();
 
       const isFormCorrect = await this.v$.$validate();
@@ -524,13 +523,9 @@ export default {
       }
 
       let job = null;
-      console.log(this.selectedML);
-      console.log(this.selectedML == "rf");
 
-      console.log(this.selectedML == "svmradial");
       // create job object for the api
       if (this.selectedML == "rf") {
-        console.log("rf");
         job = {
           name: this.formData.name,
           area_of_interest: this.formData.area_of_interest,
@@ -549,7 +544,6 @@ export default {
           },
         };
       } else if (this.selectedML == "svmradial") {
-        console.log("svm");
         job = {
           name: this.formData.name,
           area_of_interest: this.formData.area_of_interest,

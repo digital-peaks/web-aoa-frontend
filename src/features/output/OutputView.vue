@@ -736,7 +736,7 @@
         <v-tooltip left color="error">
           <template v-slot:activator="{ on }">
             <v-row justify="center" v-on="on">
-              <v-expansion-panels accordion disabled class="mb-1">
+              <v-expansion-panels flat accordion disabled class="mb-3">
                 <v-expansion-panel>
                   <v-expansion-panel-header class="pl-4" style="font-size: 14px"
                     >Details</v-expansion-panel-header
@@ -749,7 +749,7 @@
         </v-tooltip>
       </template>
       <template v-if="kappaIndex != null">
-        <v-expansion-panels flat accordion class="mb-1">
+        <v-expansion-panels flat accordion class="mb-3">
           <v-expansion-panel>
             <v-expansion-panel-header class="pl-4" style="font-size: 14px"
               >Details</v-expansion-panel-header
