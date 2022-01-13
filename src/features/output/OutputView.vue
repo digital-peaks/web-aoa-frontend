@@ -1011,21 +1011,15 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    createCustomIcon: function (latlng) {
+    /**
+     * This function builds layers for all .geojson files.
+     */
+    showGeoJson: async function () {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
         iconAnchor: [23, 23],
       });
-      return L.marker(latlng, { icon: customizedIcon });
-    },
-    /**
-     * This function builds layers for all .geojson files.
-     */
-    showGeoJson: async function () {
-      const myLayerOptions = {
-        pointToLayer: this.createCustomIcon,
-      };
 
       let responseAoi = null;
       let responseSamplePolygons = null;
@@ -1060,10 +1054,11 @@ export default {
         this.samplePolygonsLayer = L.geoJson(responseSamplePolygons.data);
       }
       if (responseSuggestion) {
-        this.suggestionLayer = L.geoJson(
-          responseSuggestion.data,
-          myLayerOptions
-        );
+        this.suggestionLayer = L.geoJson(responseSuggestion.data, {
+          pointToLayer: function (_feature, latlng) {
+            return L.marker(latlng, { icon: customizedIcon });
+          },
+        });
       }
     },
     /**
