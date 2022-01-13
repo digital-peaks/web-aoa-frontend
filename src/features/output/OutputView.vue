@@ -260,6 +260,7 @@
                           width: '20px',
                           height: '20px',
                           backgroundColor: value,
+                          boxShadow: '0 0 1px #333',
                         }"
                       ></div>
                       <div class="ml-3">{{ resultJson[0][index] }}</div>
