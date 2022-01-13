@@ -751,7 +751,24 @@
               <div class="mb-1" style="font-size: 14px">
                 Accuracy: {{ accuracy }}
               </div>
-              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+              <div class="mb-1" style="font-size: 14px">
+                Kappa Index: {{ kappaIndex }}
+              </div>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    color="primary"
+                    class="float-left mt-3"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="downloadRDSFile('model.rds', 'model.rds')"
+                  >
+                    Model
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the trained model</span>
+              </v-tooltip>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -887,7 +904,7 @@ export default {
         .addTo(this.map);
     },
     /**
-     * this function triggers the downlad process of the result of the calculations.
+     * This function triggers the downlad process of the result of the calculations.
      * @param {string} urlLink -  Contains the internal URL to the file.
      * @param {string} label - Contains the label the downloaded file should get.
      */
@@ -902,11 +919,34 @@ export default {
       link.click();
       URL.revokeObjectURL(link.href);
     },
+    /**
+     * This function triggers the downlad process of the log file of the calculations or if required other text files.
+     * @param {string} urlLink -  Contains the internal URL to the file.
+     * @param {string} label - Contains the label the downloaded file should get.
+     */
     downloadTextFile: async function (urlLink, label) {
       let response = await API.getJobFile(this.jobId, urlLink, {
         responseType: "blob",
       });
       const blob = new Blob([response.data], { type: "text/html" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
+    /**
+     * This function triggers the downlad process of the trained model of the calculations.
+     * @param {string} urlLink -  Contains the internal URL to the file.
+     * @param {string} label - Contains the label the downloaded file should get.
+     */
+    downloadRDSFile: async function (urlLink, label) {
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], {
+        type: "application/octet-stream",
+      });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
@@ -1193,12 +1233,6 @@ export default {
     this.showTif1Band();
     this.showGeoJson();
     this.loadResultJson();
-
-    let test = await API.getJobFile(this.jobId, "model.rds", {
-      responseType: "arraybuffer",
-    });
-
-    console.log(test);
   },
   beforeUnmount() {
     if (this.map) {
