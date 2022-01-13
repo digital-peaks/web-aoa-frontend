@@ -14,7 +14,7 @@
       <p>
         Machine learning has become a popular method to classify remote sensing
         data. method for the classification of remote sensing data. Possible
-        classifications can be found in the context of LULC. The possibility of
+        classifications can be found in the context of LU/LC. The possibility of
         using machine learning to capture non-linear correlations and thus to
         enable complex classifications is certainly one of the main reasons for
         this. for this. Usually, such models are trained for spaces in which the
@@ -34,7 +34,7 @@
         Since currently knowledge of the language R language is required for the
         use of the AOA method, an infrastructure shall be created which allows a
         much larger spectrum of users to use the AOA method for their own
-        purposes. purposes.
+        purposes.
       </p>
 
       <h5>Who are we?</h5>
