@@ -1,7 +1,21 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
+      <div id="job_number" class="m-3 text-h5">
+        {{ job.name || "-" }}
+        <v-btn
+          class="float-right"
+          outlined
+          style="padding-left: 10px; padding-right: 7px"
+          v-on:click="downloadTextFile('output.log', 'output.log')"
+        >
+          Protocol
+          <v-icon>mdi-download</v-icon>
+        </v-btn>
+      </div>
+      <!-- Farbliche Alternativen für den Button: -->
+      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
+
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
@@ -844,6 +858,7 @@ export default {
     resultJson: null,
     kappaIndex: null,
     accuracy: null,
+    outputLogUrl: "output.log",
   }),
   components: {
     VueSlider,
@@ -902,6 +917,17 @@ export default {
         responseType: "blob",
       });
       const blob = new Blob([response.data], { type: "image/tiff" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
+    downloadTextFile: async function (urlLink, label) {
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
@@ -1227,6 +1253,9 @@ tr#not_last_td {
 }
 tr#last_td {
   border-bottom: grey;
+}
+.child {
+  display: inline-block;
 }
 
 #download_b {
