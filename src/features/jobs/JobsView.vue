@@ -45,7 +45,7 @@
                 <v-btn icon v-on:click.prevent="dialog = true">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <v-dialog v-model="dialog" :key="job.id" max-width="350">
+                <v-dialog v-model="dialog" max-width="350">
                   <v-card>
                     <v-card-title class="text-h5">
                       Are you sure you want to delete "{{ job.name }}"?
@@ -74,7 +74,7 @@
             </v-list-item>
             <v-divider
               v-if="index < Object.keys(jobs).length - 1"
-              :key="job.id"
+              :key="'A' + job.id"
               class="m-0"
             ></v-divider>
           </template>
