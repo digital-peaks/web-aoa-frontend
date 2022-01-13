@@ -8,28 +8,28 @@
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
-            <template v-if="aoaLayer != null">
+            <template v-if="aoiLayer != null">
               <tr id="not_last_td">
-                <td>Log File</td>
+                <td v-on="on">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadTextFile('output.log', 'output.log')
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span> </v-tooltip
+                  >Log File
+                </td>
                 <td>
-                  <div class="d-flex align-items-center">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2 pl-50"
-                          icon
-                          v-on:click="
-                            downloadTextFile('output.log', 'output.log')
-                          "
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Download</span>
-                    </v-tooltip>
-                  </div>
+                  <div class="d-flex align-items-center"></div>
                 </td>
               </tr>
             </template>
