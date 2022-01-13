@@ -758,7 +758,7 @@
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"
-                    color="primary"
+                    dark
                     class="float-left mt-3"
                     style="padding-left: 10px; padding-right: 7px"
                     v-on:click="downloadRDSFile('model.rds', 'model.rds')"
