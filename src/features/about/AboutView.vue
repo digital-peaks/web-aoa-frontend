@@ -27,9 +27,7 @@
         are to be determined first. The Area of Applicability method, as
         proposed by Meyer and Pebesma (Meyer and Pebesma 2021), solves exactly
         this problem and allows the user to make a spatial estimate of how
-        reliable the target variables are. estimate how reliable a machine
-        classification algorithm is likely to work in a new application area. is
-        able to perform in a new application domain.
+        reliable the target variables are.
         <br />
         Since currently knowledge of the language R language is required for the
         use of the AOA method, an infrastructure shall be created which allows a
