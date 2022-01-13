@@ -104,19 +104,17 @@ export default {
   components: {
     TimeAgo,
   },
-  data() {
-    return {
-      dialog: false,
-    };
-  },
+  data: () => ({
+    selected: null,
+    dialog: false,
+  }),
   // Map the state from store/index.js
   computed: mapState(["jobs", "jobsState"]),
   methods: {
-    deleteJob(jobId) {
-      console.log(jobId);
+    async deleteJob(jobId) {
       this.dialog = false;
-      API.deleteJobById(jobId);
-      window.location.reload();
+      await API.deleteJobById(jobId);
+      this.$store.dispatch("getJobs");
     },
   },
   mounted() {
