@@ -115,7 +115,8 @@ export default {
     async deleteJob(jobId) {
       this.dialog = false;
       await API.deleteJobById(jobId);
-      this.$store.dispatch("getJobs");
+      await this.$store.dispatch("getJobs");
+      this.loading = false;
     },
   },
   async mounted() {
