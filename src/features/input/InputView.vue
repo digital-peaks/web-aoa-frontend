@@ -550,7 +550,6 @@ export default {
             this.formData.support_vector_machine.cross_validation_folds,
         };
       }
-
       const data = { job };
 
       if (job.use_pretrained_model) {
