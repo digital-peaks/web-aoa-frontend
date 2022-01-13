@@ -820,7 +820,8 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
-    resultJson: "result.json",
+    resultJsonUrl: "result.json",
+    resultJson: null,
     kappaIndex: null,
     accuracy: null,
   }),
@@ -1140,32 +1141,50 @@ export default {
         });
       }
 
+      // Need to be colored:
       if (responsePred) {
         const georasterPred = await parseGeoraster(responsePred.data);
 
         this.predLayer = new GeoRasterLayer({
           georaster: georasterPred,
           opacity: this.predTransparency,
+          /*pixelValuesToColorFn: function (pixelValues) {
+            for (let i = 0; i < this.resultJson[0].length) {
+              if (this.resultJson[0][i] == "urban") {
+
+              }
+            }
+
+            const pixelValue = pixelValues[0];
+            // if there's zero wind, don't return a color
+            if (pixelValue === 1) {
+              return null;
+            }
+            return "#cf1f8f";
+            
+          },*/
           resolution: 256,
         });
+        console.log(georasterPred);
       }
     },
     loadResultJson: async function () {
       let responseResult = null;
 
       try {
-        responseResult = await API.getJobFile(this.jobId, this.resultJson);
+        responseResult = await API.getJobFile(this.jobId, this.resultJsonUrl);
       } catch (err) {
-        console.warn("Unable to load file:", this.resultJson);
+        console.warn("Unable to load file:", this.resultJsonUrl);
       }
 
       if (responseResult) {
         this.accuracy = responseResult.data[1];
         this.kappaIndex = responseResult.data[2];
+        this.resultJson = responseResult.data;
       }
     },
   },
-  mounted() {
+  async mounted() {
     this.$store.dispatch("getJobById", this.jobId);
 
     this.initMap();
