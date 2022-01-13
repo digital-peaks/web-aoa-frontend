@@ -13,6 +13,8 @@
           <v-icon>mdi-download</v-icon>
         </v-btn>
       </div>
+      <!-- Farbliche Alternativen für den Button: -->
+      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
