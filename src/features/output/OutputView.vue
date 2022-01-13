@@ -1,38 +1,22 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5 child">
+      <div id="job_number" class="m-3 text-h5">
         {{ job.name || "-" }}
+        <v-btn
+          class="float-right"
+          outlined
+          style="padding-left: 10px; padding-right: 7px"
+          v-on:click="downloadTextFile('output.log', 'output.log')"
+        >
+          Protocol
+          <v-icon>mdi-download</v-icon>
+        </v-btn>
       </div>
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
-            <template v-if="aoiLayer != null">
-              <tr id="not_last_td">
-                <td v-on="on">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        class="ms-2"
-                        icon
-                        v-on:click="
-                          downloadTextFile('output.log', 'output.log')
-                        "
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon>mdi-download</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Download</span> </v-tooltip
-                  >Log File
-                </td>
-                <td>
-                  <div class="d-flex align-items-center"></div>
-                </td>
-              </tr>
-            </template>
             <template v-if="aoiLayer != null">
               <tr id="not_last_td">
                 <td id="td_elements_with_slider">
