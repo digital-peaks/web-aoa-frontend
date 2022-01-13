@@ -107,6 +107,7 @@ export default {
   data: () => ({
     selected: null,
     dialog: false,
+    loading: true,
   }),
   // Map the state from store/index.js
   computed: mapState(["jobs", "jobsState"]),
@@ -117,8 +118,9 @@ export default {
       this.$store.dispatch("getJobs");
     },
   },
-  mounted() {
-    this.$store.dispatch("getJobs");
+  async mounted() {
+    await this.$store.dispatch("getJobs");
+    this.loading = false;
   },
 };
 </script>

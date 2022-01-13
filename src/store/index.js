@@ -31,7 +31,7 @@ export default new Vuex.Store({
     token: restoredToken,
     user: {},
     /** "loading", "loaded", "error"  */
-    jobsState: "loading",
+    jobsState: "running",
     jobs: {},
   },
   mutations: {
@@ -80,7 +80,7 @@ export default new Vuex.Store({
      * @param context
      */
     async getJobs(context) {
-      context.commit("setJobsState", "loading");
+      context.commit("setJobsState", "running");
       try {
         const { data } = await API.getJobs();
         context.commit("getJobs", data);
