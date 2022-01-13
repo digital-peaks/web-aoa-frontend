@@ -1160,7 +1160,6 @@ export default {
           resolution: 256,
         });
       }
-
       // Needs to be colored:
       if (responsePred) {
         const georasterPred = await parseGeoraster(responsePred.data);
@@ -1172,9 +1171,13 @@ export default {
             this.predClassificationColors[pixelValues[0] - 1] || null,
           resolution: 256,
         });
-        console.log(georasterPred);
       }
     },
+    /**
+     * This function loads the given result.json asynchronious, which gives us the possibility to work with this given values including
+     * the accuracy and the dissimilarity index as resulting values from the processing as well as the the classes from the classification used
+     * to color the resultig GeoTiff.
+     */
     loadResultJson: async function () {
       let responseResult = null;
 
