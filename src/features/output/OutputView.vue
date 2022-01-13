@@ -1160,13 +1160,19 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     this.$store.dispatch("getJobById", this.jobId);
 
     this.initMap();
     this.showTif1Band();
     this.showGeoJson();
     this.loadResultJson();
+
+    let test = await API.getJobFile(this.jobId, "model.rds", {
+      responseType: "arraybuffer",
+    });
+
+    console.log(test);
   },
   beforeUnmount() {
     if (this.map) {
