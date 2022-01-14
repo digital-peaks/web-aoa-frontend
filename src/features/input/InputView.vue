@@ -340,7 +340,7 @@
       </template>
 
       <div class="mt-3 mb-2">
-        <span class="text-h6">Point Suggestions</span>
+        <span class="text-h6">Sampling Strategy</span>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
