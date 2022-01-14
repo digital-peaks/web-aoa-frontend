@@ -798,12 +798,12 @@
               <div class="mb-1" style="font-size: 14px">
                 Kappa Index: {{ kappaIndex }}
               </div>
-              <v-tooltip right>
+              <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"
                     dark
-                    class="float-left mt-3"
+                    class="float-left mt-3 mr-2 mb-2"
                     style="padding-left: 10px; padding-right: 7px"
                     v-on:click="
                       downloadItem(
@@ -818,6 +818,27 @@
                   </v-btn>
                 </template>
                 <span>Download the trained model</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3 mb-2"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'job_param.json',
+                        'job_param.json',
+                        'application/json'
+                      )
+                    "
+                  >
+                    Job parameters
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the job parameters</span>
               </v-tooltip>
             </v-expansion-panel-content>
           </v-expansion-panel>
