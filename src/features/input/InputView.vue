@@ -48,13 +48,25 @@
       v-on:submit="onSubmitForm"
     >
       <div class="d-flex w-100 mb-3">
-        <div style="flex: 1"><span class="text-h5">Create job</span></div>
+        <div style="flex: 1">
+          <span class="text-h5">Create job</span>
+        </div>
         <div>
           <v-btn to="/">Cancel</v-btn>
           &nbsp;
           <v-btn type="submit" color="primary">Start</v-btn>
         </div>
       </div>
+
+      <v-row class="mb-1">
+        <v-col cols="6">
+          <v-switch
+            v-model="colorblindMode"
+            label="Switch to Color Blind Mode"
+            v-on:change="switchMode"
+          ></v-switch
+        ></v-col>
+      </v-row>
 
       <div class="mt-2 mb-3">
         <v-text-field
@@ -407,6 +419,8 @@ export default {
       // size in meters^2
       aoiSize: 0,
       selectedML: "rf",
+      // Colorblind mode
+      colorblindMode: false,
     };
   },
   validations() {
@@ -433,11 +447,34 @@ export default {
     };
   },
   methods: {
+    switchMode: function () {
+      if (this.colorblindMode === false) {
+        this.tileLayer = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(this.map);
+      } else if (this.colorblindMode === true) {
+        this.tileLayer = L.tileLayer(
+          "https://tile.jawg.io/6a02934c-f2d2-4d27-9ab4-1cd57a01bc03/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          {
+            attribution:
+              '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+          }
+        ).addTo(this.map);
+      }
+    },
     /**
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
-      this.map = L.map("map-container").setView([51.966, 7.633], 10);
+      this.map = L.map("map-container", { layers: this.tileLayer }).setView(
+        [51.966, 7.633],
+        10
+      );
+
       this.tileLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
