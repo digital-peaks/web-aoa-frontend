@@ -868,6 +868,7 @@ export default {
     map: null,
     tileLayer: null,
     earthLayer: null,
+    colorblindLayer: null,
     // Everything needed to visualize the aoi.geojson.
     aoiCheckbox: false,
     aoiJson: "aoi.geojson",
@@ -928,6 +929,7 @@ export default {
       this.map.getPane("basemap").style.zIndex = 10;
       // To keep sure the tiles are not able to grab this line gets added.
       this.map.getPane("basemap").style.pointerEvents = "none";
+
       // First the osm layer gets initialized.
       const osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
       const osmAttr =
@@ -937,6 +939,11 @@ export default {
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
       const earthAttr =
         "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
+      // Colorblind layer basemap
+      const colorblindUrl =
+        "https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ";
+      const colorblindAttr =
+        '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributor';
 
       this.tileLayer = L.tileLayer(osmUrl, {
         attribution: osmAttr,
@@ -948,13 +955,19 @@ export default {
         pane: "basemap", // Both layers are added to the basemap-pane.
       });
 
+      this.colorblindLayer = L.tileLayer(colorblindUrl, {
+        attribution: colorblindAttr,
+        subdomains: "abcd",
+      });
+
+      const basemaps = {
+        "Open Street Map": this.tileLayer,
+        "Colorblind map": this.colorblindLayer,
+      };
+      const overlayMaps = { "World Imagery": this.earthLayer };
+
       // At last a layer control must be added to switch between multiple basemaps.
-      L.control
-        .layers(
-          { "Open Street Map": this.tileLayer },
-          { "World Imagery": this.earthLayer }
-        )
-        .addTo(this.map);
+      L.control.layers(basemaps, overlayMaps).addTo(this.map);
     },
     /**
      * This function triggers the downlad process of the results of the calculations.
