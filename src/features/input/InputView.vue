@@ -493,7 +493,9 @@ export default {
           rectangle: {
             showArea: true,
             metric: ["km"], // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
-            color: "red",
+            shapeOptions: {
+              color: "#212121",
+            },
           },
           circle: false,
           marker: false,
