@@ -59,7 +59,7 @@
       </div>
 
       <v-row class="mb-1">
-        <v-col cols="6">
+        <v-col cols="12">
           <v-switch
             v-model="colorblindMode"
             label="Switch to Color Blind Mode"

@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">
+      <div id="job_number" class="m-3 mb-2 text-h5">
         {{ job.name || "-" }}
         <v-btn
           class="float-right"
@@ -13,8 +13,16 @@
           <v-icon>mdi-download</v-icon>
         </v-btn>
       </div>
-      <!-- Farbliche Alternativen für den Button: -->
-      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
+
+      <v-row class="ml-1">
+        <v-col cols="12">
+          <v-switch
+            v-model="colorblindMode"
+            label="Switch to Color Blind Mode"
+            v-on:change="switchMode"
+          ></v-switch
+        ></v-col>
+      </v-row>
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -916,6 +924,28 @@ export default {
   },
   methods: {
     /**
+     * This function will change the basemap into a colorblind version.
+     */
+    switchMode: function () {
+      if (this.colorblindMode === false) {
+        this.tileLayer = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(this.map);
+      } else if (this.colorblindMode === true) {
+        this.tileLayer = L.tileLayer(
+          "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          {
+            attribution:
+              '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+          }
+        ).addTo(this.map);
+      }
+    },
+    /**
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
@@ -941,9 +971,9 @@ export default {
         "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
       // Colorblind layer basemap
       const colorblindUrl =
-        "https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ";
+        "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ";
       const colorblindAttr =
-        '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributor';
+        '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors';
 
       this.tileLayer = L.tileLayer(osmUrl, {
         attribution: osmAttr,
