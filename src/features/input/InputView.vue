@@ -458,7 +458,7 @@ export default {
         ).addTo(this.map);
       } else if (this.colorblindMode === true) {
         this.tileLayer = L.tileLayer(
-          "https://tile.jawg.io/6a02934c-f2d2-4d27-9ab4-1cd57a01bc03/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
           {
             attribution:
               '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
@@ -493,6 +493,7 @@ export default {
           rectangle: {
             showArea: true,
             metric: ["km"], // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
+            color: "red",
           },
           circle: false,
           marker: false,
