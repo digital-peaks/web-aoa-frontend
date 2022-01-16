@@ -24,6 +24,24 @@
         ></v-col>
       </v-row>
 
+      <template v-if="colorblindMode === true">
+        <v-row class="mx-1">
+          <v-col cols="12">
+            <v-select
+              filled
+              :items="[
+                'Red-Blind/Protanopia',
+                'Green-Blind/Deuteranopia',
+                'Blue-Blind/Tritanopia',
+              ]"
+              label="Type"
+              v-model="typeOfColorBlindness"
+              v-on:change="changePolygonColor"
+            ></v-select>
+          </v-col>
+        </v-row>
+      </template>
+
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
@@ -917,6 +935,9 @@ export default {
     kappaIndex: null,
     accuracy: null,
     outputLogUrl: "output.log",
+    // Color blind mode
+    colorblindMode: false,
+    typeOfColorBlindness: "Red-Blind/Protanopia",
   }),
   components: {
     VueSlider,
@@ -926,7 +947,7 @@ export default {
     /**
      * This function will change the basemap into a colorblind version.
      */
-    switchMode: function () {
+    switchMode: async function () {
       if (this.colorblindMode === false) {
         this.tileLayer = L.tileLayer(
           "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -935,6 +956,8 @@ export default {
               '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }
         ).addTo(this.map);
+
+        await this.showGeoJson("#3388ff");
       } else if (this.colorblindMode === true) {
         this.tileLayer = L.tileLayer(
           "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
@@ -943,6 +966,33 @@ export default {
               '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
           }
         ).addTo(this.map);
+
+        let polygonColor = null;
+
+        if (this.redBlind === true) {
+          polygonColor = "#33691E";
+        } else if (this.greenBlind === true) {
+          polygonColor = "#FF6D00";
+        } else if (this.blueBlind === true) {
+          polygonColor = "#FF1744";
+        }
+        await this.showGeoJson(polygonColor);
+      }
+    },
+    changePolygonColor: async function () {
+      if (this.colorblindMode === false) {
+        await this.showGeoJson("#3388ff");
+      } else if (this.colorblindMode === true) {
+        let polygonColor = null;
+
+        if (this.typeOfColorBlindness === "Red-Blind/Protanopia") {
+          polygonColor = "#33691E";
+        } else if (this.typeOfColorBlindness === "Green-Blind/Deuteranopia") {
+          polygonColor = "#FF6D00";
+        } else if (this.typeOfColorBlindness === "Blue-Blind/Tritanopia") {
+          polygonColor = "#FF1744";
+        }
+        await this.showGeoJson(polygonColor);
       }
     },
     /**
@@ -1153,7 +1203,7 @@ export default {
     /**
      * This function builds layers for all .geojson files.
      */
-    showGeoJson: async function () {
+    showGeoJson: async function (color) {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
@@ -1187,7 +1237,9 @@ export default {
       }
 
       if (responseAoi) {
-        this.aoiLayer = L.geoJson(responseAoi.data);
+        this.aoiLayer = L.geoJson(responseAoi.data, {
+          style: { color: color },
+        });
       }
       if (responseSamplePolygons) {
         this.samplePolygonsLayer = L.geoJson(responseSamplePolygons.data);
