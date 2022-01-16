@@ -7,7 +7,7 @@
           class="float-right"
           outlined
           style="padding-left: 10px; padding-right: 7px"
-          v-on:click="downloadTextFile('output.log', 'output.log')"
+          v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
         >
           Protocol
           <v-icon>mdi-download</v-icon>
@@ -176,7 +176,9 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
+                          v-on:click="
+                            downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                          "
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -236,7 +238,13 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
+                              v-on:click="
+                                downloadItem(
+                                  'aoa_di.tif',
+                                  'aoa_di',
+                                  'image/tiff'
+                                )
+                              "
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -316,7 +324,9 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="downloadItem('pred.tif', 'pred')"
+                          v-on:click="
+                            downloadItem('pred.tif', 'pred', 'image/tiff')
+                          "
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -373,7 +383,9 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="downloadItem('pred.tif', 'pred')"
+                              v-on:click="
+                                downloadItem('pred.tif', 'pred', 'image/tiff')
+                              "
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -441,7 +453,9 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="downloadItem('aoa_aoa.tif', 'aoa_aoa')"
+                          v-on:click="
+                            downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
+                          "
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -505,7 +519,11 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem('aoa_aoa.tif', 'aoa_aoa')
+                                downloadItem(
+                                  'aoa_aoa.tif',
+                                  'aoa_aoa',
+                                  'image/tiff'
+                                )
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -670,7 +688,11 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem('suggestion.geojson', 'suggestion')
+                            downloadItem(
+                              'suggestion.geojson',
+                              'suggestion',
+                              'image/tiff'
+                            )
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -722,7 +744,11 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem('suggestion.geojson', 'suggestion')
+                                downloadItem(
+                                  'suggestion.geojson',
+                                  'suggestion',
+                                  'image/tiff'
+                                )
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -769,7 +795,30 @@
               <div class="mb-1" style="font-size: 14px">
                 Accuracy: {{ accuracy }}
               </div>
-              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+              <div class="mb-1" style="font-size: 14px">
+                Kappa Index: {{ kappaIndex }}
+              </div>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'model.rds',
+                        'model.rds',
+                        'application/octet-stream'
+                      )
+                    "
+                  >
+                    Model
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the trained model</span>
+              </v-tooltip>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -908,15 +957,15 @@ export default {
         .addTo(this.map);
     },
     /**
-     * this function triggers the downlad process of the result of the calculations.
+     * This function triggers the downlad process of the results of the calculations.
      * @param {string} urlLink -  Contains the internal URL to the file.
      * @param {string} label - Contains the label the downloaded file should get.
      */
-    downloadItem: async function (urlLink, label) {
+    downloadItem: async function (urlLink, label, type) {
       let response = await API.getJobFile(this.jobId, urlLink, {
         responseType: "blob",
       });
-      const blob = new Blob([response.data], { type: "image/tiff" });
+      const blob = new Blob([response.data], { type: type });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
