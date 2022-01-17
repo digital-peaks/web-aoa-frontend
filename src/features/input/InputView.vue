@@ -287,85 +287,90 @@
         ></v-col>
       </v-row>
 
-      <div class="mt-3 mb-2">
-        <span class="text-h6">Algorithm</span
-        ><v-tooltip right>
-          <template v-slot:activator="{ on }">
-            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
-          </template>
-          <span
-            >An algorithm to train a<br />
-            new model for prediction.</span
-          >
-        </v-tooltip>
-      </div>
+      <template v-if="formData.use_pretrained_model === false">
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Algorithm</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span
+              >An algorithm to train a<br />
+              new model for prediction.</span
+            >
+          </v-tooltip>
+        </div>
 
-      <v-row>
-        <v-col cols="12">
-          <v-select
-            filled
-            v-model="selectedML"
-            :items="[
-              { algorithm: 'Random Forrest', selectedML: 'rf' },
-              { algorithm: 'Support Vector Machines', selectedML: 'svmradial' },
-            ]"
-            item-text="algorithm"
-            item-value="selectedML"
-            label="Algorithm"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <template v-if="selectedML === 'rf'">
-        <v-row class="mb-3">
-          <v-col cols="6">
+        <v-row>
+          <v-col cols="12">
             <v-select
               filled
-              :items="[200, 500, 800]"
-              label="N-Tree"
-              v-model="formData.random_forrest.n_tree"
-            ></v-select>
-          </v-col>
-          <v-col cols="6">
-            <v-select
-              filled
-              :items="[1, 5, 10]"
-              label="Cross validation folds"
-              v-model="formData.random_forrest.cross_validation_folds"
+              v-model="selectedML"
+              :items="[
+                { algorithm: 'Random Forrest', selectedML: 'rf' },
+                {
+                  algorithm: 'Support Vector Machines',
+                  selectedML: 'svmradial',
+                },
+              ]"
+              item-text="algorithm"
+              item-value="selectedML"
+              label="Algorithm"
             ></v-select>
           </v-col>
         </v-row>
-      </template>
 
-      <template v-if="selectedML === 'svmradial'">
-        <v-row class="mb-3">
-          <v-col cols="4">
-            <v-text-field
-              filled
-              type="string"
-              label="Sigma"
-              hint="This parameter describes sigma."
-              v-model="formData.support_vector_machine.sigma"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              filled
-              type="string"
-              label="C"
-              hint="This parameter describes C."
-              v-model="formData.support_vector_machine.c"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-select
-              filled
-              :items="[1, 5, 10]"
-              label="Cross validation folds"
-              v-model="formData.support_vector_machine.cross_validation_folds"
-            ></v-select>
-          </v-col>
-        </v-row>
+        <template v-if="selectedML === 'rf'">
+          <v-row class="mb-3">
+            <v-col cols="6">
+              <v-select
+                filled
+                :items="[200, 500, 800]"
+                label="N-Tree"
+                v-model="formData.random_forrest.n_tree"
+              ></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                filled
+                :items="[1, 5, 10]"
+                label="Cross validation folds"
+                v-model="formData.random_forrest.cross_validation_folds"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </template>
+
+        <template v-if="selectedML === 'svmradial'">
+          <v-row class="mb-3">
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="Sigma"
+                hint="This parameter describes sigma."
+                v-model="formData.support_vector_machine.sigma"
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="C"
+                hint="This parameter describes C."
+                v-model="formData.support_vector_machine.c"
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-select
+                filled
+                :items="[1, 5, 10]"
+                label="Cross validation folds"
+                v-model="formData.support_vector_machine.cross_validation_folds"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </template>
       </template>
 
       <div class="mt-3 mb-2">
@@ -598,13 +603,19 @@ export default {
       };
 
       // create job object for the api
-      if (this.selectedML == "rf") {
+      if (
+        this.selectedML == "rf" &&
+        this.formData.use_pretrained_model == "false"
+      ) {
         job.random_forrest = {
           n_tree: this.formData.random_forrest.n_tree,
           cross_validation_folds:
             this.formData.random_forrest.cross_validation_folds,
         };
-      } else if (this.selectedML == "svmradial") {
+      } else if (
+        this.selectedML == "svmradial" &&
+        this.formData.use_pretrained_model == "false"
+      ) {
         job.support_vector_machine = {
           sigma: this.formData.support_vector_machine.sigma,
           c: this.formData.support_vector_machine.c,
