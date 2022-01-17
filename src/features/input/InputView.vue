@@ -327,6 +327,8 @@
                 filled
                 :items="[200, 500, 800]"
                 label="N-Tree"
+                hint="Describes the number of decision trees"
+                persistent-hint
                 v-model="formData.random_forrest.n_tree"
               ></v-select>
             </v-col>
@@ -335,6 +337,8 @@
                 filled
                 :items="[1, 5, 10]"
                 label="Cross validation folds"
+                hint="Describes the number of cross validations"
+                persistent-hint
                 v-model="formData.random_forrest.cross_validation_folds"
               ></v-select>
             </v-col>
