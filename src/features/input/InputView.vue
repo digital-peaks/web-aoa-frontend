@@ -367,6 +367,38 @@
           </v-col>
         </v-row>
       </template>
+
+      <div class="mt-3 mb-2">
+        <span class="text-h6">Sampling Strategy</span>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+          </template>
+          <span
+            >A sampling strategy to find suggested points for additional
+            measuring.</span
+          >
+        </v-tooltip>
+      </div>
+
+      <v-row class="mb-3">
+        <v-col cols="12">
+          <v-select
+            filled
+            :items="[
+              'regular',
+              'stratified',
+              'random',
+              'nonaligned',
+              'hexagonal',
+              'clustered',
+              'Fibonacci',
+            ]"
+            label="N-Tree"
+            v-model="formData.sampling_strategy"
+          ></v-select>
+        </v-col>
+      </v-row>
     </form>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -406,6 +438,7 @@ export default {
         start_timestamp: format(subMonths(new Date(), 6), "yyyy-MM-dd"),
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
+        sampling_strategy: "regular",
         use_pretrained_model: false,
         random_forrest: {
           n_tree: 800,
@@ -560,7 +593,7 @@ export default {
         start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
         end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
         samples_class: this.formData.samples_class,
-        sampling_strategy: "regular",
+        sampling_strategy: this.formData.sampling_strategy,
         use_pretrained_model: this.formData.use_pretrained_model,
       };
 
