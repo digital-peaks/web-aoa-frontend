@@ -142,30 +142,59 @@
         </v-col>
       </v-row>
 
-      <v-row class="mb-3">
+      <template v-if="formData.use_lookup === false">
+        <v-row>
+          <v-col cols="6">
+            <v-select
+              filled
+              :items="['10', '20', '60']"
+              label="Resolution"
+              v-model="formData.resolution"
+              suffix="meter"
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              type="text"
+              filled
+              label="Cloud Cover"
+              v-model="formData.cloud_cover"
+              suffix="%"
+              :error-messages="
+                v$.formData.cloud_cover.$error
+                  ? ['Must be between 0 and 100']
+                  : []
+              "
+            />
+          </v-col>
+        </v-row>
+      </template>
+      <template v-if="formData.use_lookup === true">
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              type="text"
+              filled
+              label="Cloud Cover"
+              v-model="formData.cloud_cover"
+              suffix="%"
+              :error-messages="
+                v$.formData.cloud_cover.$error
+                  ? ['Must be between 0 and 100']
+                  : []
+              "
+            />
+          </v-col>
+        </v-row>
+      </template>
+
+      <v-row class="mb-1">
         <v-col cols="6">
-          <v-select
-            filled
-            :items="['10', '20', '60']"
-            label="Resolution"
-            v-model="formData.resolution"
-            suffix="meter"
-          ></v-select>
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            type="text"
-            filled
-            label="Cloud Cover"
-            v-model="formData.cloud_cover"
-            suffix="%"
-            :error-messages="
-              v$.formData.cloud_cover.$error
-                ? ['Must be between 0 and 100']
-                : []
-            "
-          />
-        </v-col>
+          <v-switch
+            v-model="formData.use_lookup"
+            label="Use lookup table for optimal resolution"
+          ></v-switch
+        ></v-col>
       </v-row>
 
       <template v-if="formData.use_pretrained_model === false">
@@ -371,6 +400,7 @@ export default {
       formData: {
         name: "",
         area_of_interest: null,
+        use_lookup: false,
         resolution: "10",
         cloud_cover: "15",
         start_timestamp: format(subMonths(new Date(), 6), "yyyy-MM-dd"),
@@ -525,8 +555,7 @@ export default {
       let job = {
         name: this.formData.name,
         area_of_interest: this.formData.area_of_interest,
-        use_lookup: false,
-        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+        use_lookup: this.formData.use_lookup,
         cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
         start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
         end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
@@ -550,6 +579,11 @@ export default {
             this.formData.support_vector_machine.cross_validation_folds,
         };
       }
+
+      if (this.formData.use_lookup == "false") {
+        job.resolution = Number.parseInt(this.formData.resolution, 10) || 10;
+      }
+
       const data = { job };
 
       if (job.use_pretrained_model) {
