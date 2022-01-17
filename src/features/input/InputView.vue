@@ -224,7 +224,7 @@
               label="Sample Polygons"
               accept=".json,.geojson,.gpkg"
               persistent-hint
-              hint=".json,.geojson,.gpkg (max. 10 MB)"
+              hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
               show-size
               truncate-length="25"
               v-model="samplesFile"
