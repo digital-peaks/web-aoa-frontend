@@ -100,7 +100,7 @@
           <div v-if="aoiSize > 0" class="me-3" style="min-width: 120px">
             {{ (aoiSize / 1000 / 1000).toFixed(3) }} km<sup>2</sup>
             <div v-if="aoiSize / 1000 / 1000 > 400" class="me-3" style="min-width: 120px">
-            <span class="red--text"> AOI > 400: Calculation can take a very long time</span>
+            <span class="red--text"> should be smaller than 400. <br> Otherwise Calculation can <br> take a very long time.  </span>
             </div>
           </div>
           <v-btn color="primary" v-on:click="drawItem">
