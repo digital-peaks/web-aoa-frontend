@@ -603,10 +603,7 @@ export default {
       };
 
       // create job object for the api
-      if (
-        this.selectedML == "rf" &&
-        this.formData.use_pretrained_model == "false"
-      ) {
+      if (this.selectedML == "rf" && !this.formData.use_pretrained_model) {
         job.random_forrest = {
           n_tree: this.formData.random_forrest.n_tree,
           cross_validation_folds:
@@ -614,7 +611,7 @@ export default {
         };
       } else if (
         this.selectedML == "svmradial" &&
-        this.formData.use_pretrained_model == "false"
+        !this.formData.use_pretrained_model
       ) {
         job.support_vector_machine = {
           sigma: this.formData.support_vector_machine.sigma,
@@ -624,7 +621,7 @@ export default {
         };
       }
 
-      if (this.formData.use_lookup == "false") {
+      if (!this.formData.use_lookup) {
         job.resolution = Number.parseInt(this.formData.resolution, 10) || 10;
       }
 
