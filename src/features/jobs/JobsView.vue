@@ -48,11 +48,19 @@
               </v-list-item-action>
             </v-list-item>
             <v-divider
-              v-if="index < Object.keys(jobs).length - 1"
+              v-if="index < Object.keys(jobs).length"
               :key="'A' + job.id"
               class="m-0"
             ></v-divider>
           </template>
+          <v-list-item link :to="'/outputDemo'">
+            <v-list-item-content class="mt-1" style="flex: 1">
+              Demo
+            </v-list-item-content>
+            <v-list-item-action class="ml-5 mr-10">
+              <div class="status-indicator" v-bind:class="'success'"></div>
+            </v-list-item-action>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-card>

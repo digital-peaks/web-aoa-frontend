@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
 import OutputView from "../features/output/OutputView.vue";
+import DemoView from "../features/output/DemoView.vue";
 import ImpressumView from "../features/impressum/ImpressumView.vue";
 import LoginView from "../features/login/LoginView.vue";
 
@@ -42,6 +43,11 @@ const routes = [
     path: "/output/:jobId?",
     name: "Output",
     component: OutputView,
+  },
+  {
+    path: "/outputDemo",
+    name: "Demo",
+    component: DemoView,
   },
 ];
 
