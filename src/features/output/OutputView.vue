@@ -649,9 +649,7 @@
             </template>
             <template v-if="suggestionLayer != null">
               <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Suggested locations for training polygons
-                </td>
+                <td>Suggested locations for training polygons</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <v-tooltip bottom>
@@ -710,7 +708,7 @@
               <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
-                    <td id="td_elements_with_slider" style="color: #a7a7a7">
+                    <td style="color: #a7a7a7">
                       Suggested locations for training polygons
                     </td>
                     <td>
@@ -768,7 +766,7 @@
           </tbody></template
         >
       </v-simple-table>
-      <v-divider light> </v-divider>
+      <v-divider light class="m-0"> </v-divider>
       <template v-if="kappaIndex === null">
         <v-tooltip left color="error">
           <template v-slot:activator="{ on }">

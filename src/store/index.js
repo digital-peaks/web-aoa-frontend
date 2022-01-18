@@ -52,6 +52,10 @@ export default new Vuex.Store({
       state.jobs = { ...state.jobs, [data.id]: { ...data } };
       state.jobsState = "loaded";
     },
+    deleteJobById(state, jobId) {
+      delete state.jobs[jobId];
+      state.jobs = { ...state.jobs };
+    },
   },
   actions: {
     /**
@@ -86,6 +90,11 @@ export default new Vuex.Store({
         context.commit("setJobsState", "error");
       }
     },
+    /**
+     * Gets a specific job from API by its id.
+     * @param context
+     * @param {integer} jobId - Job id
+     */
     async getJobById(context, jobId) {
       context.commit("setJobsState", "loaded");
       try {
@@ -95,6 +104,21 @@ export default new Vuex.Store({
         console.error("Unable to load job", err);
         context.commit("setJobsState", "error");
       }
+    },
+    /**
+     * Deletes a specific job by its id.
+     * @param context
+     * @param {integer} jobId - Job id
+     */
+    async deleteJobById(context, jobId) {
+      try {
+        await API.deleteJobById(jobId);
+        context.commit("deleteJobById", jobId);
+        return true;
+      } catch (err) {
+        console.error("Unable to delete job", err);
+      }
+      return false;
     },
   },
   modules: {},

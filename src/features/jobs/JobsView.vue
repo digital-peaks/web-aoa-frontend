@@ -31,7 +31,7 @@
               <v-list-item-action class="text-caption text--secondary">
                 <time-ago :date="job.created" />
               </v-list-item-action>
-              <v-list-item-action>
+              <v-list-item-action class="ml-5">
                 <div
                   class="status-indicator"
                   v-bind:class="{
@@ -41,10 +41,15 @@
                   }"
                 ></div>
               </v-list-item-action>
+              <v-list-item-action class="ml-1">
+                <v-btn icon v-on:click.prevent="openDialogDelete(job.id)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-list-item-action>
             </v-list-item>
             <v-divider
               v-if="index < Object.keys(jobs).length - 1"
-              :key="job.id"
+              :key="'A' + job.id"
               class="m-0"
             ></v-divider>
           </template>
@@ -61,6 +66,45 @@
     <div v-if="jobsState === 'error'" class="text-center m-3">
       An error has occurred. Please try again later.
     </div>
+
+    <!-- Delete dialog -->
+    <v-dialog v-model="dialogDeleteModel" max-width="395">
+      <v-card>
+        <v-card-title class="text-h5">
+          Are you sure you want to delete "{{
+            jobs[dialogDeleteJobId] ? jobs[dialogDeleteJobId].name : ""
+          }}"?
+        </v-card-title>
+        <v-card-text>
+          This item will be deleted immediately. You can't undo this action.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="dialogDeleteModel = false">
+            Cancel
+          </v-btn>
+          <v-btn color="error" text @click="deleteJob()">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Snackbars for the delete response (success or error) -->
+    <v-snackbar v-model="showDeleteSuccess">
+      Job deleted successfully.
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="showDeleteSuccess = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="showDeleteError" color="error">
+      Unable to delete job. Please try again later.
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="showDeleteError = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -73,10 +117,47 @@ export default {
   components: {
     TimeAgo,
   },
+  data: () => ({
+    selected: null,
+    dialogDeleteModel: false,
+    dialogDeleteJobId: "",
+    showDeleteSuccess: false,
+    showDeleteError: false,
+    loading: true,
+  }),
   // Map the state from store/index.js
   computed: mapState(["jobs", "jobsState"]),
-  mounted() {
-    this.$store.dispatch("getJobs");
+  methods: {
+    /**
+     * Hide/close delete dialog.
+     */
+    openDialogDelete(jobId) {
+      this.dialogDeleteModel = true;
+      this.dialogDeleteJobId = jobId;
+    },
+    /**
+     * Finally delete job.
+     */
+    async deleteJob() {
+      this.dialogDeleteModel = false;
+
+      // Call API request and remove the job form the state:
+      const success = await this.$store.dispatch(
+        "deleteJobById",
+        this.dialogDeleteJobId
+      );
+
+      // Show success or error snackbar:
+      if (success) {
+        this.showDeleteSuccess = true;
+      } else {
+        this.showDeleteError = true;
+      }
+    },
+  },
+  async mounted() {
+    await this.$store.dispatch("getJobs");
+    this.loading = false;
   },
 };
 </script>
