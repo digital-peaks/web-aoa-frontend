@@ -654,6 +654,8 @@ export default {
 
       if (!this.formData.use_lookup) {
         job.resolution = Number.parseInt(this.formData.resolution, 10) || 10;
+      } else {
+        job.resolution = 10; // default value
       }
 
       const data = { job };
