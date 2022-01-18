@@ -2,8 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
+import DemoViewInput from "../features/input/DemoViewInput.vue";
 import OutputView from "../features/output/OutputView.vue";
-import DemoView from "../features/output/DemoView.vue";
+import DemoViewOutput from "../features/output/DemoViewOutput.vue";
 import ImpressumView from "../features/impressum/ImpressumView.vue";
 import LoginView from "../features/login/LoginView.vue";
 
@@ -45,9 +46,14 @@ const routes = [
     component: OutputView,
   },
   {
+    path: "/inputDemo",
+    name: "Demo",
+    component: DemoViewInput,
+  },
+  {
     path: "/outputDemo",
     name: "Demo",
-    component: DemoView,
+    component: DemoViewOutput,
   },
 ];
 
