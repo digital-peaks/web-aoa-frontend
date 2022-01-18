@@ -233,7 +233,7 @@
               type="string"
               label="Class field"
               persistent-hint
-              hint="Field which classifies the polygons."
+              hint="Field which classifies the polygons"
               v-model="formData.samples_class"
               :error-messages="
                 v$.formData.samples_class.$error
@@ -327,6 +327,8 @@
                 filled
                 :items="[200, 500, 800]"
                 label="N-Tree"
+                hint="Describes the number of decision trees"
+                persistent-hint
                 v-model="formData.random_forrest.n_tree"
               ></v-select>
             </v-col>
@@ -335,6 +337,8 @@
                 filled
                 :items="[1, 5, 10]"
                 label="Cross validation folds"
+                hint="Describes the number of cross validations"
+                persistent-hint
                 v-model="formData.random_forrest.cross_validation_folds"
               ></v-select>
             </v-col>
@@ -348,7 +352,13 @@
                 filled
                 type="string"
                 label="Sigma"
-                hint="This parameter describes sigma."
+                :error-messages="
+                  v$.formData.support_vector_machine.sigma.$error
+                    ? ['Must be a decimal value']
+                    : []
+                "
+                hint="This parameter describes sigma"
+                persistent-hint
                 v-model="formData.support_vector_machine.sigma"
               />
             </v-col>
@@ -357,7 +367,13 @@
                 filled
                 type="string"
                 label="C"
-                hint="This parameter describes C."
+                :error-messages="
+                  v$.formData.support_vector_machine.c.$error
+                    ? ['Must be a decimal or an integer value']
+                    : []
+                "
+                hint="This parameter describes C"
+                persistent-hint
                 v-model="formData.support_vector_machine.c"
               />
             </v-col>
@@ -414,6 +430,9 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import {
+  integer,
+  or,
+  decimal,
   required,
   minValue,
   maxValue,
@@ -491,6 +510,18 @@ export default {
         },
         area_of_interest: { required },
         use_pretrained_model: { required },
+        sampling_strategy: { required },
+        resolution: requiredIf(() => !this.formData.use_lookup),
+        support_vector_machine: {
+          sigma: {
+            decimal,
+            minValue: minValue(0),
+          },
+          c: {
+            valid: or(integer, decimal),
+            minValue: minValue(0),
+          },
+        },
       },
       samplesFile: {
         required: requiredIf(() => !this.formData.use_pretrained_model),
