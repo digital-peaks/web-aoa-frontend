@@ -1,8 +1,22 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
-      <v-simple-table class="mb-0">
+      <div id="job_number" class="m-3 text-h5">
+        {{ job.name || "-" }}
+        <v-btn
+          class="float-right"
+          outlined
+          style="padding-left: 10px; padding-right: 7px"
+          v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
+        >
+          Protocol
+          <v-icon>mdi-download</v-icon>
+        </v-btn>
+      </div>
+      <!-- Farbliche Alternativen für den Button: -->
+      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
+
+      <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
             <template v-if="aoiLayer != null">
@@ -162,7 +176,9 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
+                          v-on:click="
+                            downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                          "
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -222,7 +238,13 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="downloadItem('aoa_di.tif', 'aoa_di')"
+                              v-on:click="
+                                downloadItem(
+                                  'aoa_di.tif',
+                                  'aoa_di',
+                                  'image/tiff'
+                                )
+                              "
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -248,6 +270,24 @@
                     :tooltip-formatter="sliderPercentage"
                   />
                   <p style="font-size: 10px">Transparency</p>
+
+                  <div class="d-flex flex-column">
+                    <div
+                      v-for="(value, index) in predClassificationColors"
+                      :key="value"
+                      class="d-flex align-items-center mb-1"
+                    >
+                      <div
+                        :style="{
+                          width: '20px',
+                          height: '20px',
+                          backgroundColor: value,
+                          boxShadow: '0 0 1px #333',
+                        }"
+                      ></div>
+                      <div class="ml-3">{{ resultJson[0][index] }}</div>
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
@@ -284,7 +324,9 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="downloadItem('pred.tif', 'pred')"
+                          v-on:click="
+                            downloadItem('pred.tif', 'pred', 'image/tiff')
+                          "
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -341,7 +383,9 @@
                               class="ms-2"
                               icon
                               disabled
-                              v-on:click="downloadItem('pred.tif', 'pred')"
+                              v-on:click="
+                                downloadItem('pred.tif', 'pred', 'image/tiff')
+                              "
                               v-bind="attrs"
                               v-on="on"
                             >
@@ -409,7 +453,9 @@
                         <v-btn
                           class="ms-2"
                           icon
-                          v-on:click="downloadItem('aoa_aoa.tif', 'aoa_aoa')"
+                          v-on:click="
+                            downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
+                          "
                           v-bind="attrs"
                           v-on="on"
                         >
@@ -473,7 +519,11 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem('aoa_aoa.tif', 'aoa_aoa')
+                                downloadItem(
+                                  'aoa_aoa.tif',
+                                  'aoa_aoa',
+                                  'image/tiff'
+                                )
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -636,7 +686,11 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem('suggestion.geojson', 'suggestion')
+                            downloadItem(
+                              'suggestion.geojson',
+                              'suggestion',
+                              'image/tiff'
+                            )
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -688,7 +742,11 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem('suggestion.geojson', 'suggestion')
+                                downloadItem(
+                                  'suggestion.geojson',
+                                  'suggestion',
+                                  'image/tiff'
+                                )
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -735,7 +793,51 @@
               <div class="mb-1" style="font-size: 14px">
                 Accuracy: {{ accuracy }}
               </div>
-              <div style="font-size: 14px">Kappa Index: {{ kappaIndex }}</div>
+              <div class="mb-1" style="font-size: 14px">
+                Kappa Index: {{ kappaIndex }}
+              </div>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3 mr-2 mb-2"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'model.rds',
+                        'model.rds',
+                        'application/octet-stream'
+                      )
+                    "
+                  >
+                    Model
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the trained model</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3 mb-2"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'job_param.json',
+                        'job_param.json',
+                        'application/json'
+                      )
+                    "
+                  >
+                    Job parameters
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the job parameters</span>
+              </v-tooltip>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -801,6 +903,8 @@ export default {
     predUrl: "pred.tif",
     predLayer: null,
     predTransparency: 100,
+    // Generated by chromajs, e.g.: ['#9e0142', '#f98e52', ...]
+    predClassificationColors: [],
     // Everything needed to visualize the aoi_aoa.tif.
     aoaCheckbox: false,
     aoaUrl: "aoa_aoa.tif",
@@ -818,9 +922,11 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
-    resultJson: "result.json",
+    resultJsonUrl: "result.json",
+    resultJson: null,
     kappaIndex: null,
     accuracy: null,
+    outputLogUrl: "output.log",
   }),
   components: {
     VueSlider,
@@ -870,15 +976,26 @@ export default {
         .addTo(this.map);
     },
     /**
-     * this function triggers the downlad process of the result of the calculations.
+     * This function triggers the downlad process of the results of the calculations.
      * @param {string} urlLink -  Contains the internal URL to the file.
      * @param {string} label - Contains the label the downloaded file should get.
      */
-    downloadItem: async function (urlLink, label) {
+    downloadItem: async function (urlLink, label, type) {
       let response = await API.getJobFile(this.jobId, urlLink, {
         responseType: "blob",
       });
-      const blob = new Blob([response.data], { type: "image/tiff" });
+      const blob = new Blob([response.data], { type: type });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
+    downloadTextFile: async function (urlLink, label) {
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
@@ -1009,21 +1126,15 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    createCustomIcon: function (latlng) {
+    /**
+     * This function builds layers for all .geojson files.
+     */
+    showGeoJson: async function () {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
         iconAnchor: [23, 23],
       });
-      return L.marker(latlng, { icon: customizedIcon });
-    },
-    /**
-     * This function builds layers for all .geojson files.
-     */
-    showGeoJson: async function () {
-      const myLayerOptions = {
-        pointToLayer: this.createCustomIcon,
-      };
 
       let responseAoi = null;
       let responseSamplePolygons = null;
@@ -1058,10 +1169,11 @@ export default {
         this.samplePolygonsLayer = L.geoJson(responseSamplePolygons.data);
       }
       if (responseSuggestion) {
-        this.suggestionLayer = L.geoJson(
-          responseSuggestion.data,
-          myLayerOptions
-        );
+        this.suggestionLayer = L.geoJson(responseSuggestion.data, {
+          pointToLayer: function (_feature, latlng) {
+            return L.marker(latlng, { icon: customizedIcon });
+          },
+        });
       }
     },
     /**
@@ -1137,39 +1249,54 @@ export default {
           resolution: 256,
         });
       }
-
+      // Needs to be colored:
       if (responsePred) {
         const georasterPred = await parseGeoraster(responsePred.data);
 
         this.predLayer = new GeoRasterLayer({
           georaster: georasterPred,
           opacity: this.predTransparency,
+          pixelValuesToColorFn: (pixelValues) =>
+            this.predClassificationColors[pixelValues[0] - 1] || null,
           resolution: 256,
         });
       }
     },
+    /**
+     * This function loads the given result.json asynchronious, which gives us the possibility to work with this given values including
+     * the accuracy and the dissimilarity index as resulting values from the processing as well as the the classes from the classification used
+     * to color the resultig GeoTiff.
+     */
     loadResultJson: async function () {
       let responseResult = null;
 
       try {
-        responseResult = await API.getJobFile(this.jobId, this.resultJson);
+        responseResult = await API.getJobFile(this.jobId, this.resultJsonUrl);
       } catch (err) {
-        console.warn("Unable to load file:", this.resultJson);
+        console.warn("Unable to load file:", this.resultJsonUrl);
       }
 
-      if (responseResult) {
-        this.accuracy = responseResult.data[1];
-        this.kappaIndex = responseResult.data[2];
+      if (!responseResult) {
+        return;
       }
+
+      this.accuracy = responseResult.data[1];
+      this.kappaIndex = responseResult.data[2];
+      this.resultJson = responseResult.data;
+
+      // Generate classification colors with chromajs
+      this.predClassificationColors = chroma
+        .scale("Spectral")
+        .colors(this.resultJson[0].length);
     },
   },
-  mounted() {
+  async mounted() {
     this.$store.dispatch("getJobById", this.jobId);
 
     this.initMap();
+    await this.loadResultJson();
     this.showTif1Band();
     this.showGeoJson();
-    this.loadResultJson();
   },
   beforeUnmount() {
     if (this.map) {
@@ -1194,6 +1321,9 @@ tr#not_last_td {
 }
 tr#last_td {
   border-bottom: grey;
+}
+.child {
+  display: inline-block;
 }
 
 #download_b {
