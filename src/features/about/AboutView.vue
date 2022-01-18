@@ -12,27 +12,27 @@
 
       <h5>Project reference</h5>
       <p>
-        Machine learning has become a popular method to classify remote sensing
-        data. method for the classification of remote sensing data. Possible
-        classifications can be found in the context of LU/LC. The possibility of
-        using machine learning to capture non-linear correlations and thus to
-        enable complex classifications is certainly one of the main reasons for
-        this. for this. Usually, such models are trained for spaces in which the
-        actual values of the target variables are known.
+        Machine learning has become a popular method for remote sensing data
+        classification. Possible classifications can be found in the context of
+        LULC. Machine learning offers the possibility to capture also nonlinear
+        relationships. This makes complex classifications possible. Usually,
+        such models are trained for spaces in which the actual values of the
+        target variables are known. In this case, methods must also be found and
+        made available, which perform an estimation. This estimation determines
+        how well an already trained model is suitable for a new application
+        space. In this new application area, the target variables must first be
+        determined.
         <br />
-        In addition, however, methods have to be found methods must be found and
-        provided, which allow the user to estimate how good an already how well
-        an already trained model can be applied to a new space, i.e. a space
-        where the target variables are a space, in which the target variables
-        are to be determined first. The Area of Applicability method, as
-        proposed by Meyer and Pebesma (Meyer and Pebesma 2021), solves exactly
-        this problem and allows the user to make a spatial estimate of how
-        reliable the target variables are.
+        The area of applicability method, as proposed by Meyer and Pebesma
+        (Meyer and Pebesma 2021), solves exactly this problem. This method
+        generates a spatial estimate that represents the reliability of the
+        machine classification algorithm in a new application area. Currently,
+        the use of the AOA method requires knowledge of the R language.
         <br />
-        Since currently knowledge of the language R language is required for the
-        use of the AOA method, an infrastructure shall be created which allows a
-        much larger spectrum of users to use the AOA method for their own
-        purposes.
+        The goalnow is to create an infrastructure that makes the AOA method
+        available to a much wider range of users. This will allow users who do
+        not know the R programming language well to use the AOA method for their
+        purposes and research.
       </p>
 
       <h5>Who are we?</h5>
