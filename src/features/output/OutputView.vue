@@ -1,7 +1,20 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">{{ job.name || "-" }}</div>
+      <div id="job_number" class="m-3 text-h5">
+        {{ job.name || "-" }}
+        <v-btn
+          class="float-right"
+          outlined
+          style="padding-left: 10px; padding-right: 7px"
+          v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
+        >
+          Protocol
+          <v-icon>mdi-download</v-icon>
+        </v-btn>
+      </div>
+      <!-- Farbliche Alternativen für den Button: -->
+      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -164,7 +177,7 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem('geotiffs_test/aoa_di.tif', 'aoa_di')
+                            downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -227,8 +240,9 @@
                               disabled
                               v-on:click="
                                 downloadItem(
-                                  'geotiffs_test/aoa_di.tif',
-                                  'aoa_di'
+                                  'aoa_di.tif',
+                                  'aoa_di',
+                                  'image/tiff'
                                 )
                               "
                               v-bind="attrs"
@@ -256,6 +270,24 @@
                     :tooltip-formatter="sliderPercentage"
                   />
                   <p style="font-size: 10px">Transparency</p>
+
+                  <div class="d-flex flex-column">
+                    <div
+                      v-for="(value, index) in predClassificationColors"
+                      :key="value"
+                      class="d-flex align-items-center mb-1"
+                    >
+                      <div
+                        :style="{
+                          width: '20px',
+                          height: '20px',
+                          backgroundColor: value,
+                          boxShadow: '0 0 1px #333',
+                        }"
+                      ></div>
+                      <div class="ml-3">{{ resultJson[0][index] }}</div>
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
@@ -293,7 +325,7 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem('geotiffs_test/pred.tif', 'pred')
+                            downloadItem('pred.tif', 'pred', 'image/tiff')
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -352,7 +384,7 @@
                               icon
                               disabled
                               v-on:click="
-                                downloadItem('geotiffs_test/pred.tif', 'pred')
+                                downloadItem('pred.tif', 'pred', 'image/tiff')
                               "
                               v-bind="attrs"
                               v-on="on"
@@ -422,7 +454,7 @@
                           class="ms-2"
                           icon
                           v-on:click="
-                            downloadItem('geotiffs_test/aoa_aoa.tif', 'aoa_aoa')
+                            downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
                           "
                           v-bind="attrs"
                           v-on="on"
@@ -488,8 +520,9 @@
                               disabled
                               v-on:click="
                                 downloadItem(
-                                  'geotiffs_test/aoa_aoa.tif',
-                                  'aoa_aoa'
+                                  'aoa_aoa.tif',
+                                  'aoa_aoa',
+                                  'image/tiff'
                                 )
                               "
                               v-bind="attrs"
@@ -656,8 +689,9 @@
                           icon
                           v-on:click="
                             downloadItem(
-                              'geotiffs_test/suggestion.geojson',
-                              'suggestion'
+                              'suggestion.geojson',
+                              'suggestion',
+                              'image/tiff'
                             )
                           "
                           v-bind="attrs"
@@ -711,8 +745,9 @@
                               disabled
                               v-on:click="
                                 downloadItem(
-                                  'geotiffs_test/suggestion.geojson',
-                                  'suggestion'
+                                  'suggestion.geojson',
+                                  'suggestion',
+                                  'image/tiff'
                                 )
                               "
                               v-bind="attrs"
@@ -730,11 +765,85 @@
                 <span>This Layer is not available</span>
               </v-tooltip>
             </template>
-          </tbody>
-
-          <tbody></tbody
-        ></template>
+          </tbody></template
+        >
       </v-simple-table>
+      <v-divider light> </v-divider>
+      <template v-if="kappaIndex === null">
+        <v-tooltip left color="error">
+          <template v-slot:activator="{ on }">
+            <v-row justify="center" v-on="on">
+              <v-expansion-panels flat accordion disabled class="pb-7">
+                <v-expansion-panel>
+                  <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                    >Details</v-expansion-panel-header
+                  >
+                  <v-expansion-panel-content> </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels> </v-row
+          ></template>
+          <span>These informations are not available</span>
+        </v-tooltip>
+      </template>
+      <template v-if="kappaIndex != null">
+        <v-expansion-panels flat accordion class="pb-7">
+          <v-expansion-panel>
+            <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+              >Details</v-expansion-panel-header
+            >
+            <v-expansion-panel-content>
+              <div class="mb-1" style="font-size: 14px">
+                Accuracy: {{ accuracy }}
+              </div>
+              <div class="mb-1" style="font-size: 14px">
+                Kappa Index: {{ kappaIndex }}
+              </div>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3 mr-2 mb-2"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'model.rds',
+                        'model.rds',
+                        'application/octet-stream'
+                      )
+                    "
+                  >
+                    Model
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the trained model</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3 mb-2"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'job_param.json',
+                        'job_param.json',
+                        'application/json'
+                      )
+                    "
+                  >
+                    Job parameters
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the job parameters</span>
+              </v-tooltip>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
     </div>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -754,7 +863,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
@@ -796,6 +905,8 @@ export default {
     predUrl: "pred.tif",
     predLayer: null,
     predTransparency: 100,
+    // Generated by chromajs, e.g.: ['#9e0142', '#f98e52', ...]
+    predClassificationColors: [],
     // Everything needed to visualize the aoi_aoa.tif.
     aoaCheckbox: false,
     aoaUrl: "aoa_aoa.tif",
@@ -813,6 +924,11 @@ export default {
     suggestionLayer: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
+    resultJsonUrl: "result.json",
+    resultJson: null,
+    kappaIndex: null,
+    accuracy: null,
+    outputLogUrl: "output.log",
   }),
   components: {
     VueSlider,
@@ -862,14 +978,26 @@ export default {
         .addTo(this.map);
     },
     /**
-     * this function triggers the downlad process of the result of the calculations.
+     * This function triggers the downlad process of the results of the calculations.
      * @param {string} urlLink -  Contains the internal URL to the file.
      * @param {string} label - Contains the label the downloaded file should get.
      */
-    downloadItem: async function (urlLink, label) {
-      const url = `${process.env.BASE_URL}` + urlLink;
-      let response = await axios.get(url, { responseType: "blob" });
-      const blob = new Blob([response.data], { type: "image/tiff" });
+    downloadItem: async function (urlLink, label, type) {
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: type });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = label;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
+    downloadTextFile: async function (urlLink, label) {
+      let response = await API.getJobFile(this.jobId, urlLink, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
@@ -1000,22 +1128,15 @@ export default {
       else return;
       this.map.fitBounds(tempLayer.getBounds());
     },
-    // eslint-disable-next-line
-    createCustomIcon: function (feature, latlng) {
+    /**
+     * This function builds layers for all .geojson files.
+     */
+    showGeoJson: async function () {
       const customizedIcon = L.icon({
         iconUrl: markerPng,
         iconSize: [46, 46],
         iconAnchor: [23, 23],
       });
-      return L.marker(latlng, { icon: customizedIcon });
-    },
-    /**
-     * This function builds layers for all .geojson files.
-     */
-    showGeoJson: async function () {
-      const myLayerOptions = {
-        pointToLayer: this.createCustomIcon,
-      };
 
       let responseAoi = null;
       let responseSamplePolygons = null;
@@ -1050,10 +1171,11 @@ export default {
         this.samplePolygonsLayer = L.geoJson(responseSamplePolygons.data);
       }
       if (responseSuggestion) {
-        this.suggestionLayer = L.geoJson(
-          responseSuggestion.data,
-          myLayerOptions
-        );
+        this.suggestionLayer = L.geoJson(responseSuggestion.data, {
+          pointToLayer: function (_feature, latlng) {
+            return L.marker(latlng, { icon: customizedIcon });
+          },
+        });
       }
     },
     /**
@@ -1129,26 +1251,54 @@ export default {
           resolution: 256,
         });
       }
-
+      // Needs to be colored:
       if (responsePred) {
         const georasterPred = await parseGeoraster(responsePred.data);
 
         this.predLayer = new GeoRasterLayer({
           georaster: georasterPred,
           opacity: this.predTransparency,
+          pixelValuesToColorFn: (pixelValues) =>
+            this.predClassificationColors[pixelValues[0] - 1] || null,
           resolution: 256,
         });
       }
     },
+    /**
+     * This function loads the given result.json asynchronious, which gives us the possibility to work with this given values including
+     * the accuracy and the dissimilarity index as resulting values from the processing as well as the the classes from the classification used
+     * to color the resultig GeoTiff.
+     */
+    loadResultJson: async function () {
+      let responseResult = null;
+
+      try {
+        responseResult = await API.getJobFile(this.jobId, this.resultJsonUrl);
+      } catch (err) {
+        console.warn("Unable to load file:", this.resultJsonUrl);
+      }
+
+      if (!responseResult) {
+        return;
+      }
+
+      this.accuracy = responseResult.data[1];
+      this.kappaIndex = responseResult.data[2];
+      this.resultJson = responseResult.data;
+
+      // Generate classification colors with chromajs
+      this.predClassificationColors = chroma
+        .scale("Spectral")
+        .colors(this.resultJson[0].length);
+    },
   },
-  mounted() {
+  async mounted() {
     this.$store.dispatch("getJobById", this.jobId);
 
     this.initMap();
+    await this.loadResultJson();
     this.showTif1Band();
     this.showGeoJson();
-
-    console.log(this.aoiLayer === null);
   },
   beforeUnmount() {
     if (this.map) {
@@ -1169,11 +1319,13 @@ td {
   padding-bottom: 5px;
 }
 tr#not_last_td {
-  border-bottom: white;
+  border-bottom: grey;
 }
 tr#last_td {
   border-bottom: grey;
-  border-bottom-style: double;
+}
+.child {
+  display: inline-block;
 }
 
 #download_b {
@@ -1185,9 +1337,6 @@ tr#last_td {
   flex-wrap: nowrap;
   position: relative;
 }
-#zoom_button {
-}
-
 #control.table {
   display: block;
   /* DOENST WORK BUT THE TARGET WAS A CENTER ALIGNED LAYER CONTROL FOR THE RESPONSIVE DESIGN */

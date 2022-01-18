@@ -153,7 +153,9 @@
           <v-col cols="6">
             <v-select
               filled
+
               :items="['10', '20', '50','100','200','400']"
+
               label="Resolution"
               v-model="formData.resolution"
               suffix="meter"
