@@ -96,6 +96,13 @@
         </v-col>
       </v-row>
 
+      <!--
+        Die Validation muss noch entfernt werden; 
+        Die AOI Size muss ausgegeben werden sowie die AOI auf der Karte
+        ausgegeben. 
+        dann muss auf der Ausagebseite fortgefahren werden
+      -->
+
       <div class="mt-3 mb-2">
         <span class="text-h6">Sentinel-2</span>
         <v-tooltip right>
