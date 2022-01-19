@@ -47,12 +47,12 @@ const routes = [
   },
   {
     path: "/inputDemo",
-    name: "Demo",
+    name: "Demo_input",
     component: DemoViewInput,
   },
   {
     path: "/outputDemo",
-    name: "Demo",
+    name: "Demo_output",
     component: DemoViewOutput,
   },
 ];

@@ -748,11 +748,8 @@ export default {
       const responsePred = await fetch(this.predUrl);
 
       const arrayBufferDi = await responseDi.arrayBuffer();
-      console.log(arrayBufferDi);
       const arrayBufferAoa = await responseAoa.arrayBuffer();
-      console.log(arrayBufferAoa);
       const arrayBufferPred = await responsePred.arrayBuffer();
-      console.log(arrayBufferPred);
 
       const georasterDi = await parseGeoraster(arrayBufferDi);
 
@@ -796,10 +793,11 @@ export default {
 
       // Will be colored:
       const georasterPred = await parseGeoraster(arrayBufferPred);
-      console.log(georasterPred);
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
         opacity: this.predTransparency,
+        pixelValuesToColorFn: (pixelValues) =>
+          this.predClassificationColors[pixelValues[0] - 1] || null,
         resolution: 256,
       });
     },
