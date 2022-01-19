@@ -212,7 +212,7 @@
         </div>
 
         <v-row>
-          <v-col cols="6">
+          <v-col cols="4">
             <v-file-input
               filled
               label="Sample Polygons"
@@ -227,7 +227,7 @@
               "
             ></v-file-input>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="4">
             <v-text-field
               filled
               type="string"
@@ -239,6 +239,19 @@
                 v$.formData.samples_class.$error
                   ? ['This field is required']
                   : []
+              "
+            />
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              filled
+              type="string"
+              label="Object ID "
+              persistent-hint
+              hint="Describes the attribute that represent the key of the sample polygons"
+              v-model="formData.obj_id"
+              :error-messages="
+                v$.formData.obj_id.$error ? ['This field is required'] : []
               "
             />
           </v-col>
@@ -464,6 +477,7 @@ export default {
         samples_class: "class",
         sampling_strategy: "regular",
         use_pretrained_model: false,
+        obj_id: "PID",
         random_forrest: {
           n_tree: 800,
           cross_validation_folds: 5,
@@ -512,6 +526,7 @@ export default {
         use_pretrained_model: { required },
         sampling_strategy: { required },
         resolution: requiredIf(() => !this.formData.use_lookup),
+        obj_id: { required },
         support_vector_machine: {
           sigma: {
             decimal,
@@ -631,6 +646,7 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: this.formData.sampling_strategy,
         use_pretrained_model: this.formData.use_pretrained_model,
+        obj_id: this.formData.obj_id,
       };
 
       // create job object for the api
