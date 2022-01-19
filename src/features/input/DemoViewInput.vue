@@ -1,52 +1,6 @@
 <template>
   <div class="d-flex flex-column-reverse flex-lg-row wrapper">
-    <v-dialog v-model="dialogError" max-width="390" style="z-index: 1000">
-      <v-card>
-        <v-card-title class="text-h5 red--text">Oops!</v-card-title>
-
-        <v-card-text>
-          <div class="mb-3">
-            Something went wrong. Please try again later or send us the error
-            message and we will help you.
-          </div>
-          <div v-if="errorMessage">
-            <v-btn
-              small
-              outlined
-              class="mb-2"
-              @click="dialogErrorShowError = !dialogErrorShowError"
-            >
-              {{ dialogErrorShowError ? "Hide" : "Show" }} error message
-            </v-btn>
-
-            <div v-if="dialogErrorShowError">
-              <v-textarea
-                solo
-                label="Error Message"
-                style="font-size: 12px"
-                :value="
-                  typeof errorMessage === 'object'
-                    ? JSON.stringify(errorMessage, null, 2)
-                    : errorMessage
-                "
-              ></v-textarea>
-            </div>
-          </div>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn color="darken-1" text @click="dialogError = false"> Ok </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <form
-      class="d-flex flex-column p-3 form-column"
-      style="flex: 1"
-      v-on:submit="onSubmitForm"
-    >
+    <form class="d-flex flex-column p-3 form-column" style="flex: 1">
       <div class="d-flex w-100 mb-3">
         <div style="flex: 1"><span class="text-h5">Create job</span></div>
         <div>
@@ -67,29 +21,17 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >The Area of Interest describes the area the trained model should
-            <br />
-            be tested on. A rectangle has to be drawn in the given map.</span
+            >The Area of Interest describes the area<br />
+            the trained model should be tested on. A<br />
+            rectangle has to be drawn in the given map.</span
           >
         </v-tooltip>
       </div>
 
       <v-row class="mb-3">
         <v-col class="d-flex align-items-center">
-          <div
-            v-if="aoiSize === 0"
-            :class="{
-              'me-3': true,
-              'red--text': v$.formData.area_of_interest.$error,
-            }"
-            style="min-width: 120px"
-          >
-            Not selected...
-          </div>
-          <div v-if="aoiSize > 0" class="me-3" style="min-width: 120px">
-            {{ (aoiSize / 1000 / 1000).toFixed(3) }} km<sup>2</sup>
-          </div>
-          <v-btn color="primary" v-on:click="drawItem">
+          <div class="me-3" style="min-width: 120px">48.338 km<sup>2</sup></div>
+          <v-btn color="primary">
             Select on map
             <v-icon right dark>mdi-vector-square</v-icon>
           </v-btn>
@@ -110,12 +52,11 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span class="max-width-20">
-            A timeframe for Sentinel-2 data <br />that should be used can be
-            edited.<br />
-            As default value the past six month <br />will be used. Also a
-            resolution<br />
-            for the used imagery can be choosen <br />as well as the cloud
-            coverage.
+            A timeframe for Sentinel-2 data that should <br />
+            be used can be edited. As default value the<br />
+            past six month will be used. Also a resolution<br />
+            for the used imagery can be choosen as well as <br />
+            the cloud coverage.
           </span>
         </v-tooltip>
       </div>
@@ -126,6 +67,7 @@
             type="date"
             label="From"
             filled
+            readonly
             v-model="formData.start_timestamp"
           />
         </v-col>
@@ -134,6 +76,7 @@
             type="date"
             label="To"
             filled
+            readonly
             v-model="formData.end_timestamp"
           />
         </v-col>
@@ -182,8 +125,9 @@
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span
-              >In case no existing model should be used, <br />
-              points or polygons to train a model are required.</span
+              >In case no existing model should <br />
+              be used, points or polygons to train <br />
+              a model are required.</span
             >
           </v-tooltip>
         </div>
@@ -300,8 +244,8 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >A sampling strategy to find suggested points for additional
-            measuring.</span
+            >A sampling strategy to find suggested <br />
+            points for additional measuring.</span
           >
         </v-tooltip>
       </div>
@@ -377,9 +321,8 @@ export default {
       tileLayer: null,
       drawControl: null,
       rectangleLayer: null,
-      drawnItem: null,
       // size in meters^2
-      aoiSize: 0,
+      // aoiSize: 0,
       selectedML: "svmradial",
     };
   },
@@ -452,21 +395,26 @@ export default {
           edit: false,
         },
       });
-
       this.map.addControl(this.drawControl);
 
       const responseAoi = await fetch(
-        `${process.env.BASE_URL}demoData/aoi.geojson`
+        `${process.env.BASE_URL}demoData/demo_aoi.geojson`
       );
       const aoi = await responseAoi.json();
       this.rectangleLayer = L.geoJson(aoi);
+      this.rectangleLayer.addTo(this.map);
 
-      this.drawnItem = this.rectangleLayer;
-      console.log(this.drawnItem); // DOESNST WORK TO GET LAT AND LONGS
-      const [rectangle] = this.drawnItem.getLatLngs();
-
+      /*
+      const bounds = this.rectangleLayer.getBounds();
+      const rectangle = [
+        new L.latLng(bounds._southWest.lat, bounds._northEast.lng),
+        new L.latLng(bounds._northEast.lat, bounds._northEast.lng),
+        new L.latLng(bounds._northEast.lat, bounds._southWest.lng),
+        new L.latLng(bounds._southWest.lat, bounds._southWest.lng),
+      ];
       // This variable contains the size of the entered aoi in m2.
       this.aoiSize = L.GeometryUtil.geodesicArea(rectangle);
+      */
     },
   },
   mounted() {

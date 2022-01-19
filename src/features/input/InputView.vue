@@ -75,9 +75,9 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >The Area of Interest describes the area the trained model should
-            <br />
-            be tested on. A rectangle has to be drawn in the given map.</span
+            >The Area of Interest describes the area<br />
+            the trained model should be tested on. A<br />
+            rectangle has to be drawn in the given map.</span
           >
         </v-tooltip>
       </div>
@@ -110,12 +110,13 @@
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
-          <span
-            >A <b>timeframe</b> for Sentinel-2 data that should be used can be
-            edited. As default value the past six month will be used. <br />
-            Also a <b>resolution</b> for the used imagery can be choosen as well
-            as the <b>cloud coverage</b>.</span
-          >
+          <span>
+            A timeframe for Sentinel-2 data that should <br />
+            be used can be edited. As default value the<br />
+            past six month will be used. Also a resolution<br />
+            for the used imagery can be choosen as well as <br />
+            the cloud coverage.
+          </span>
         </v-tooltip>
       </div>
 
@@ -205,8 +206,9 @@
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span
-              >In case no existing model should be used, <br />
-              points or polygons to train a model are required.</span
+              >In case no existing model should <br />
+              be used, points or polygons to train <br />
+              a model are required.</span
             >
           </v-tooltip>
         </div>
@@ -253,8 +255,9 @@
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span
-              >Optional: A computional model can be<br />
-              used to classify Sentinel-2 imagery.</span
+              >Optional: A computional model <br />
+              can be used to classify <br />
+              Sentinel-2 imagery.</span
             >
           </v-tooltip>
         </div>
@@ -396,8 +399,8 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >A sampling strategy to find suggested points for additional
-            measuring.</span
+            >A sampling strategy to find suggested <br />
+            points for additional measuring.</span
           >
         </v-tooltip>
       </div>
@@ -577,9 +580,10 @@ export default {
           this.rectangleLayer.removeLayer(this.drawnItem);
         }
         this.drawnItem = e.layer;
-
+        console.log(this.drawnItem);
         // Get the first element
         const [rectangle] = this.drawnItem.getLatLngs();
+        console.log(rectangle);
 
         // Prepare coordinates for AOI GeoJSON
         const coordinates = [];

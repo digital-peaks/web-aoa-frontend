@@ -487,7 +487,7 @@ export default {
     earthLayer: null,
     // Everything needed to visualize the aoi.geojson.
     aoiCheckbox: false,
-    aoiJson: `${process.env.BASE_URL}demoData/aoi.geojson`,
+    aoiJson: `${process.env.BASE_URL}demoData/demo_aoi.geojson`,
     aoiLayer: null,
     aoiTransparency: 50,
     aoiLineThickness: 1,
@@ -510,7 +510,7 @@ export default {
     aoaTransparency: 100,
     // Everything needed to visualize the samplePolygons.geojson.
     samplePolygonsCheckbox: false,
-    samplePolygonsJson: `${process.env.BASE_URL}demoData/samplePolygons.geojson`,
+    samplePolygonsJson: `${process.env.BASE_URL}demoData/demo_samples.geojson`,
     samplePolygonsLayer: null,
     samplePolygonsTransparency: 50,
     samplePolygonsLineThickness: 1,
@@ -748,8 +748,11 @@ export default {
       const responsePred = await fetch(this.predUrl);
 
       const arrayBufferDi = await responseDi.arrayBuffer();
+      console.log(arrayBufferDi);
       const arrayBufferAoa = await responseAoa.arrayBuffer();
+      console.log(arrayBufferAoa);
       const arrayBufferPred = await responsePred.arrayBuffer();
+      console.log(arrayBufferPred);
 
       const georasterDi = await parseGeoraster(arrayBufferDi);
 
@@ -793,12 +796,10 @@ export default {
 
       // Will be colored:
       const georasterPred = await parseGeoraster(arrayBufferPred);
-
+      console.log(georasterPred);
       this.predLayer = new GeoRasterLayer({
         georaster: georasterPred,
         opacity: this.predTransparency,
-        pixelValuesToColorFn: (pixelValues) =>
-          this.predClassificationColors[pixelValues[0] - 1] || null,
         resolution: 256,
       });
     },
@@ -808,22 +809,11 @@ export default {
      * to color the resultig GeoTiff.
      */
     loadResultJson: async function () {
-      // DOESNT WORK YET
-      let responseResult = null;
+      let responseResult = await fetch(this.resultJsonUrl);
+      this.resultJson = await responseResult.json();
 
-      try {
-        responseResult = await API.getJobFile(this.jobId, this.resultJsonUrl);
-      } catch (err) {
-        console.warn("Unable to load file:", this.resultJsonUrl);
-      }
-
-      if (!responseResult) {
-        return;
-      }
-
-      this.accuracy = responseResult.data[1];
-      this.kappaIndex = responseResult.data[2];
-      this.resultJson = responseResult.data;
+      this.accuracy = this.resultJson[1];
+      this.kappaIndex = this.resultJson[2];
 
       // Generate classification colors with chromajs
       this.predClassificationColors = chroma
