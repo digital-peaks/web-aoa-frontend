@@ -3,17 +3,28 @@
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">
         Demo
-        <v-btn
-          class="float-right"
-          outlined
-          style="padding-left: 10px; padding-right: 7px"
-          v-on:click="
-            downloadItem('demoData/output.log', 'output.log', 'text/html')
-          "
-        >
-          Protocol
-          <v-icon>mdi-download</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              class="float-right"
+              outlined
+              v-on="on"
+              style="padding-left: 10px; padding-right: 7px"
+              v-on:click="
+                downloadItem('demoData/output.log', 'output.log', 'text/html')
+              "
+            >
+              Protocol
+              <v-icon>mdi-download</v-icon>
+            </v-btn>
+          </template>
+          <span>
+            Here you can download a <br />
+            log file, written by the <br />
+            R-code while the calculations <br />
+            are running.
+          </span>
+        </v-tooltip>
       </div>
 
       <v-simple-table class="mb-6">

@@ -10,9 +10,24 @@
         </div>
       </div>
 
-      <div class="mt-2 mb-3">
+      <span class="my-4">
+        On this page you can create a job for the AOA (Area of Applicability)
+        calculation. Multiple parameters are required and some are optional.<br />
+        First of all, your have to name the job as want want it to be seen in
+        the job-overview:
+      </span>
+
+      <div class="mt-2">
         <v-text-field type="text" label="Name" value="Demo" filled readonly />
       </div>
+
+      <span class="my-4">
+        Afterwards you have to choose your AOI (Area of Interest). Just press
+        the button on the right <i>SELECT ON MAP</i> to start drawing of the
+        map. You are allowed to draw only one rectangle to describe this area.
+        But you can draw another one by pushing the small button leftsided in
+        the map:
+      </span>
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Area of Interest (AOI)</span>
@@ -37,13 +52,6 @@
           </v-btn>
         </v-col>
       </v-row>
-
-      <!--
-        Die Validation muss noch entfernt werden; 
-        Die AOI Size muss ausgegeben werden sowie die AOI auf der Karte
-        ausgegeben. 
-        dann muss auf der Ausagebseite fortgefahren werden
-      -->
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Sentinel-2</span>
@@ -403,18 +411,6 @@ export default {
       const aoi = await responseAoi.json();
       this.rectangleLayer = L.geoJson(aoi);
       this.rectangleLayer.addTo(this.map);
-
-      /*
-      const bounds = this.rectangleLayer.getBounds();
-      const rectangle = [
-        new L.latLng(bounds._southWest.lat, bounds._northEast.lng),
-        new L.latLng(bounds._northEast.lat, bounds._northEast.lng),
-        new L.latLng(bounds._northEast.lat, bounds._southWest.lng),
-        new L.latLng(bounds._southWest.lat, bounds._southWest.lng),
-      ];
-      // This variable contains the size of the entered aoi in m2.
-      this.aoiSize = L.GeometryUtil.geodesicArea(rectangle);
-      */
     },
   },
   mounted() {
