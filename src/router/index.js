@@ -3,8 +3,8 @@ import VueRouter from "vue-router";
 import JobsView from "../features/jobs/JobsView.vue";
 import InputView from "../features/input/InputView.vue";
 import DemoViewInput from "../features/demo/DemoViewInput.vue";
-import OutputView from "../features/demo/OutputView.vue";
-import DemoViewOutput from "../features/output/DemoViewOutput.vue";
+import OutputView from "../features/output/OutputView.vue";
+import DemoViewOutput from "../features/demo/DemoViewOutput.vue";
 import ImpressumView from "../features/impressum/ImpressumView.vue";
 import LoginView from "../features/login/LoginView.vue";
 
