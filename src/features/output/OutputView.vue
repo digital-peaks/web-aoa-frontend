@@ -13,8 +13,6 @@
           <v-icon>mdi-download</v-icon>
         </v-btn>
       </div>
-      <!-- Farbliche Alternativen für den Button: -->
-      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -861,7 +859,6 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-//import axios from "axios";
 import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
@@ -985,17 +982,6 @@ export default {
         responseType: "blob",
       });
       const blob = new Blob([response.data], { type: type });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = label;
-      link.click();
-      URL.revokeObjectURL(link.href);
-    },
-    downloadTextFile: async function (urlLink, label) {
-      let response = await API.getJobFile(this.jobId, urlLink, {
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;

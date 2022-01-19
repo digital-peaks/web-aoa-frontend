@@ -7,7 +7,9 @@
           class="float-right"
           outlined
           style="padding-left: 10px; padding-right: 7px"
-          v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
+          v-on:click="
+            downloadItem('demoData/output.log', 'output.log', 'text/html')
+          "
         >
           Protocol
           <v-icon>mdi-download</v-icon>
@@ -118,7 +120,11 @@
                         class="ms-2"
                         icon
                         v-on:click="
-                          downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                          downloadItem(
+                            'demoData/aoa_di.tif',
+                            'aoa_di',
+                            'image/tiff'
+                          )
                         "
                         v-bind="attrs"
                         v-on="on"
@@ -195,7 +201,11 @@
                         class="ms-2"
                         icon
                         v-on:click="
-                          downloadItem('pred.tif', 'pred', 'image/tiff')
+                          downloadItem(
+                            'demoData/pred.tif',
+                            'pred',
+                            'image/tiff'
+                          )
                         "
                         v-bind="attrs"
                         v-on="on"
@@ -260,7 +270,11 @@
                         class="ms-2"
                         icon
                         v-on:click="
-                          downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
+                          downloadItem(
+                            'demoData/aoa_aoa.tif',
+                            'aoa_aoa',
+                            'image/tiff'
+                          )
                         "
                         v-bind="attrs"
                         v-on="on"
@@ -363,7 +377,7 @@
                         icon
                         v-on:click="
                           downloadItem(
-                            'suggestion.geojson',
+                            'demoData/suggestion.geojson',
                             'suggestion',
                             'image/tiff'
                           )
@@ -404,7 +418,7 @@
                   style="padding-left: 10px; padding-right: 7px"
                   v-on:click="
                     downloadItem(
-                      'model.rds',
+                      'demoData/model.rds',
                       'model.rds',
                       'application/octet-stream'
                     )
@@ -425,7 +439,7 @@
                   style="padding-left: 10px; padding-right: 7px"
                   v-on:click="
                     downloadItem(
-                      'job_param.json',
+                      'demoData/job_param.json',
                       'job_param.json',
                       'application/json'
                     )
@@ -459,8 +473,7 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-//import axios from "axios";
-import * as API from "@/common/api";
+import axios from "axios";
 
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
@@ -579,21 +592,9 @@ export default {
      * @param {string} label - Contains the label the downloaded file should get.
      */
     downloadItem: async function (urlLink, label, type) {
-      let response = await API.getJobFile(this.jobId, urlLink, {
-        responseType: "blob",
-      });
+      const url = `${process.env.BASE_URL}` + urlLink;
+      let response = await axios.get(url, { responseType: "blob" });
       const blob = new Blob([response.data], { type: type });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = label;
-      link.click();
-      URL.revokeObjectURL(link.href);
-    },
-    downloadTextFile: async function (urlLink, label) {
-      let response = await API.getJobFile(this.jobId, urlLink, {
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;
