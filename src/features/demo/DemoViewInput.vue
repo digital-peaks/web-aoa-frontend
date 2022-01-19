@@ -53,6 +53,8 @@
         </v-col>
       </v-row>
 
+      <span class="my-4"> Next you can specify the timeframe ... </span>
+
       <div class="mt-3 mb-2">
         <span class="text-h6">Sentinel-2</span>
         <v-tooltip right>
