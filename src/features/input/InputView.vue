@@ -59,13 +59,13 @@
       </div>
 
       <v-row class="mb-1">
-        <v-col cols="12">
+        <v-col>
           <v-switch
             v-model="colorblindMode"
-            label="Switch to Color Blind Mode"
+            label="Switch to Color Blind Mode (Trichromacy)"
             v-on:change="switchMode"
-          ></v-switch
-        ></v-col>
+          ></v-switch>
+        </v-col>
       </v-row>
 
       <div class="mt-2 mb-3">
@@ -84,8 +84,10 @@
         <span class="text-h6">Area of Interest (AOI)</span>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
-          </template>
+            <v-icon class="pb-3" small v-on="on"
+              >mdi-help-circle</v-icon
+            ></template
+          >
           <span
             >The Area of Interest describes the area the trained model should
             <br />
@@ -555,6 +557,12 @@ export default {
               '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }
         ).addTo(this.map);
+
+        if (this.rectangleLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
       } else if (this.colorblindMode === true) {
         this.tileLayer = L.tileLayer(
           "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
@@ -563,6 +571,12 @@ export default {
               '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
           }
         ).addTo(this.map);
+
+        if (this.rectangleLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#FF4452",
+          });
+        }
       }
     },
     /**
@@ -592,9 +606,9 @@ export default {
           rectangle: {
             showArea: true,
             metric: ["km"], // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
-            shapeOptions: {
-              color: "#212121",
-            },
+            /*shapeOptions: {
+              color: "black",
+            },*/
           },
           circle: false,
           marker: false,

@@ -1112,6 +1112,7 @@ export default {
      */
     changeOpacity: function (layerId) {
       if (layerId == "aoi") {
+        console.log(this.aoiLayer);
         this.aoiLayer.setStyle({
           fillOpacity: this.aoiTransparency / 100,
         });
