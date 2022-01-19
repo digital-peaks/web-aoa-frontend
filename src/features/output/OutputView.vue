@@ -18,7 +18,7 @@
         <v-col cols="12">
           <v-switch
             v-model="colorblindMode"
-            label="Switch to Color Blind Mode"
+            label="Switch to Color Blind Mode (Trichromacy)"
             v-on:change="switchMode"
           ></v-switch
         ></v-col>
@@ -976,26 +976,39 @@ export default {
           }
         ).addTo(this.map);
 
-        await this.showGeoJson("#3388ff");
+        if (this.aoiLayer != null) {
+          this.aoiLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
+        if (this.samplePolygonsLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
+        // Suggestion points style stays the same
       } else if (this.colorblindMode === true) {
         this.tileLayer = L.tileLayer(
-          "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          //"https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          "https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
           {
             attribution:
-              '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+              //'<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+              '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }
         ).addTo(this.map);
 
-        let polygonColor = null;
-
-        if (this.redBlind === true) {
-          polygonColor = "#33691E";
-        } else if (this.greenBlind === true) {
-          polygonColor = "#FF6D00";
-        } else if (this.blueBlind === true) {
-          polygonColor = "#FF1744";
+        if (this.aoiLayer != null) {
+          this.aoiLayer.setStyle({
+            color: "#FF4452",
+          });
         }
-        await this.showGeoJson(polygonColor);
+        if (this.samplePolygonsLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#FF4452",
+          });
+        }
+        // Suggestion points style stays the same
       }
     },
     changePolygonColor: async function () {
