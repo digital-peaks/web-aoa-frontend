@@ -24,24 +24,6 @@
         ></v-col>
       </v-row>
 
-      <template v-if="colorblindMode === true">
-        <v-row class="mx-1">
-          <v-col cols="12">
-            <v-select
-              filled
-              :items="[
-                'Red-Blind/Protanopia',
-                'Green-Blind/Deuteranopia',
-                'Blue-Blind/Tritanopia',
-              ]"
-              label="Type"
-              v-model="typeOfColorBlindness"
-              v-on:change="changePolygonColor"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </template>
-
       <v-simple-table class="mb-6">
         <template v-slot:default>
           <tbody>
@@ -982,7 +964,7 @@ export default {
           });
         }
         if (this.samplePolygonsLayer != null) {
-          this.rectangleLayer.setStyle({
+          this.samplePolygonsLayer.setStyle({
             color: "#3388ff",
           });
         }
@@ -998,13 +980,18 @@ export default {
           }
         ).addTo(this.map);
 
+        const colorblindScale = chroma
+          .scale("RdYlBu")
+          .colors(this.resultJson[0].length);
+        console.log(colorblindScale);
+
         if (this.aoiLayer != null) {
           this.aoiLayer.setStyle({
             color: "#FF4452",
           });
         }
         if (this.samplePolygonsLayer != null) {
-          this.rectangleLayer.setStyle({
+          this.samplePolygonsLayer.setStyle({
             color: "#FF4452",
           });
         }
@@ -1125,7 +1112,6 @@ export default {
      */
     changeOpacity: function (layerId) {
       if (layerId == "aoi") {
-        console.log(this.aoiLayer);
         this.aoiLayer.setStyle({
           fillOpacity: this.aoiTransparency / 100,
         });
@@ -1322,6 +1308,7 @@ export default {
         const rangeDi = georasterDi.ranges[0];
 
         const scaleViridis = chroma.scale("Viridis");
+        console.log(scaleViridis);
 
         this.diLayer = new GeoRasterLayer({
           georaster: georasterDi,
