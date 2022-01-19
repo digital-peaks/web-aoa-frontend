@@ -154,30 +154,59 @@
         </v-col>
       </v-row>
 
-      <v-row class="mb-3">
+      <template v-if="formData.use_lookup === false">
+        <v-row>
+          <v-col cols="6">
+            <v-select
+              filled
+              :items="['10', '20', '60']"
+              label="Resolution"
+              v-model="formData.resolution"
+              suffix="meter"
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              type="text"
+              filled
+              label="Cloud Cover"
+              v-model="formData.cloud_cover"
+              suffix="%"
+              :error-messages="
+                v$.formData.cloud_cover.$error
+                  ? ['Must be between 0 and 100']
+                  : []
+              "
+            />
+          </v-col>
+        </v-row>
+      </template>
+      <template v-if="formData.use_lookup === true">
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              type="text"
+              filled
+              label="Cloud Cover"
+              v-model="formData.cloud_cover"
+              suffix="%"
+              :error-messages="
+                v$.formData.cloud_cover.$error
+                  ? ['Must be between 0 and 100']
+                  : []
+              "
+            />
+          </v-col>
+        </v-row>
+      </template>
+
+      <v-row class="mb-1">
         <v-col cols="6">
-          <v-select
-            filled
-            :items="['10', '20', '60']"
-            label="Resolution"
-            v-model="formData.resolution"
-            suffix="meter"
-          ></v-select>
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            type="text"
-            filled
-            label="Cloud Cover"
-            v-model="formData.cloud_cover"
-            suffix="%"
-            :error-messages="
-              v$.formData.cloud_cover.$error
-                ? ['Must be between 0 and 100']
-                : []
-            "
-          />
-        </v-col>
+          <v-switch
+            v-model="formData.use_lookup"
+            label="Use lookup table for optimal resolution"
+          ></v-switch
+        ></v-col>
       </v-row>
 
       <template v-if="formData.use_pretrained_model === false">
@@ -216,7 +245,7 @@
               type="string"
               label="Class field"
               persistent-hint
-              hint="Field which classifies the polygons."
+              hint="Field which classifies the polygons"
               v-model="formData.samples_class"
               :error-messages="
                 v$.formData.samples_class.$error
@@ -270,86 +299,139 @@
         ></v-col>
       </v-row>
 
+      <template v-if="formData.use_pretrained_model === false">
+        <div class="mt-3 mb-2">
+          <span class="text-h6">Algorithm</span
+          ><v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
+            </template>
+            <span
+              >An algorithm to train a<br />
+              new model for prediction.</span
+            >
+          </v-tooltip>
+        </div>
+
+        <v-row>
+          <v-col cols="12">
+            <v-select
+              filled
+              v-model="selectedML"
+              :items="[
+                { algorithm: 'Random Forrest', selectedML: 'rf' },
+                {
+                  algorithm: 'Support Vector Machines',
+                  selectedML: 'svmradial',
+                },
+              ]"
+              item-text="algorithm"
+              item-value="selectedML"
+              label="Algorithm"
+            ></v-select>
+          </v-col>
+        </v-row>
+
+        <template v-if="selectedML === 'rf'">
+          <v-row class="mb-3">
+            <v-col cols="6">
+              <v-select
+                filled
+                :items="[200, 500, 800]"
+                label="N-Tree"
+                hint="Describes the number of decision trees"
+                persistent-hint
+                v-model="formData.random_forrest.n_tree"
+              ></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                filled
+                :items="[1, 5, 10]"
+                label="Cross validation folds"
+                hint="Describes the number of cross validations"
+                persistent-hint
+                v-model="formData.random_forrest.cross_validation_folds"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </template>
+
+        <template v-if="selectedML === 'svmradial'">
+          <v-row class="mb-3">
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="Sigma"
+                :error-messages="
+                  v$.formData.support_vector_machine.sigma.$error
+                    ? ['Must be a decimal value']
+                    : []
+                "
+                hint="This parameter describes sigma"
+                persistent-hint
+                v-model="formData.support_vector_machine.sigma"
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="C"
+                :error-messages="
+                  v$.formData.support_vector_machine.c.$error
+                    ? ['Must be a decimal or an integer value']
+                    : []
+                "
+                hint="This parameter describes C"
+                persistent-hint
+                v-model="formData.support_vector_machine.c"
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-select
+                filled
+                :items="[1, 5, 10]"
+                label="Cross validation folds"
+                v-model="formData.support_vector_machine.cross_validation_folds"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </template>
+      </template>
+
       <div class="mt-3 mb-2">
-        <span class="text-h6">Algorithm</span
-        ><v-tooltip right>
+        <span class="text-h6">Sampling Strategy</span>
+        <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >An algorithm to train a<br />
-            new model for prediction.</span
+            >A sampling strategy to find suggested points for additional
+            measuring.</span
           >
         </v-tooltip>
       </div>
 
-      <v-row>
+      <v-row class="mb-3">
         <v-col cols="12">
           <v-select
             filled
-            v-model="selectedML"
             :items="[
-              { algorithm: 'Random Forrest', selectedML: 'rf' },
-              { algorithm: 'Support Vector Machines', selectedML: 'svmradial' },
+              'regular',
+              'stratified',
+              'random',
+              'nonaligned',
+              'hexagonal',
+              'clustered',
+              'Fibonacci',
             ]"
-            item-text="algorithm"
-            item-value="selectedML"
-            label="Algorithm"
+            label="N-Tree"
+            v-model="formData.sampling_strategy"
           ></v-select>
         </v-col>
       </v-row>
-
-      <template v-if="selectedML === 'rf'">
-        <v-row class="mb-3">
-          <v-col cols="6">
-            <v-select
-              filled
-              :items="[200, 500, 800]"
-              label="N-Tree"
-              v-model="formData.random_forrest.n_tree"
-            ></v-select>
-          </v-col>
-          <v-col cols="6">
-            <v-select
-              filled
-              :items="[1, 5, 10]"
-              label="Cross validation folds"
-              v-model="formData.random_forrest.cross_validation_folds"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </template>
-
-      <template v-if="selectedML === 'svmradial'">
-        <v-row class="mb-3">
-          <v-col cols="4">
-            <v-text-field
-              filled
-              type="string"
-              label="Sigma"
-              hint="This parameter describes sigma."
-              v-model="formData.support_vector_machine.sigma"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              filled
-              type="string"
-              label="C"
-              hint="This parameter describes C."
-              v-model="formData.support_vector_machine.c"
-            />
-          </v-col>
-          <v-col cols="4">
-            <v-select
-              filled
-              :items="[1, 5, 10]"
-              label="Cross validation folds"
-              v-model="formData.support_vector_machine.cross_validation_folds"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </template>
     </form>
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
@@ -360,6 +442,9 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import {
+  integer,
+  or,
+  decimal,
   required,
   minValue,
   maxValue,
@@ -383,11 +468,13 @@ export default {
       formData: {
         name: "",
         area_of_interest: null,
+        use_lookup: false,
         resolution: "10",
         cloud_cover: "15",
         start_timestamp: format(subMonths(new Date(), 6), "yyyy-MM-dd"),
         end_timestamp: format(new Date(), "yyyy-MM-dd"),
         samples_class: "class",
+        sampling_strategy: "regular",
         use_pretrained_model: false,
         random_forrest: {
           n_tree: 800,
@@ -437,6 +524,18 @@ export default {
         },
         area_of_interest: { required },
         use_pretrained_model: { required },
+        sampling_strategy: { required },
+        resolution: requiredIf(() => !this.formData.use_lookup),
+        support_vector_machine: {
+          sigma: {
+            decimal,
+            minValue: minValue(0),
+          },
+          c: {
+            valid: or(integer, decimal),
+            minValue: minValue(0),
+          },
+        },
       },
       samplesFile: {
         required: requiredIf(() => !this.formData.use_pretrained_model),
@@ -565,24 +664,26 @@ export default {
       let job = {
         name: this.formData.name,
         area_of_interest: this.formData.area_of_interest,
-        use_lookup: false,
-        resolution: Number.parseInt(this.formData.resolution, 10) || 10,
+        use_lookup: this.formData.use_lookup,
         cloud_cover: Number.parseInt(this.formData.cloud_cover, 10) || 15,
         start_timestamp: `${this.formData.start_timestamp}T00:00:00.000Z`,
         end_timestamp: `${this.formData.end_timestamp}T00:00:00.000Z`,
         samples_class: this.formData.samples_class,
-        sampling_strategy: "regular",
+        sampling_strategy: this.formData.sampling_strategy,
         use_pretrained_model: this.formData.use_pretrained_model,
       };
 
       // create job object for the api
-      if (this.selectedML == "rf") {
+      if (this.selectedML == "rf" && !this.formData.use_pretrained_model) {
         job.random_forrest = {
           n_tree: this.formData.random_forrest.n_tree,
           cross_validation_folds:
             this.formData.random_forrest.cross_validation_folds,
         };
-      } else if (this.selectedML == "svmradial") {
+      } else if (
+        this.selectedML == "svmradial" &&
+        !this.formData.use_pretrained_model
+      ) {
         job.support_vector_machine = {
           sigma: this.formData.support_vector_machine.sigma,
           c: this.formData.support_vector_machine.c,
@@ -590,6 +691,13 @@ export default {
             this.formData.support_vector_machine.cross_validation_folds,
         };
       }
+
+      if (!this.formData.use_lookup) {
+        job.resolution = Number.parseInt(this.formData.resolution, 10) || 10;
+      } else {
+        job.resolution = 10; // default value
+      }
+
       const data = { job };
 
       if (job.use_pretrained_model) {

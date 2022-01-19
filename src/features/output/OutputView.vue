@@ -675,9 +675,7 @@
             </template>
             <template v-if="suggestionLayer != null">
               <tr id="not_last_td">
-                <td id="td_elements_with_slider">
-                  Suggested locations for training polygons
-                </td>
+                <td>Suggested locations for training polygons</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <v-tooltip bottom>
@@ -736,7 +734,7 @@
               <v-tooltip left color="error">
                 <template v-slot:activator="{ on }">
                   <tr id="not_last_td" v-on="on">
-                    <td id="td_elements_with_slider" style="color: #a7a7a7">
+                    <td style="color: #a7a7a7">
                       Suggested locations for training polygons
                     </td>
                     <td>
@@ -794,7 +792,7 @@
           </tbody></template
         >
       </v-simple-table>
-      <v-divider light> </v-divider>
+      <v-divider light class="m-0"> </v-divider>
       <template v-if="kappaIndex === null">
         <v-tooltip left color="error">
           <template v-slot:activator="{ on }">
@@ -824,12 +822,12 @@
               <div class="mb-1" style="font-size: 14px">
                 Kappa Index: {{ kappaIndex }}
               </div>
-              <v-tooltip right>
+              <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"
                     dark
-                    class="float-left mt-3"
+                    class="float-left mt-3 mr-2 mb-2"
                     style="padding-left: 10px; padding-right: 7px"
                     v-on:click="
                       downloadItem(
@@ -844,6 +842,27 @@
                   </v-btn>
                 </template>
                 <span>Download the trained model</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    dark
+                    class="float-left mt-3 mb-2"
+                    style="padding-left: 10px; padding-right: 7px"
+                    v-on:click="
+                      downloadItem(
+                        'job_param.json',
+                        'job_param.json',
+                        'application/json'
+                      )
+                    "
+                  >
+                    Job parameters
+                    <v-icon>mdi-download</v-icon>
+                  </v-btn>
+                </template>
+                <span>Download the job parameters</span>
               </v-tooltip>
             </v-expansion-panel-content>
           </v-expansion-panel>

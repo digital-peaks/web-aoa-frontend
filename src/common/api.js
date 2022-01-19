@@ -8,7 +8,7 @@ const api = axios.create({
 
 /**
  * Set bearer token for API requests.
- * @param {string} token
+ * @param {String} token
  */
 export const setBearerToken = (token) => {
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -24,8 +24,8 @@ export const clearBearerToken = () => {
 /**
  * Login
  * @param {Object} body
- * @param {string} body.email
- * @param {string} body.password
+ * @param {String} body.email
+ * @param {String} body.password
  */
 export const userLogin = (body) => api.post("/users/login", body);
 
@@ -38,10 +38,17 @@ export const getJobs = () => api.get("/jobs");
 
 /**
  * Get job by id.
- * @param {string} id Job id
+ * @param {String} id Job id
  * @returns
  */
 export const getJobById = (id) => api.get(`/jobs/${id}`);
+
+/**
+ * Delete job by id.
+ * @param {String} id - Job id
+ * @returns
+ */
+export const deleteJobById = (id) => api.delete(`/jobs/${id}`);
 
 /**
  * Create job.
@@ -75,10 +82,10 @@ export const createJob = ({ samples, model, job }) => {
  * Get array buffer:
  * `getJobsFile("155h565734r", "pred.tif", { responseType: "arraybuffer" })`
  *
- * @param {string} jobId
- * @param {string} name
+ * @param {String} jobId
+ * @param {String} name
  * @param {object} options See https://axios-http.com/docs/req_config
- * @param {string} options.responseType Default "json"
+ * @param {String} options.responseType Default "json"
  */
 export const getJobFile = (jobId, name, options) =>
   api.get(`/jobs/${jobId}/files/${name}`, options);
