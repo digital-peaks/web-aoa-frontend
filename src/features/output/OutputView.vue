@@ -147,7 +147,12 @@
                   />
                   <p style="font-size: 10px">Transparency</p>
 
-                  <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                  <template v-if="colorblindMode == false">
+                    <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                  </template>
+                  <template v-if="colorblindMode == true">
+                    <ColorLegend scale="Spectral" :steps="6" :fixed="1" />
+                  </template>
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
@@ -280,21 +285,40 @@
                   <p style="font-size: 10px">Transparency</p>
 
                   <div class="d-flex flex-column">
-                    <div
-                      v-for="(value, index) in predClassificationColors"
-                      :key="value"
-                      class="d-flex align-items-center mb-1"
-                    >
+                    <template v-if="colorblindMode == false">
                       <div
-                        :style="{
-                          width: '20px',
-                          height: '20px',
-                          backgroundColor: value,
-                          boxShadow: '0 0 1px #333',
-                        }"
-                      ></div>
-                      <div class="ml-3">{{ resultJson[0][index] }}</div>
-                    </div>
+                        v-for="(value, index) in predClassificationColors"
+                        :key="value"
+                        class="d-flex align-items-center mb-1"
+                      >
+                        <div
+                          :style="{
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: value,
+                            boxShadow: '0 0 1px #333',
+                          }"
+                        ></div>
+                        <div class="ml-3">{{ resultJson[0][index] }}</div>
+                      </div>
+                    </template>
+                    <template v-if="colorblindMode == true">
+                      <div
+                        v-for="(value, index) in colorblindScalePred"
+                        :key="value"
+                        class="d-flex align-items-center mb-1"
+                      >
+                        <div
+                          :style="{
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: value,
+                            boxShadow: '0 0 1px #333',
+                          }"
+                        ></div>
+                        <div class="ml-3">{{ resultJson[0][index] }}</div>
+                      </div>
+                    </template>
                   </div>
                 </td>
                 <td>
@@ -420,11 +444,20 @@
                   />
                   <p style="font-size: 10px">Transparency</p>
 
-                  <ColorLegend
-                    :scale="['#cf1f8f', '#ffffff']"
-                    :steps="2"
-                    :fixed="0"
-                  />
+                  <template v-if="colorblindMode == false">
+                    <ColorLegend
+                      :scale="['#cf1f8f', '#ffffff']"
+                      :steps="2"
+                      :fixed="0"
+                    />
+                  </template>
+                  <template v-if="colorblindMode == true">
+                    <ColorLegend
+                      :scale="['#21A7E6', '#ffffff']"
+                      :steps="2"
+                      :fixed="0"
+                    />
+                  </template>
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
@@ -490,11 +523,20 @@
                       />
                       <p style="font-size: 10px">Transparency</p>
 
-                      <ColorLegend
-                        :scale="['#cf1f8f', '#ffffff']"
-                        :steps="2"
-                        :fixed="0"
-                      />
+                      <template v-if="colorblindMode == false">
+                        <ColorLegend
+                          :scale="['#cf1f8f', '#ffffff']"
+                          :steps="2"
+                          :fixed="0"
+                        />
+                      </template>
+                      <template v-if="colorblindMode == true">
+                        <ColorLegend
+                          :scale="['#21A7E6', '#ffffff']"
+                          :steps="2"
+                          :fixed="0"
+                        />
+                      </template>
                     </td>
                     <td>
                       <div class="d-flex align-items-center">
@@ -900,7 +942,6 @@ export default {
     aoiCheckbox: false,
     aoiJson: "aoi.geojson",
     aoiLayer: null,
-    aoiLayerColorblind: null,
     aoiTransparency: 50,
     aoiLineThickness: 1,
     // Everything needed to visualize the aoi_di.tif.
@@ -931,14 +972,12 @@ export default {
     samplePolygonsCheckbox: false,
     samplePolygonsJson: "samples.geojson",
     samplePolygonsLayer: null,
-    samplePolygonsLayerColorblind: null,
     samplePolygonsTransparency: 50,
     samplePolygonsLineThickness: 1,
     // Everything needed to visualize the suggestion.geojson.
     suggestionCheckbox: false,
     suggestionJson: "suggestion.geojson",
     suggestionLayer: null,
-    suggestionLayerColorblind: null,
     // Causes the percentage scale of the slider component.
     sliderPercentage: "{value} %",
     resultJsonUrl: "result.json",
@@ -948,7 +987,6 @@ export default {
     outputLogUrl: "output.log",
     // Color blind mode
     colorblindMode: false,
-    typeOfColorBlindness: "Red-Blind/Protanopia",
   }),
   components: {
     VueSlider,
@@ -973,15 +1011,22 @@ export default {
             color: "#3388ff",
           });
         }
+        if (this.diLayer != null && this.diCheckbox == true) {
+          this.map.removeLayer(this.diLayerColorblind);
+          this.diLayer.addTo(this.map);
+        }
+        if (this.predLayer != null && this.predCheckbox == true) {
+          this.map.removeLayer(this.predLayerColorblind);
+          this.predLayer.addTo(this.map);
+        }
+        if (this.aoaLayer != null && this.aoaCheckbox == true) {
+          this.map.removeLayer(this.aoaLayerColorblind);
+          this.aoaLayer.addTo(this.map);
+        }
         if (this.samplePolygonsLayer != null) {
           this.samplePolygonsLayer.setStyle({
             color: "#3388ff",
           });
-        }
-        // Suggestion points style stays the same
-
-        if (this.predLayer != null && this.predCheckbox == true) {
-          this.predLayer.addTo(this.map);
         }
       } else if (this.colorblindMode === true) {
         this.tileLayer = L.tileLayer(
@@ -999,23 +1044,22 @@ export default {
             color: "#FF4452",
           });
         }
+        if (this.diLayerColorblind != null && this.diCheckbox == true) {
+          this.map.removeLayer(this.diLayer);
+          this.diLayerColorblind.addTo(this.map);
+        }
+        if (this.predLayerColorblind != null && this.predCheckbox == true) {
+          this.map.removeLayer(this.predLayer);
+          this.predLayerColorblind.addTo(this.map);
+        }
+        if (this.aoaLayerColorblind != null && this.aoaCheckbox == true) {
+          this.map.removeLayer(this.aoaLayer);
+          this.aoaLayerColorblind.addTo(this.map);
+        }
         if (this.samplePolygonsLayer != null) {
           this.samplePolygonsLayer.setStyle({
             color: "#FF4452",
           });
-        }
-        // Suggestion points style stays the same
-
-        if (this.aoaLayerColorblind != null && this.aoaCheckbox == true) {
-          this.aoaLayerColorblind.addTo(this.map);
-        }
-
-        if (this.predLayerColorblind != null && this.predCheckbox == true) {
-          this.predLayerColorblind.addTo(this.map);
-        }
-
-        if (this.diLayerColorblind != null && this.diCheckbox == true) {
-          this.diLayerColorblind.addTo(this.map);
         }
       }
     },
@@ -1025,6 +1069,7 @@ export default {
     SWITCHLAYER MUSS ANGEPASST WERDEN
     DIE GEOJSON LAYER ÜBERARBEITET MIT GLOBALEN VARIABLEN
     SHOWTIF1BAND MIT VON COLORBLIND ZU NORMAL ERARBEITET WERDEN 
+    DIE LEGENDEN MÜSSEN ANGEPASST WERDEN 
 
      */
 
@@ -1164,6 +1209,7 @@ export default {
       if (id == "aoi") {
         if (!this.checkLayerGetsFoundWithMessage(this.aoiLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
+
         if (this.aoiCheckbox == true) {
           this.aoiLayer.addTo(this.map);
           this.map.fitBounds(this.aoiLayer.getBounds());
@@ -1174,28 +1220,55 @@ export default {
         if (!this.checkLayerGetsFoundWithMessage(this.diLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
         if (this.diCheckbox == true) {
-          this.diLayer.addTo(this.map);
-          this.map.fitBounds(this.diLayer.getBounds());
+          if (this.colorblindMode == false) {
+            this.diLayer.addTo(this.map);
+            this.map.fitBounds(this.diLayer.getBounds());
+          } else if (this.colorblindMode == true) {
+            this.diLayerColorblind.addTo(this.map);
+            this.map.fitBounds(this.diLayerColorblind.getBounds());
+          }
         } else if (this.diCheckbox == false) {
-          this.map.removeLayer(this.diLayer);
+          if (this.colorblindMode == false) {
+            this.map.removeLayer(this.diLayer);
+          } else if (this.colorblindMode == true) {
+            this.map.removeLayer(this.diLayerColorblind);
+          }
         }
       } else if (id == "pred") {
         if (!this.checkLayerGetsFoundWithMessage(this.predLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
         if (this.predCheckbox == true) {
-          this.predLayer.addTo(this.map);
-          this.map.fitBounds(this.predLayer.getBounds());
+          if (this.colorblindMode == false) {
+            this.predLayer.addTo(this.map);
+            this.map.fitBounds(this.predLayer.getBounds());
+          } else if (this.colorblindMode == true) {
+            this.predLayerColorblind.addTo(this.map);
+            this.map.fitBounds(this.predLayerColorblind.getBounds());
+          }
         } else if (this.predCheckbox == false) {
-          this.map.removeLayer(this.predLayer);
+          if (this.colorblindMode == false) {
+            this.map.removeLayer(this.predLayer);
+          } else if (this.colorblindMode == true) {
+            this.map.removeLayer(this.predLayerColorblind);
+          }
         }
       } else if (id == "aoa") {
         if (!this.checkLayerGetsFoundWithMessage(this.aoaLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
         if (this.aoaCheckbox == true) {
-          this.aoaLayer.addTo(this.map);
-          this.map.fitBounds(this.aoaLayer.getBounds());
+          if (this.colorblindMode == false) {
+            this.aoaLayer.addTo(this.map);
+            this.map.fitBounds(this.aoaLayer.getBounds());
+          } else if (this.colorblindMode == true) {
+            this.aoaLayerColorblind.addTo(this.map);
+            this.map.fitBounds(this.aoaLayerColorblind.getBounds());
+          }
         } else if (this.aoaCheckbox == false) {
-          this.map.removeLayer(this.aoaLayer);
+          if (this.colorblindMode == false) {
+            this.map.removeLayer(this.aoaLayer);
+          } else if (this.colorblindMode == true) {
+            this.map.removeLayer(this.aoaLayerColorblind);
+          }
         }
       } else if (id == "samplePolygons") {
         if (!this.checkLayerGetsFoundWithMessage(this.samplePolygonsLayer))
