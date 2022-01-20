@@ -399,8 +399,9 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >A sampling strategy to find suggested <br />
-            points for additional measuring.</span
+            >A sampling strategy to be employed<br />
+            to find locations, where additional <br />
+            training datsets might be useful.</span
           >
         </v-tooltip>
       </div>
