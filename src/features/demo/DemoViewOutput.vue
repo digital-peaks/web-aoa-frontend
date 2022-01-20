@@ -28,524 +28,1016 @@
         </v-tooltip>
       </div>
 
-      <div class="m-3 pt-4">
-        <span
-          >The <i>Area of Interest</i> is the area for which the classification
-          and the Area of Applicability are calculated:</span
-        >
-      </div>
+      <hide-at
+        :breakpoints="{ small: 1263, medium: 1264 }"
+        breakpoint="smallAndBelow"
+      >
+        <div>
+          <div class="m-3 pt-4">
+            <span
+              >The <i>Area of Interest</i> is the area for which the
+              classification and the Area of Applicability are calculated:</span
+            >
+          </div>
+          <v-simple-table class="mb-6">
+            <tbody>
+              <tr id="not_last_td">
+                <td id="td_elements_with_slider">
+                  Area of Interest (AOI)
+                  <vue-slider
+                    v-model="aoiTransparency"
+                    v-on:change="changeOpacity('aoi')"
+                    :minRange="0"
+                    :maxRange="10"
+                  />
+                  <p style="font-size: 10px">Transparency</p>
+                  <vue-slider
+                    v-model="aoiLineThickness"
+                    v-on:change="changeLineThickness('aoi')"
+                    :data="[0, 1, 2, 3, 4, 5]"
+                    :marks="true"
+                    :hide-label="true"
+                  />
+                  <p style="font-size: 10px">Line thickness</p>
+                </td>
+                <td class="check justify-center align-start">
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="aoi"
+                          v-on:click="switchLayer('aoi')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="aoiCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('aoi')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-divider></v-divider>
+          <div class="m-3">
+            <span class="my-4"
+              >The <i>Dissimilarity Index</i> can be understood as a measure for
+              the similarity between the surveyed area and the area from which
+              the training datsets are extracted. The values range from 0 to 1
+              and the closer the value is to 0, the greater the
+              similarity:</span
+            >
+          </div>
+          <v-simple-table>
+            <tbody>
+              <tr id="not_last_td">
+                <td id="td_elements_with_slider">
+                  Dissimilarity Index
+                  <vue-slider
+                    v-model="diTransparency"
+                    v-on:change="changeOpacity('di')"
+                    :tooltip-formatter="sliderPercentage"
+                  />
+                  <p style="font-size: 10px">Transparency</p>
 
-      <v-simple-table class="mb-6">
-        <tbody>
-          <tr id="not_last_td">
-            <td id="td_elements_with_slider">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }"
-                  ><div v-on="on">Area of Interest (AOI)</div>
-                </template>
-                <span class="my-4"
-                  >The <i>Area of Interest</i> is the area for which the
-                  classification and the Area of Applicability are
-                  calculated:</span
-                > </v-tooltip
-              ><vue-slider
-                v-model="aoiTransparency"
-                v-on:change="changeOpacity('aoi')"
-                :minRange="0"
-                :maxRange="10"
-              />
-              <p style="font-size: 10px">Transparency</p>
-              <vue-slider
-                v-model="aoiLineThickness"
-                v-on:change="changeLineThickness('aoi')"
-                :data="[0, 1, 2, 3, 4, 5]"
-                :marks="true"
-                :hide-label="true"
-              />
-              <p style="font-size: 10px">Line thickness</p>
-            </td>
-            <td class="check justify-center align-start">
-              <div class="d-flex align-items-center">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-simple-checkbox
-                      id="aoi"
-                      v-on:click="switchLayer('aoi')"
-                      color="primary"
-                      v-on="on"
-                      v-bind="attrs"
-                      v-model="aoiCheckbox"
-                      v-ripple
-                    ></v-simple-checkbox>
-                  </template>
-                  <span>Show/Hide</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="zoomToLayer('aoi')"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Zoom to layer</span>
-                </v-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-      <v-divider></v-divider>
-      <div class="m-3">
-        <span class="my-4"
-          >The dissimilarity index can be understood as a measure for the
-          similarity between the surveyed area and the area from which the
-          training datsets are extracted. The values range from 0 to 1 and the
-          closer the value is to 0 the greater the similarity:</span
-        >
-      </div>
-      <v-simple-table>
-        <tbody>
-          <tr id="not_last_td">
-            <td id="td_elements_with_slider">
-              Dissimilarity Index
-              <vue-slider
-                v-model="diTransparency"
-                v-on:change="changeOpacity('di')"
-                :tooltip-formatter="sliderPercentage"
-              />
-              <p style="font-size: 10px">Transparency</p>
+                  <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="di"
+                          v-on:click="switchLayer('di')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="diCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('di')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem(
+                              'demoData/aoa_di.tif',
+                              'aoa_di',
+                              'image/tiff'
+                            )
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-divider> </v-divider>
+          <div class="m-3">
+            <span
+              >The <i>Prediction</i> is the actual result of the
+              land-use/land-cover classification and is in essence a
+              segmentation of the Sentinel-2A image into the classes, provided
+              in the training datasets or the pretrained model:</span
+            >
+          </div>
+          <v-simple-table>
+            <tbody>
+              <tr id="not_last_td">
+                <td id="td_elements_with_slider">
+                  Prediction / Classification
+                  <vue-slider
+                    v-model="predTransparency"
+                    v-on:change="changeOpacity('pred')"
+                    :tooltip-formatter="sliderPercentage"
+                  />
+                  <p style="font-size: 10px">Transparency</p>
 
-              <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-simple-checkbox
-                      id="di"
-                      v-on:click="switchLayer('di')"
-                      color="primary"
-                      v-on="on"
-                      v-bind="attrs"
-                      v-model="diCheckbox"
-                      v-ripple
-                    ></v-simple-checkbox>
-                  </template>
-                  <span>Show/Hide</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="zoomToLayer('di')"
-                      v-bind="attrs"
-                      v-on="on"
+                  <div class="d-flex flex-column">
+                    <div
+                      v-for="(value, index) in predClassificationColors"
+                      :key="value"
+                      class="d-flex align-items-center mb-1"
                     >
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Zoom to layer</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="
-                        downloadItem(
-                          'demoData/aoa_di.tif',
-                          'aoa_di',
-                          'image/tiff'
-                        )
-                      "
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Download</span>
-                </v-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-      <v-divider> </v-divider>
-      <div class="m-3">
-        <span
-          >The prediction is the actual result of the land-use/land-Cover
-          classification and is in essence a segmentation of the Sentinel-2A
-          image into the classes provided in the training datasets or the
-          pretrained model:</span
-        >
-      </div>
-      <v-simple-table>
-        <tbody>
-          <tr id="not_last_td">
-            <td id="td_elements_with_slider">
-              Prediction / Classification
-              <vue-slider
-                v-model="predTransparency"
-                v-on:change="changeOpacity('pred')"
-                :tooltip-formatter="sliderPercentage"
-              />
-              <p style="font-size: 10px">Transparency</p>
+                      <div
+                        :style="{
+                          width: '20px',
+                          height: '20px',
+                          backgroundColor: value,
+                          boxShadow: '0 0 1px #333',
+                        }"
+                      ></div>
+                      <div class="ml-3">{{ resultJson[0][index] }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="pred"
+                          v-on:click="switchLayer('pred')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="predCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('pred')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem(
+                              'demoData/pred.tif',
+                              'pred',
+                              'image/tiff'
+                            )
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-divider> </v-divider>
+          <div class="m-3">
+            <span
+              >The <i>Area of Applicability</i> describes the areas in which the
+              trained model performed inside acceptable margins of error (pixel
+              value 1). In areas, which are outside the Area of Applicability,
+              the trained model did not perform as expected, thus the results
+              there are not reliable (pixel value 0):</span
+            >
+          </div>
+          <v-simple-table>
+            <tbody>
+              <tr id="not_last_td">
+                <td id="td_elements_with_slider">
+                  Area of Applicability (AOA)
+                  <vue-slider
+                    v-model="aoaTransparency"
+                    v-on:change="changeOpacity('aoa')"
+                    :tooltip-formatter="sliderPercentage"
+                  />
+                  <p style="font-size: 10px">Transparency</p>
 
-              <div class="d-flex flex-column">
-                <div
-                  v-for="(value, index) in predClassificationColors"
-                  :key="value"
-                  class="d-flex align-items-center mb-1"
-                >
-                  <div
-                    :style="{
-                      width: '20px',
-                      height: '20px',
-                      backgroundColor: value,
-                      boxShadow: '0 0 1px #333',
-                    }"
-                  ></div>
-                  <div class="ml-3">{{ resultJson[0][index] }}</div>
+                  <ColorLegend
+                    :scale="['#cf1f8f', '#ffffff']"
+                    :steps="2"
+                    :fixed="0"
+                  />
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="aoa"
+                          v-on:click="switchLayer('aoa')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="aoaCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('aoa')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem(
+                              'demoData/aoa_aoa.tif',
+                              'aoa_aoa',
+                              'image/tiff'
+                            )
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-divider></v-divider>
+          <div class="m-3">
+            <span
+              >In case no pretrained model was provided, the
+              <i>training datasets</i> are shown here:</span
+            >
+          </div>
+          <v-simple-table>
+            <tbody>
+              <tr id="last_td">
+                <td id="td_elements_with_slider">
+                  Sample Polygons
+                  <vue-slider
+                    v-model="samplePolygonsTransparency"
+                    v-on:change="changeOpacity('samplePolygons')"
+                    :tooltip-formatter="sliderPercentage"
+                  />
+                  <p style="font-size: 10px">Transparency</p>
+                  <vue-slider
+                    v-model="samplePolygonsLineThickness"
+                    v-on:change="changeLineThickness('samplePolygons')"
+                    :data="[0, 1, 2, 3, 4, 5]"
+                    :marks="true"
+                    :hide-label="true"
+                  />
+                  <p style="font-size: 10px">Line thickness</p>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="samplePolygons"
+                          v-on:click="switchLayer('samplePolygons')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="samplePolygonsCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('samplePolygons')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-divider></v-divider>
+          <div class="m-3">
+            <span
+              >The software suggests
+              <i>locations for additional training</i> polygons. They are
+              located in areas, where the model is not applicable and are shown
+              here:</span
+            >
+          </div>
+          <v-simple-table>
+            <tbody>
+              <tr id="not_last_td">
+                <td>Suggested locations for training polygons</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="suggestion"
+                          v-on:click="switchLayer('suggestion')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="suggestionCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('suggestion')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem(
+                              'demoData/suggestion.geojson',
+                              'suggestion',
+                              'image/tiff'
+                            )
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-divider></v-divider>
+          <div class="m-3">
+            <span
+              >Trained models can be described by various parameters. To
+              evaluate the model the <i>accuracy</i> and the
+              <i>kappa index</i> can be used. The trained model and the
+              parameters of the job can be downloaded here as well:</span
+            >
+          </div>
+          <v-expansion-panels flat accordion class="pb-7">
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                >Details</v-expansion-panel-header
+              >
+              <v-expansion-panel-content>
+                <div class="mb-1" style="font-size: 14px">
+                  Accuracy: {{ accuracy }}
                 </div>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
+                <div class="mb-1" style="font-size: 14px">
+                  Kappa Index: {{ kappaIndex }}
+                </div>
                 <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-simple-checkbox
-                      id="pred"
-                      v-on:click="switchLayer('pred')"
-                      color="primary"
-                      v-on="on"
-                      v-bind="attrs"
-                      v-model="predCheckbox"
-                      v-ripple
-                    ></v-simple-checkbox>
-                  </template>
-                  <span>Show/Hide</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template v-slot:activator="{ on }">
                     <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="zoomToLayer('pred')"
-                      v-bind="attrs"
                       v-on="on"
-                    >
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Zoom to layer</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
+                      dark
+                      class="float-left mt-3 mr-2 mb-2"
+                      style="padding-left: 10px; padding-right: 7px"
                       v-on:click="
-                        downloadItem('demoData/pred.tif', 'pred', 'image/tiff')
+                        downloadItem(
+                          'demoData/model.rds',
+                          'model.rds',
+                          'application/octet-stream'
+                        )
                       "
-                      v-bind="attrs"
-                      v-on="on"
                     >
+                      Model
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </template>
-                  <span>Download</span>
+                  <span>Download the trained model</span>
                 </v-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-      <v-divider> </v-divider>
-      <div class="m-3">
-        <span
-          >The area of applicability describes the areas in which the trained
-          model performed inside acceptable margins of error (pixel value 1). In
-          areas which are outside the area of applicability the trained model
-          did not perform as expected thus the results there are not reliable
-          (pixel value 0):</span
-        >
-      </div>
-      <v-simple-table>
-        <tbody>
-          <tr id="not_last_td">
-            <td id="td_elements_with_slider">
-              Area of Applicability (AOA)
-              <vue-slider
-                v-model="aoaTransparency"
-                v-on:change="changeOpacity('aoa')"
-                :tooltip-formatter="sliderPercentage"
-              />
-              <p style="font-size: 10px">Transparency</p>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      v-on="on"
+                      dark
+                      class="float-left mt-3 mb-2"
+                      style="padding-left: 10px; padding-right: 7px"
+                      v-on:click="
+                        downloadItem(
+                          'demoData/job_param.json',
+                          'job_param.json',
+                          'application/json'
+                        )
+                      "
+                    >
+                      Job parameters
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Download the job parameters</span>
+                </v-tooltip>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
+      </hide-at>
 
-              <ColorLegend
-                :scale="['#cf1f8f', '#ffffff']"
-                :steps="2"
-                :fixed="0"
-              />
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
+      <hide-at
+        :breakpoints="{ small: 1263, medium: 1264 }"
+        breakpoint="mediumAndAbove"
+      >
+        <div>
+          <v-simple-table class="mb-6">
+            <template v-slot:default>
+              <tbody>
+                <tr id="not_last_td">
+                  <td id="td_elements_with_slider">
+                    <div class="my-4">
+                      The <i>Area of Interest</i> is the area for which the
+                      classification and the Area of Applicability are
+                      calculated:
+                    </div>
+                    Area of Interest (AOI)
+                    <vue-slider
+                      v-model="aoiTransparency"
+                      v-on:change="changeOpacity('aoi')"
+                      :minRange="0"
+                      :maxRange="10"
+                    />
+                    <p style="font-size: 10px">Transparency</p>
+                    <vue-slider
+                      v-model="aoiLineThickness"
+                      v-on:change="changeLineThickness('aoi')"
+                      :data="[0, 1, 2, 3, 4, 5]"
+                      :marks="true"
+                      :hide-label="true"
+                    />
+                    <p style="font-size: 10px">Line thickness</p>
+                  </td>
+                  <td class="check justify-center align-start">
+                    <div class="d-flex align-items-center">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-simple-checkbox
+                            id="aoi"
+                            v-on:click="switchLayer('aoi')"
+                            color="primary"
+                            v-on="on"
+                            v-bind="attrs"
+                            v-model="aoiCheckbox"
+                            v-ripple
+                          ></v-simple-checkbox>
+                        </template>
+                        <span>Show/Hide</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="zoomToLayer('aoi')"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Zoom to layer</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr id="not_last_td">
+                  <td id="td_elements_with_slider">
+                    <div class="my-4">
+                      The <i>Dissimilarity Index</i> can be understood as a
+                      measure for the similarity between the surveyed area and
+                      the area from which the training datsets are extracted.
+                      The values range from 0 to 1 and the closer the value is
+                      to 0, the greater the similarity:
+                    </div>
+                    Dissimilarity Index
+                    <vue-slider
+                      v-model="diTransparency"
+                      v-on:change="changeOpacity('di')"
+                      :tooltip-formatter="sliderPercentage"
+                    />
+                    <p style="font-size: 10px">Transparency</p>
+
+                    <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-simple-checkbox
+                            id="di"
+                            v-on:click="switchLayer('di')"
+                            color="primary"
+                            v-on="on"
+                            v-bind="attrs"
+                            v-model="diCheckbox"
+                            v-ripple
+                          ></v-simple-checkbox>
+                        </template>
+                        <span>Show/Hide</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="zoomToLayer('di')"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Zoom to layer</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="
+                              downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-download</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Download</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr id="not_last_td">
+                  <td id="td_elements_with_slider">
+                    <div class="my-4">
+                      The <i>Dissimilarity Index</i> can be understood as a
+                      measure for the similarity between the surveyed area and
+                      the area from which the training datsets are extracted.
+                      The values range from 0 to 1 and the closer the value is
+                      to 0, the greater the similarity:
+                    </div>
+                    Prediction / Classification
+                    <vue-slider
+                      v-model="predTransparency"
+                      v-on:change="changeOpacity('pred')"
+                      :tooltip-formatter="sliderPercentage"
+                    />
+                    <p style="font-size: 10px">Transparency</p>
+
+                    <div class="d-flex flex-column">
+                      <div
+                        v-for="(value, index) in predClassificationColors"
+                        :key="value"
+                        class="d-flex align-items-center mb-1"
+                      >
+                        <div
+                          :style="{
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: value,
+                            boxShadow: '0 0 1px #333',
+                          }"
+                        ></div>
+                        <div class="ml-3">{{ resultJson[0][index] }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-simple-checkbox
+                            id="pred"
+                            v-on:click="switchLayer('pred')"
+                            color="primary"
+                            v-on="on"
+                            v-bind="attrs"
+                            v-model="predCheckbox"
+                            v-ripple
+                          ></v-simple-checkbox>
+                        </template>
+                        <span>Show/Hide</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="zoomToLayer('pred')"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Zoom to layer</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="
+                              downloadItem('pred.tif', 'pred', 'image/tiff')
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-download</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Download</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr id="not_last_td">
+                  <td id="td_elements_with_slider">
+                    <div class="my-4">
+                      The <i>Area of Applicability</i> describes the areas in
+                      which the trained model performed inside acceptable
+                      margins of error (pixel value 1). In areas, which are
+                      outside the Area of Applicability, the trained model did
+                      not perform as expected, thus the results there are not
+                      reliable (pixel value 0):
+                    </div>
+                    Area of Applicability (AOA)
+                    <vue-slider
+                      v-model="aoaTransparency"
+                      v-on:change="changeOpacity('aoa')"
+                      :tooltip-formatter="sliderPercentage"
+                    />
+                    <p style="font-size: 10px">Transparency</p>
+
+                    <ColorLegend
+                      :scale="['#cf1f8f', '#ffffff']"
+                      :steps="2"
+                      :fixed="0"
+                    />
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-simple-checkbox
+                            id="aoa"
+                            v-on:click="switchLayer('aoa')"
+                            color="primary"
+                            v-on="on"
+                            v-bind="attrs"
+                            v-model="aoaCheckbox"
+                            v-ripple
+                          ></v-simple-checkbox>
+                        </template>
+                        <span>Show/Hide</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="zoomToLayer('aoa')"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Zoom to layer</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="
+                              downloadItem(
+                                'aoa_aoa.tif',
+                                'aoa_aoa',
+                                'image/tiff'
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-download</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Download</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr id="last_td">
+                  <td id="td_elements_with_slider">
+                    <div class="my-4">
+                      In case no pretrained model was provided, the
+                      <i>training datasets</i> are shown here:
+                    </div>
+                    Sample Polygons
+                    <vue-slider
+                      v-model="samplePolygonsTransparency"
+                      v-on:change="changeOpacity('samplePolygons')"
+                      :tooltip-formatter="sliderPercentage"
+                    />
+                    <p style="font-size: 10px">Transparency</p>
+                    <vue-slider
+                      v-model="samplePolygonsLineThickness"
+                      v-on:change="changeLineThickness('samplePolygons')"
+                      :data="[0, 1, 2, 3, 4, 5]"
+                      :marks="true"
+                      :hide-label="true"
+                    />
+                    <p style="font-size: 10px">Line thickness</p>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-simple-checkbox
+                            id="samplePolygons"
+                            v-on:click="switchLayer('samplePolygons')"
+                            color="primary"
+                            v-on="on"
+                            v-bind="attrs"
+                            v-model="samplePolygonsCheckbox"
+                            v-ripple
+                          ></v-simple-checkbox>
+                        </template>
+                        <span>Show/Hide</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="zoomToLayer('samplePolygons')"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Zoom to layer</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr id="not_last_td">
+                  <td>
+                    <div class="my-4">
+                      The software suggests
+                      <i>locations for additional training</i> polygons. They
+                      are located in areas, where the model is not applicable
+                      and are shown here:
+                    </div>
+                    Suggested locations for training polygons
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-simple-checkbox
+                            id="suggestion"
+                            v-on:click="switchLayer('suggestion')"
+                            color="primary"
+                            v-on="on"
+                            v-bind="attrs"
+                            v-model="suggestionCheckbox"
+                            v-ripple
+                          ></v-simple-checkbox>
+                        </template>
+                        <span>Show/Hide</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="zoomToLayer('suggestion')"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-magnify</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Zoom to layer</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="
+                              downloadItem(
+                                'suggestion.geojson',
+                                'suggestion',
+                                'image/tiff'
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-download</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Download</span>
+                      </v-tooltip>
+                    </div>
+                  </td>
+                </tr>
+              </tbody></template
+            >
+          </v-simple-table>
+          <v-divider light class="m-0"> </v-divider>
+          <div class="m-3" style="font-size: 14px">
+            Trained models can be described by various parameters. To evaluate
+            the model the <i>accuracy</i> and the <i>kappa index</i> can be
+            used. The trained model and the parameters of the job can be
+            downloaded here as well:
+          </div>
+          <v-expansion-panels flat accordion class="pb-7">
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                >Details</v-expansion-panel-header
+              >
+              <v-expansion-panel-content>
+                <div class="mb-1" style="font-size: 14px">
+                  Accuracy: {{ accuracy }}
+                </div>
+                <div class="mb-1" style="font-size: 14px">
+                  Kappa Index: {{ kappaIndex }}
+                </div>
                 <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-simple-checkbox
-                      id="aoa"
-                      v-on:click="switchLayer('aoa')"
-                      color="primary"
-                      v-on="on"
-                      v-bind="attrs"
-                      v-model="aoaCheckbox"
-                      v-ripple
-                    ></v-simple-checkbox>
-                  </template>
-                  <span>Show/Hide</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template v-slot:activator="{ on }">
                     <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="zoomToLayer('aoa')"
-                      v-bind="attrs"
                       v-on="on"
-                    >
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Zoom to layer</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
+                      dark
+                      class="float-left mt-3 mr-2 mb-2"
+                      style="padding-left: 10px; padding-right: 7px"
                       v-on:click="
                         downloadItem(
-                          'demoData/aoa_aoa.tif',
-                          'aoa_aoa',
-                          'image/tiff'
+                          'model.rds',
+                          'model.rds',
+                          'application/octet-stream'
                         )
                       "
-                      v-bind="attrs"
-                      v-on="on"
                     >
+                      Model
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </template>
-                  <span>Download</span>
-                </v-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-      <v-divider></v-divider>
-      <div class="m-3">
-        <span
-          >In case no pretrained model was provided, the training datasets are
-          shown here:</span
-        >
-      </div>
-      <v-simple-table>
-        <tbody>
-          <tr id="last_td">
-            <td id="td_elements_with_slider">
-              Sample Polygons
-              <vue-slider
-                v-model="samplePolygonsTransparency"
-                v-on:change="changeOpacity('samplePolygons')"
-                :tooltip-formatter="sliderPercentage"
-              />
-              <p style="font-size: 10px">Transparency</p>
-              <vue-slider
-                v-model="samplePolygonsLineThickness"
-                v-on:change="changeLineThickness('samplePolygons')"
-                :data="[0, 1, 2, 3, 4, 5]"
-                :marks="true"
-                :hide-label="true"
-              />
-              <p style="font-size: 10px">Line thickness</p>
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-simple-checkbox
-                      id="samplePolygons"
-                      v-on:click="switchLayer('samplePolygons')"
-                      color="primary"
-                      v-on="on"
-                      v-bind="attrs"
-                      v-model="samplePolygonsCheckbox"
-                      v-ripple
-                    ></v-simple-checkbox>
-                  </template>
-                  <span>Show/Hide</span>
+                  <span>Download the trained model</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template v-slot:activator="{ on }">
                     <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="zoomToLayer('samplePolygons')"
-                      v-bind="attrs"
                       v-on="on"
-                    >
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Zoom to layer</span>
-                </v-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-      <v-divider></v-divider>
-      <div class="m-3">
-        <span
-          >The software suggests locations for additional training polygons.
-          They are located in areas where the model is not applicable and are
-          shown here:</span
-        >
-      </div>
-      <v-simple-table>
-        <tbody>
-          <tr id="not_last_td">
-            <td>Suggested locations for training polygons</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-simple-checkbox
-                      id="suggestion"
-                      v-on:click="switchLayer('suggestion')"
-                      color="primary"
-                      v-on="on"
-                      v-bind="attrs"
-                      v-model="suggestionCheckbox"
-                      v-ripple
-                    ></v-simple-checkbox>
-                  </template>
-                  <span>Show/Hide</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
-                      v-on:click="zoomToLayer('suggestion')"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Zoom to layer</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="ms-2"
-                      icon
+                      dark
+                      class="float-left mt-3 mb-2"
+                      style="padding-left: 10px; padding-right: 7px"
                       v-on:click="
                         downloadItem(
-                          'demoData/suggestion.geojson',
-                          'suggestion',
-                          'image/tiff'
+                          'job_param.json',
+                          'job_param.json',
+                          'application/json'
                         )
                       "
-                      v-bind="attrs"
-                      v-on="on"
                     >
+                      Job parameters
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </template>
-                  <span>Download</span>
+                  <span>Download the job parameters</span>
                 </v-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-      <v-divider></v-divider>
-      <div class="m-3">
-        <span
-          >Trained models can be described with various parameters. To evaluate
-          the model the accuracy and the kappa index can be used. The trained
-          model and the parameters of the job can be downloaded here as
-          well:</span
-        >
-      </div>
-      <v-expansion-panels flat accordion class="pb-7">
-        <v-expansion-panel>
-          <v-expansion-panel-header class="pl-4" style="font-size: 14px"
-            >Details</v-expansion-panel-header
-          >
-          <v-expansion-panel-content>
-            <div class="mb-1" style="font-size: 14px">
-              Accuracy: {{ accuracy }}
-            </div>
-            <div class="mb-1" style="font-size: 14px">
-              Kappa Index: {{ kappaIndex }}
-            </div>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-on="on"
-                  dark
-                  class="float-left mt-3 mr-2 mb-2"
-                  style="padding-left: 10px; padding-right: 7px"
-                  v-on:click="
-                    downloadItem(
-                      'demoData/model.rds',
-                      'model.rds',
-                      'application/octet-stream'
-                    )
-                  "
-                >
-                  Model
-                  <v-icon>mdi-download</v-icon>
-                </v-btn>
-              </template>
-              <span>Download the trained model</span>
-            </v-tooltip>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-on="on"
-                  dark
-                  class="float-left mt-3 mb-2"
-                  style="padding-left: 10px; padding-right: 7px"
-                  v-on:click="
-                    downloadItem(
-                      'demoData/job_param.json',
-                      'job_param.json',
-                      'application/json'
-                    )
-                  "
-                >
-                  Job parameters
-                  <v-icon>mdi-download</v-icon>
-                </v-btn>
-              </template>
-              <span>Download the job parameters</span>
-            </v-tooltip>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
+      </hide-at>
     </div>
+
     <div class="d-flex align-stretch bg-light" style="flex: 1">
       <div id="map-container"></div>
     </div>
@@ -572,6 +1064,8 @@ import "vue-slider-component/theme/antd.css";
 import chroma from "chroma-js";
 
 import markerPng from "@/assets/markerIconRedCrossWithBlackEvenThicker.png";
+
+import { hideAt } from "vue-breakpoints";
 
 export default {
   name: "Output",
@@ -633,6 +1127,7 @@ export default {
   components: {
     VueSlider,
     ColorLegend,
+    hideAt,
   },
   methods: {
     /**
