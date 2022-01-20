@@ -3,6 +3,7 @@
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">
         Demo
+
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
@@ -32,6 +33,7 @@
           <tbody>
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
+				<span class="my-4">The area of interest is the area for which the calssification and the area of applicability are calculated:</span>
                 Area of Interest (AOI)
                 <vue-slider
                   v-model="aoiTransparency"
@@ -85,6 +87,7 @@
 
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
+			  	<span class="my-4">The dissimilarity index can be understood as a measure for the similarity between the surveyed area and the area from which the training datsets are extracted. The values range from 0 to 1 and the closer the value is to 0 the greater the similarity:</span>
                 Dissimilarity Index
                 <vue-slider
                   v-model="diTransparency"
@@ -150,6 +153,7 @@
             </tr>
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
+			  	<span class="my-4">The prediction is the actual result of the land-use/land-Cover classification and is in essence a segmentation of the Sentinel-2A image into the classes provided in the training datasets or the pretrained model:</span>
                 Prediction / Classification
                 <vue-slider
                   v-model="predTransparency"
@@ -231,6 +235,7 @@
             </tr>
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
+			  	<span class="my-4">The area of applicability describes the areas in which the trained model performed inside acceptable margins of error (pixel value 1). In areas which are outside the area of applicability the trained model did not perform as expected thus the results there are not reliable (pixel value 0):</span>
                 Area of Applicability (AOA)
                 <vue-slider
                   v-model="aoaTransparency"
@@ -300,6 +305,7 @@
             </tr>
             <tr id="last_td">
               <td id="td_elements_with_slider">
+			  	<span class="my-4">In case no pretrained model was provided, the training datasets are shown here:</span>
                 Sample Polygons
                 <vue-slider
                   v-model="samplePolygonsTransparency"
@@ -350,6 +356,7 @@
               </td>
             </tr>
             <tr id="not_last_td">
+				<span class="my-4">The software suggests locations for additional training polygons. They are located in areas where the model is not applicable and are shown here:</span>
               <td>Suggested locations for training polygons</td>
               <td>
                 <div class="d-flex align-items-center">
@@ -411,6 +418,8 @@
       <v-expansion-panels flat accordion class="pb-7">
         <v-expansion-panel>
           <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+			<span class="my-4">Trained models can be described with various parameters. To evaluate the model the accuracy and the kappa index can be used. The trained model and the parameters of the job can be downloaded here as well:</span>
+
             >Details</v-expansion-panel-header
           >
           <v-expansion-panel-content>
