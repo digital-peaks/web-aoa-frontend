@@ -25,7 +25,7 @@
         Afterwards you have to choose your AOI (Area of Interest). Just press
         the button on the right <i>SELECT ON MAP</i> to start drawing of the
         map. You are allowed to draw only one rectangle to describe this area.
-        But you can draw another one by pushing the small button leftsided in
+        But you can draw another one by pushing the small button on the left of
         the map:
       </span>
 
@@ -53,7 +53,7 @@
         </v-col>
       </v-row>
 
-      <span class="my-4"> Next you can specify the timeframe ... </span>
+      <span class="my-4"> Here you can specify the timeframe ... </span>
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Sentinel-2</span>
@@ -136,7 +136,7 @@
             </template>
             <span
               >In case no existing model should <br />
-              be used, points or polygons to train <br />
+              be used, polygons to train <br />
               a model are required.</span
             >
           </v-tooltip>

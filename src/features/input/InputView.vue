@@ -207,7 +207,7 @@
             </template>
             <span
               >In case no existing model should <br />
-              be used, points or polygons to train <br />
+              be used, polygons to train <br />
               a model are required.</span
             >
           </v-tooltip>
