@@ -434,7 +434,9 @@ export default {
           polyline: false,
           polygon: false,
           rectangle: {
-            showArea: true,
+            shapeOptions: {
+              color: null,
+            },
           },
           circle: false,
           marker: false,
