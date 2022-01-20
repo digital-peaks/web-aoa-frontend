@@ -53,7 +53,10 @@
         </v-col>
       </v-row>
 
-      <span class="my-4">Here you can specify the timeframe, the resolution of the output images and the allowed cloud cover:</span>
+      <span class="my-4"
+        >Here you can specify the timeframe, the resolution of the output images
+        and the allowed cloud cover:</span
+      >
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Sentinel-2</span>
@@ -117,7 +120,12 @@
         </v-row>
       </template>
 
-		<span class="my-4">In case you do not want to specify the resolution manually you can use the <i>use-lookup-table</i> option to select the resolution dynamically. In some cases the processing time can be reduced by choosing the resolution dynamically:</span>
+      <span class="my-4"
+        >In case you do not want to specify the resolution manually you can use
+        the <i>use-lookup-table</i> option to select the resolution dynamically.
+        In some cases the processing time can be reduced by choosing the
+        resolution dynamically:</span
+      >
 
       <v-row class="mb-1">
         <v-col cols="6">
@@ -128,8 +136,15 @@
           ></v-switch
         ></v-col>
       </v-row>
-	  
-		<span class="my-4">In case no petrained model is provided, training datasets must be provided along with their <i>object id</i> - a unique attribute which stores an unique key for each dataset - and the attribute which contains the response values for the classification (<i>Class field</i>). Training datasets must be provided as .geojson or .gpkg. The filesize must not be greater that 10 MB:</span>
+
+      <span class="my-4"
+        >In case no petrained model is provided, training datasets must be
+        provided along with their <i>object id</i> - a unique attribute which
+        stores an unique key for each dataset - and the attribute which contains
+        the response values for the classification (<i>Class field</i>).
+        Training datasets must be provided as .geojson or .gpkg. The filesize
+        must not be greater that 10 MB:</span
+      >
 
       <template v-if="formData.use_pretrained_model === false">
         <div class="mt-3 mb-2">
@@ -174,8 +189,12 @@
         </v-row>
       </template>
 
-		<span class="my-4">If training datasets are provided a machine learning procedure must be selected as well. One can choose the <i>Random Forrest</i> method or the <i>Support Vector Machine</i> method. Depending on the selected method multiple hyperparamters can be set:</span>
-
+      <span class="my-4"
+        >If training datasets are provided a machine learning procedure must be
+        selected as well. One can choose the <i>Random Forrest</i> method or the
+        <i>Support Vector Machine</i> method. Depending on the selected method
+        multiple hyperparamters can be set:</span
+      >
 
       <template v-if="formData.use_pretrained_model === false">
         <div class="mt-3 mb-2">
@@ -244,20 +263,30 @@
           </v-col>
         </v-row>
       </template>
-	  
-	  <span class="my-4">In case a pretrained model should be employed, it must be provided beforehand as a .rds file with a maximum size of 10 MB. Training datasets and a machine learning procedure are not required in this case. The given model should only use Sentinal-2A bands as it's predictors:</span>
+
+      <span class="my-4"
+        >In case a pretrained model should be employed, it must be provided
+        beforehand as a .rds file with a maximum size of 10 MB. Training
+        datasets and a machine learning procedure are not required in this case.
+        The given model should only use Sentinal-2A bands as it's
+        predictors:</span
+      >
 
       <v-row class="mb-1">
         <v-col cols="6">
           <v-switch
             v-model="formData.use_pretrained_model"
             label="Use existing model"
+            readonly
           ></v-switch
         ></v-col>
       </v-row>
 
-	  <span class="my-4">Since the software provides the user with suggestions for additional locations of training datasets, a sampling method must be selected:</span>
-
+      <span class="my-4"
+        >Since the software provides the user with suggestions for additional
+        locations of training datasets, a sampling method must be
+        selected:</span
+      >
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Sampling Strategy</span>
@@ -327,7 +356,7 @@ export default {
         support_vector_machine: {
           sigma: 0.004385965,
           c: 1,
-          cross_validation_folds: 15,
+          cross_validation_folds: 10,
         },
       },
       // file previews:
