@@ -21,7 +21,7 @@
         <v-text-field type="text" label="Name" value="Demo" filled readonly />
       </div>
 
-      <span class="my-4">
+      <span class="my-3">
         Afterwards you have to choose your AOI (Area of Interest). Just press
         the button on the right <i>SELECT ON MAP</i> to start drawing of the
         map. You are allowed to draw only one rectangle to describe this area.
@@ -53,7 +53,7 @@
         </v-col>
       </v-row>
 
-      <span class="my-4"
+      <span class="my-3"
         >Here you can specify the timeframe, the resolution of the output images
         and the allowed cloud cover:</span
       >
@@ -120,7 +120,7 @@
         </v-row>
       </template>
 
-      <span class="my-4"
+      <span class="mt-3 ml-0"
         >In case you do not want to specify the resolution manually you can use
         the <i>use-lookup-table</i> option to select the resolution dynamically.
         In some cases the processing time can be reduced by choosing the
@@ -137,7 +137,7 @@
         ></v-col>
       </v-row>
 
-      <span class="my-4"
+      <span class="my-3"
         >In case no petrained model is provided, training datasets must be
         provided along with their <i>object id</i> - a unique attribute which
         stores an unique key for each dataset - and the attribute which contains
@@ -268,7 +268,7 @@
         >In case a pretrained model should be employed, it must be provided
         beforehand as a .rds file with a maximum size of 10 MB. Training
         datasets and a machine learning procedure are not required in this case.
-        The given model should only use Sentinal-2A bands as it's
+        The given model should only use Sentinal-2A bands as its
         predictors:</span
       >
 
