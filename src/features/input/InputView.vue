@@ -299,15 +299,6 @@
         </v-row>
       </template>
 
-      <v-row class="mb-1">
-        <v-col cols="6">
-          <v-switch
-            v-model="formData.use_pretrained_model"
-            label="Use existing model"
-          ></v-switch
-        ></v-col>
-      </v-row>
-
       <template v-if="formData.use_pretrained_model === false">
         <div class="mt-3 mb-2">
           <span class="text-h6">Algorithm</span
@@ -367,7 +358,7 @@
         </template>
 
         <template v-if="selectedML === 'svmradial'">
-          <v-row class="mb-3">
+          <v-row>
             <v-col cols="4">
               <v-text-field
                 filled
@@ -409,6 +400,15 @@
           </v-row>
         </template>
       </template>
+
+      <v-row class="mb-1 mt-0">
+        <v-col cols="6">
+          <v-switch
+            v-model="formData.use_pretrained_model"
+            label="Use existing model"
+          ></v-switch
+        ></v-col>
+      </v-row>
 
       <div class="mt-3 mb-2">
         <span class="text-h6">Sampling Strategy</span>
