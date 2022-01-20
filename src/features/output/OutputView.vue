@@ -151,7 +151,18 @@
                     <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
                   </template>
                   <template v-if="colorblindMode == true">
-                    <ColorLegend scale="Spectral" :steps="6" :fixed="1" />
+                    <ColorLegend
+                      :scale="[
+                        '#ffff00',
+                        '#ffaf00',
+                        '#ff5634',
+                        '#e9005d',
+                        '#9a0079',
+                        '#000080',
+                      ]"
+                      :steps="6"
+                      :fixed="1"
+                    />
                   </template>
                 </td>
                 <td>
@@ -217,8 +228,23 @@
                         :tooltip-formatter="sliderPercentage"
                       />
                       <p style="font-size: 10px">Transparency</p>
-
-                      <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                      <template v-if="colorblindMode == false">
+                        <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                      </template>
+                      <template v-if="colorblindMode == true">
+                        <ColorLegend
+                          :scale="[
+                            '#ffff00',
+                            '#ffaf00',
+                            '#ff5634',
+                            '#e9005d',
+                            '#9a0079',
+                            '#000080',
+                          ]"
+                          :steps="6"
+                          :fixed="1"
+                        />
+                      </template>
                     </td>
                     <td>
                       <div class="d-flex align-items-center">
@@ -994,7 +1020,7 @@ export default {
   },
   methods: {
     /**
-     * This function will change the basemap into a colorblind version.
+     * This function will change the basemap and all layers into a colorblind version.
      */
     switchMode: async function () {
       if (this.colorblindMode === false) {
@@ -1063,16 +1089,6 @@ export default {
         }
       }
     },
-
-    /***
-    
-    SWITCHLAYER MUSS ANGEPASST WERDEN
-    DIE GEOJSON LAYER ÜBERARBEITET MIT GLOBALEN VARIABLEN
-    SHOWTIF1BAND MIT VON COLORBLIND ZU NORMAL ERARBEITET WERDEN 
-    DIE LEGENDEN MÜSSEN ANGEPASST WERDEN 
-
-     */
-
     /**
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
