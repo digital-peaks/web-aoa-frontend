@@ -503,6 +503,7 @@ export default {
       map: null,
       tileLayer: null,
       drawControl: null,
+      drawControlColorblind: null,
       rectangleLayer: null,
       drawnItem: null,
       // size in meters^2
@@ -558,6 +559,10 @@ export default {
           }
         ).addTo(this.map);
 
+        this.map.removeControl(this.drawControlColorblind);
+
+        this.map.addControl(this.drawControl);
+
         if (this.rectangleLayer != null) {
           this.rectangleLayer.setStyle({
             color: "#3388ff",
@@ -571,6 +576,10 @@ export default {
               '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
           }
         ).addTo(this.map);
+
+        this.map.removeControl(this.drawControl);
+
+        this.map.addControl(this.drawControlColorblind);
 
         if (this.rectangleLayer != null) {
           this.rectangleLayer.setStyle({
@@ -598,6 +607,30 @@ export default {
 
       this.rectangleLayer = new L.FeatureGroup().addTo(this.map);
 
+      // Initialization of draw control for colorblind mode
+      this.drawControlColorblind = new L.Control.Draw({
+        position: "topleft",
+        draw: {
+          polyline: false,
+          polygon: false,
+          rectangle: {
+            showArea: true,
+            metric: ["km"],
+            shapeOptions: {
+              color: "#FF4452",
+            },
+          },
+          circle: false,
+          marker: false,
+          circlemarker: false,
+        },
+        edit: {
+          featureGroup: this.rectangleLayer,
+          remove: false,
+          edit: false,
+        },
+      });
+
       this.drawControl = new L.Control.Draw({
         position: "topleft",
         draw: {
@@ -605,10 +638,7 @@ export default {
           polygon: false,
           rectangle: {
             showArea: true,
-            metric: ["km"], // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
-            /*shapeOptions: {
-              color: "black",
-            },*/
+            metric: ["km"],
           },
           circle: false,
           marker: false,
@@ -749,7 +779,13 @@ export default {
       if (!this.map || !this.drawControl) {
         return;
       }
-      new L.Draw.Rectangle(this.map).enable();
+      if (this.colorblindMode == false) {
+        new L.Draw.Rectangle(this.map).enable();
+      } else if (this.colorblindMode == true) {
+        new L.Draw.Rectangle(this.map, {
+          shapeOptions: { color: "#FF4452" },
+        }).enable();
+      }
     },
   },
   mounted() {
