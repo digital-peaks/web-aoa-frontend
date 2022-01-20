@@ -3,15 +3,27 @@
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">
         {{ job.name || "-" }}
-        <v-btn
-          class="float-right"
-          outlined
-          style="padding-left: 10px; padding-right: 7px"
-          v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
-        >
-          Protocol
-          <v-icon>mdi-download</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              class="float-right"
+              outlined
+              v-on="on"
+              style="padding-left: 10px; padding-right: 7px"
+              v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
+            >
+              Protocol
+              <v-icon>mdi-download</v-icon>
+            </v-btn>
+          </template>
+          <span>
+            Here you can download <br />
+            a log file, written <br />
+            by the R-code while <br />
+            the calculations are <br />
+            running.
+          </span>
+        </v-tooltip>
       </div>
 
       <v-simple-table class="mb-6">

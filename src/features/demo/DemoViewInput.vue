@@ -440,11 +440,6 @@ export default {
           marker: false,
           circlemarker: false,
         },
-        edit: {
-          featureGroup: this.rectangleLayer,
-          remove: false,
-          edit: false,
-        },
       });
       this.map.addControl(this.drawControl);
 

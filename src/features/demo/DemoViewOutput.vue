@@ -20,10 +20,11 @@
             </v-btn>
           </template>
           <span>
-            Here you can download a <br />
-            log file, written by the <br />
-            R-code while the calculations <br />
-            are running.
+            Here you can download <br />
+            a log file, written <br />
+            by the R-code while <br />
+            the calculations are <br />
+            running.
           </span>
         </v-tooltip>
       </div>
