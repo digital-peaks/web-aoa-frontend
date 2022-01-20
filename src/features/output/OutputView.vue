@@ -1192,10 +1192,13 @@ export default {
         });
       } else if (layerId == "aoa") {
         this.aoaLayer.setOpacity(this.aoaTransparency / 100);
+        this.aoaLayerColorblind.setOpacity(this.aoaTransparency / 100);
       } else if (layerId == "di") {
         this.diLayer.setOpacity(this.diTransparency / 100);
+        this.diLayerColorblind.setOpacity(this.diTransparency / 100);
       } else if (layerId == "pred") {
         this.predLayer.setOpacity(this.predTransparency / 100);
+        this.predLayerColorblind.setOpacity(this.predTransparency / 100);
       } else if (layerId == "samplePolygons") {
         this.samplePolygonsLayer.setStyle({
           fillOpacity: this.samplePolygonsTransparency / 100,
