@@ -18,6 +18,11 @@
     </v-btn>
   </div>
 </template>
+<script>
+export default {
+  name: "ImpressumView",
+};
+</script>
 
 <style scoped>
 .v-btn:not(.v-btn--round).v-size--default {
