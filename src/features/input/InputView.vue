@@ -73,7 +73,6 @@
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
-           
           </template>
           <span
             >The Area of Interest describes the area<br />
@@ -81,7 +80,6 @@
             rectangle has to be drawn in the given map.</span
           >
         </v-tooltip>
- 
       </div>
 
       <v-row class="mb-3">
@@ -96,11 +94,19 @@
           >
             Not selected...
           </div>
-    
+
           <div v-if="aoiSize > 0" class="me-3" style="min-width: 120px">
             {{ (aoiSize / 1000 / 1000).toFixed(3) }} km<sup>2</sup>
-            <div v-if="aoiSize / 1000 / 1000 > 400" class="me-3" style="min-width: 120px">
-            <span class="red--text"> should be smaller than 400. <br> Otherwise Calculation can <br> take a very long time.  </span>
+            <div
+              v-if="aoiSize / 1000 / 1000 > 400"
+              class="me-3"
+              style="min-width: 120px"
+            >
+              <span class="red--text">
+                should be smaller than 400. <br />
+                Otherwise Calculation can <br />
+                take a very long time.
+              </span>
             </div>
           </div>
           <v-btn color="primary" v-on:click="drawItem">
@@ -154,9 +160,7 @@
           <v-col cols="6">
             <v-select
               filled
-
-              :items="['10', '20', '50','100','200','400']"
-
+              :items="['10', '20', '50', '100', '200', '400']"
               label="Resolution"
               v-model="formData.resolution"
               suffix="meter"
@@ -221,9 +225,64 @@
           </v-tooltip>
         </div>
 
-        <v-row>
-          <v-col cols="4">
+        <hide-at
+          :breakpoints="{ small: 1263, medium: 1264 }"
+          breakpoint="smallAndBelow"
+        >
+          <v-row>
+            <v-col cols="4">
+              <v-file-input
+                filled
+                label="Sample Polygons"
+                accept=".json,.geojson,.gpkg"
+                persistent-hint
+                hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
+                show-size
+                truncate-length="25"
+                v-model="samplesFile"
+                :error-messages="
+                  v$.samplesFile.$error ? ['This field is required'] : []
+                "
+              ></v-file-input>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="Class field"
+                persistent-hint
+                hint="Field which classifies the polygons"
+                v-model="formData.samples_class"
+                :error-messages="
+                  v$.formData.samples_class.$error
+                    ? ['This field is required']
+                    : []
+                "
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="Object ID "
+                persistent-hint
+                hint="Describes the attribute that represent the key of the sample polygons"
+                v-model="formData.obj_id"
+                :error-messages="
+                  v$.formData.obj_id.$error ? ['This field is required'] : []
+                "
+              />
+            </v-col>
+          </v-row>
+        </hide-at>
+
+        <hide-at
+          :breakpoints="{ small: 1263, medium: 1264 }"
+          breakpoint="mediumAndAbove"
+        >
+          <div>
             <v-file-input
+              class="pb-2"
               filled
               label="Sample Polygons"
               accept=".json,.geojson,.gpkg"
@@ -236,9 +295,9 @@
                 v$.samplesFile.$error ? ['This field is required'] : []
               "
             ></v-file-input>
-          </v-col>
-          <v-col cols="4">
+
             <v-text-field
+              class="pb-2"
               filled
               type="string"
               label="Class field"
@@ -251,9 +310,8 @@
                   : []
               "
             />
-          </v-col>
-          <v-col cols="4">
             <v-text-field
+              class="pb-2"
               filled
               type="string"
               label="Object ID "
@@ -264,8 +322,8 @@
                 v$.formData.obj_id.$error ? ['This field is required'] : []
               "
             />
-          </v-col>
-        </v-row>
+          </div>
+        </hide-at>
       </template>
 
       <template v-if="formData.use_pretrained_model === true">
@@ -470,11 +528,15 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import subMonths from "date-fns/subMonths";
 import format from "date-fns/format";
 import * as API from "@/common/api";
+import { hideAt } from "vue-breakpoints";
 
 export default {
   name: "InputView",
   setup() {
     return { v$: useVuelidate() };
+  },
+  components: {
+    hideAt,
   },
   data() {
     return {
@@ -581,7 +643,7 @@ export default {
           polygon: false,
           rectangle: {
             showArea: false,
-            metric: 'km', // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
+            metric: "km", // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
           },
           circle: false,
           marker: false,
