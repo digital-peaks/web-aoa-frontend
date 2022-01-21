@@ -3,18 +3,28 @@
     <div class="flex-column layer-column">
       <div id="job_number" class="m-3 text-h5">
         {{ job.name || "-" }}
-        <v-btn
-          class="float-right"
-          outlined
-          style="padding-left: 10px; padding-right: 7px"
-          v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
-        >
-          Protocol
-          <v-icon>mdi-download</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              class="float-right"
+              outlined
+              v-on="on"
+              style="padding-left: 10px; padding-right: 7px"
+              v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
+            >
+              Protocol
+              <v-icon>mdi-download</v-icon>
+            </v-btn>
+          </template>
+          <span>
+            Here you can download <br />
+            a log file, written <br />
+            by the R-code while <br />
+            the calculations are <br />
+            running.
+          </span>
+        </v-tooltip>
       </div>
-      <!-- Farbliche Alternativen für den Button: -->
-      <!-- #2c3e50 - The same color as the job name. | #757575 - The same color as the icons below. -->
 
       <v-simple-table class="mb-6">
         <template v-slot:default>
@@ -861,7 +871,6 @@ import GeoRasterLayer from "georaster-layer-for-leaflet";
 import ColorLegend from "@/components/ColorLegend";
 
 import { mapState } from "vuex";
-//import axios from "axios";
 import * as API from "@/common/api";
 
 import VueSlider from "vue-slider-component";
@@ -985,17 +994,6 @@ export default {
         responseType: "blob",
       });
       const blob = new Blob([response.data], { type: type });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = label;
-      link.click();
-      URL.revokeObjectURL(link.href);
-    },
-    downloadTextFile: async function (urlLink, label) {
-      let response = await API.getJobFile(this.jobId, urlLink, {
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data], { type: "text/html" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = label;

@@ -8,6 +8,7 @@
         <v-toolbar-title>Web-AOA</v-toolbar-title>
         <div v-if="token" class="d-none d-md-flex align-items-center">
           <v-btn to="/" dark text class="ms-8"> My Jobs </v-btn>
+          <v-btn to="/inputDemo" dark text class="ms-3"> Demo </v-btn>
           <v-btn to="/about" dark text class="ms-3"> About </v-btn>
           <v-btn to="/impressum" dark text class="ms-3"> Impressum </v-btn>
         </div>
