@@ -89,6 +89,12 @@
     "not dead"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest"
+    "preset": "@vue/cli-plugin-unit-jest",
+    "setupFiles": [
+      "./tests/setupFiles.js"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!leaflet)"
+    ]
   }
 }
