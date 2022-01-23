@@ -18,6 +18,7 @@
     </v-btn>
   </div>
 </template>
+
 <style scoped>
 .v-btn:not(.v-btn--round).v-size--default {
   height: 36px;
