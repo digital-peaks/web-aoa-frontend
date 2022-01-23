@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">
+      <div id="job_number" class="m-3 mb-2 text-h5">
         {{ job.name || "-" }}
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -25,6 +25,16 @@
           </span>
         </v-tooltip>
       </div>
+      
+      <v-row class="ml-1">
+        <v-col cols="12">
+          <v-switch
+            v-model="colorblindMode"
+            label="Switch to Color Blind Mode (Trichromacy)"
+            v-on:change="switchMode"
+          ></v-switch
+        ></v-col>
+      </v-row>
 
       <v-simple-table>
         <tbody>
@@ -148,83 +158,114 @@
                 />
                 <p style="font-size: 10px">Transparency</p>
 
-                <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-simple-checkbox
-                        id="di"
-                        v-on:click="switchLayer('di')"
-                        color="primary"
-                        v-on="on"
-                        v-bind="attrs"
-                        v-model="diCheckbox"
-                        v-ripple
-                      ></v-simple-checkbox>
-                    </template>
-                    <span>Show/Hide</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        class="ms-2"
-                        icon
-                        v-on:click="zoomToLayer('di')"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon>mdi-magnify</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Zoom to layer</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        class="ms-2"
-                        icon
-                        v-on:click="
-                          downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
-                        "
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon>mdi-download</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Download</span>
-                  </v-tooltip>
-                </div>
-              </td>
-            </tr>
-          </template>
-          <template v-if="diLayer === null">
-            <v-tooltip left color="error">
-              <template v-slot:activator="{ on }">
-                <tr id="not_last_td" v-on="on">
-                  <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Dissimilarity Index
-                    <vue-slider
-                      :disabled="true"
-                      v-model="diTransparency"
-                      v-on:change="changeOpacity('di')"
-                      :tooltip-formatter="sliderPercentage"
-                    />
-                    <p style="font-size: 10px">Transparency</p>
-
+                <template v-if="colorblindMode == false">
                     <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <v-simple-checkbox
-                        id="di"
-                        color="primary"
-                        v-model="diCheckbox"
-                        v-ripple
-                        disabled
-                      ></v-simple-checkbox>
+                  </template>
+                  <template v-if="colorblindMode == true">
+                    <ColorLegend
+                      :scale="[
+                        '#ffff00',
+                        '#ffaf00',
+                        '#ff5634',
+                        '#e9005d',
+                        '#9a0079',
+                        '#000080',
+                      ]"
+                      :steps="6"
+                      :fixed="1"
+                    />
+                  </template>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="di"
+                          v-on:click="switchLayer('di')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="diCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('di')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <template v-if="diLayer === null">
+              <v-tooltip left color="error">
+                <template v-slot:activator="{ on }">
+                  <tr id="not_last_td" v-on="on">
+                    <td id="td_elements_with_slider" style="color: #a7a7a7">
+                      Dissimilarity Index
+                      <vue-slider
+                        :disabled="true"
+                        v-model="diTransparency"
+                        v-on:change="changeOpacity('di')"
+                        :tooltip-formatter="sliderPercentage"
+                      />
+                      <p style="font-size: 10px">Transparency</p>
+                      <template v-if="colorblindMode == false">
+                        <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                      </template>
+                      <template v-if="colorblindMode == true">
+                        <ColorLegend
+                          :scale="[
+                            '#ffff00',
+                            '#ffaf00',
+                            '#ff5634',
+                            '#e9005d',
+                            '#9a0079',
+                            '#000080',
+                          ]"
+                          :steps="6"
+                          :fixed="1"
+                        />
+                      </template>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <v-simple-checkbox
+                          id="di"
+                          color="primary"
+                          v-model="diCheckbox"
+                          v-ripple
+                          disabled
+                        ></v-simple-checkbox>
 
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
@@ -276,21 +317,89 @@
                 />
                 <p style="font-size: 10px">Transparency</p>
 
-                <div class="d-flex flex-column">
-                  <div
-                    v-for="(value, index) in predClassificationColors"
-                    :key="value"
-                    class="d-flex align-items-center mb-1"
-                  >
-                    <div
-                      :style="{
-                        width: '20px',
-                        height: '20px',
-                        backgroundColor: value,
-                        boxShadow: '0 0 1px #333',
-                      }"
-                    ></div>
-                    <div class="ml-3">{{ resultJson[0][index] }}</div>
+                  <div class="d-flex flex-column">
+                    <template v-if="colorblindMode == false">
+                      <div
+                        v-for="(value, index) in predClassificationColors"
+                        :key="value"
+                        class="d-flex align-items-center mb-1"
+                      >
+                        <div
+                          :style="{
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: value,
+                            boxShadow: '0 0 1px #333',
+                          }"
+                        ></div>
+                        <div class="ml-3">{{ resultJson[0][index] }}</div>
+                      </div>
+                    </template>
+                    <template v-if="colorblindMode == true">
+                      <div
+                        v-for="(value, index) in colorblindScalePred"
+                        :key="value"
+                        class="d-flex align-items-center mb-1"
+                      >
+                        <div
+                          :style="{
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: value,
+                            boxShadow: '0 0 1px #333',
+                          }"
+                        ></div>
+                        <div class="ml-3">{{ resultJson[0][index] }}</div>
+                      </div>
+                    </template>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="pred"
+                          v-on:click="switchLayer('pred')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="predCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('pred')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem('pred.tif', 'pred', 'image/tiff')
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
                   </div>
                 </div>
               </td>
@@ -417,89 +526,212 @@
                 />
                 <p style="font-size: 10px">Transparency</p>
 
-                <ColorLegend
-                  :scale="['#cf1f8f', '#ffffff']"
-                  :steps="2"
-                  :fixed="0"
-                />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-simple-checkbox
-                        id="aoa"
-                        v-on:click="switchLayer('aoa')"
-                        color="primary"
-                        v-on="on"
-                        v-bind="attrs"
-                        v-model="aoaCheckbox"
-                        v-ripple
-                      ></v-simple-checkbox>
-                    </template>
-                    <span>Show/Hide</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        class="ms-2"
-                        icon
-                        v-on:click="zoomToLayer('aoa')"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon>mdi-magnify</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Zoom to layer</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        class="ms-2"
-                        icon
-                        v-on:click="
-                          downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
-                        "
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon>mdi-download</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Download</span>
-                  </v-tooltip>
-                </div>
-              </td>
-            </tr>
-          </template>
-          <template v-if="aoaLayer === null">
-            <v-tooltip left color="error">
-              <template v-slot:activator="{ on }">
-                <tr id="not_last_td" v-on="on">
-                  <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Area of Applicability (AOA)
-                    <vue-slider
-                      disabled
-                      v-model="aoaTransparency"
-                      v-on:change="changeOpacity('aoa')"
-                      :tooltip-formatter="sliderPercentage"
-                    />
-                    <p style="font-size: 10px">Transparency</p>
-
+                  <template v-if="colorblindMode == false">
                     <ColorLegend
                       :scale="['#cf1f8f', '#ffffff']"
                       :steps="2"
                       :fixed="0"
                     />
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <v-simple-checkbox
-                        id="aoa"
-                        color="primary"
-                        v-model="aoaCheckbox"
-                        v-ripple
+                  </template>
+                  <template v-if="colorblindMode == true">
+                    <ColorLegend
+                      :scale="['#21A7E6', '#ffffff']"
+                      :steps="2"
+                      :fixed="0"
+                    />
+                  </template>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="aoa"
+                          v-on:click="switchLayer('aoa')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="aoaCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('aoa')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <template v-if="aoaLayer === null">
+              <v-tooltip left color="error">
+                <template v-slot:activator="{ on }">
+                  <tr id="not_last_td" v-on="on">
+                    <td id="td_elements_with_slider" style="color: #a7a7a7">
+                      Area of Applicability (AOA)
+                      <vue-slider
+                        disabled
+                        v-model="aoaTransparency"
+                        v-on:change="changeOpacity('aoa')"
+                        :tooltip-formatter="sliderPercentage"
+                      />
+                      <p style="font-size: 10px">Transparency</p>
+
+                      <template v-if="colorblindMode == false">
+                        <ColorLegend
+                          :scale="['#cf1f8f', '#ffffff']"
+                          :steps="2"
+                          :fixed="0"
+                        />
+                      </template>
+                      <template v-if="colorblindMode == true">
+                        <ColorLegend
+                          :scale="['#21A7E6', '#ffffff']"
+                          :steps="2"
+                          :fixed="0"
+                        />
+                      </template>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <v-simple-checkbox
+                          id="aoa"
+                          color="primary"
+                          v-model="aoaCheckbox"
+                          v-ripple
+                          disabled
+                        ></v-simple-checkbox>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              class="ms-2"
+                              icon
+                              disabled
+                              v-on:click="zoomToLayer('aoa')"
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              <v-icon>mdi-magnify</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Zoom to layer</span>
+                        </v-tooltip>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              class="ms-2"
+                              icon
+                              disabled
+                              v-on:click="
+                                downloadItem(
+                                  'aoa_aoa.tif',
+                                  'aoa_aoa',
+                                  'image/tiff'
+                                )
+                              "
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              <v-icon>mdi-download</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Download</span>
+                        </v-tooltip>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+                <span>This Layer is not available</span>
+              </v-tooltip>
+            </template>
+            <template v-if="samplePolygonsLayer != null">
+              <tr id="last_td">
+                <td id="td_elements_with_slider">
+                  Sample Polygons
+                  <vue-slider
+                    v-model="samplePolygonsTransparency"
+                    v-on:change="changeOpacity('samplePolygons')"
+                    :tooltip-formatter="sliderPercentage"
+                  />
+                  <p style="font-size: 10px">Transparency</p>
+                  <vue-slider
+                    v-model="samplePolygonsLineThickness"
+                    v-on:change="changeLineThickness('samplePolygons')"
+                    :data="[0, 1, 2, 3, 4, 5]"
+                    :marks="true"
+                    :hide-label="true"
+                  />
+                  <p style="font-size: 10px">Line thickness</p>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-simple-checkbox
+                          id="samplePolygons"
+                          v-on:click="switchLayer('samplePolygons')"
+                          color="primary"
+                          v-on="on"
+                          v-bind="attrs"
+                          v-model="samplePolygonsCheckbox"
+                          v-ripple
+                        ></v-simple-checkbox>
+                      </template>
+                      <span>Show/Hide</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="zoomToLayer('samplePolygons')"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Zoom to layer</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <template v-if="samplePolygonsLayer === null">
+              <v-tooltip left color="error">
+                <template v-slot:activator="{ on }">
+                  <tr id="last_td" v-on="on">
+                    <td id="td_elements_with_slider" style="color: #a7a7a7">
+                      Sample Polygons
+                      <vue-slider
                         disabled
                       ></v-simple-checkbox>
                       <v-tooltip bottom>
@@ -890,6 +1122,7 @@ export default {
     map: null,
     tileLayer: null,
     earthLayer: null,
+    colorblindLayer: null,
     // Everything needed to visualize the aoi.geojson.
     aoiCheckbox: false,
     aoiJson: "aoi.geojson",
@@ -900,19 +1133,26 @@ export default {
     diCheckbox: false,
     diUrl: "aoa_di.tif",
     diLayer: null,
+    diLayerColorblind: null,
     diTransparency: 100,
+    georasterDi: null,
     // Everything needed to visualize the pred.tif.
     predCheckbox: false,
     predUrl: "pred.tif",
     predLayer: null,
+    predLayerColorblind: null,
     predTransparency: 100,
+    georasterPred: null,
     // Generated by chromajs, e.g.: ['#9e0142', '#f98e52', ...]
     predClassificationColors: [],
+    colorblindScalePred: [],
     // Everything needed to visualize the aoi_aoa.tif.
     aoaCheckbox: false,
     aoaUrl: "aoa_aoa.tif",
     aoaLayer: null,
+    aoaLayerColorblind: null,
     aoaTransparency: 100,
+    georasterAoa: null,
     // Everything needed to visualize the samplePolygons.geojson.
     samplePolygonsCheckbox: false,
     samplePolygonsJson: "samples.geojson",
@@ -930,12 +1170,84 @@ export default {
     kappaIndex: null,
     accuracy: null,
     outputLogUrl: "output.log",
+    // Color blind mode
+    colorblindMode: false,
   }),
   components: {
     VueSlider,
     ColorLegend,
   },
   methods: {
+    /**
+     * This function will change the basemap and all layers into a colorblind version.
+     */
+    switchMode: async function () {
+      if (this.colorblindMode === false) {
+        this.tileLayer = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(this.map);
+
+        if (this.aoiLayer != null) {
+          this.aoiLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
+        if (this.diLayer != null && this.diCheckbox == true) {
+          this.map.removeLayer(this.diLayerColorblind);
+          this.diLayer.addTo(this.map);
+        }
+        if (this.predLayer != null && this.predCheckbox == true) {
+          this.map.removeLayer(this.predLayerColorblind);
+          this.predLayer.addTo(this.map);
+        }
+        if (this.aoaLayer != null && this.aoaCheckbox == true) {
+          this.map.removeLayer(this.aoaLayerColorblind);
+          this.aoaLayer.addTo(this.map);
+        }
+        if (this.samplePolygonsLayer != null) {
+          this.samplePolygonsLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
+      } else if (this.colorblindMode === true) {
+        this.tileLayer = L.tileLayer(
+          //"https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          "https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          {
+            attribution:
+              //'<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+              '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(this.map);
+
+        if (this.aoiLayer != null) {
+          this.aoiLayer.setStyle({
+            color: "#FF4452",
+          });
+        }
+        if (this.diLayerColorblind != null && this.diCheckbox == true) {
+          this.map.removeLayer(this.diLayer);
+          this.diLayerColorblind.addTo(this.map);
+        }
+        if (this.predLayerColorblind != null && this.predCheckbox == true) {
+          this.map.removeLayer(this.predLayer);
+          this.predLayerColorblind.addTo(this.map);
+        }
+        if (this.aoaLayerColorblind != null && this.aoaCheckbox == true) {
+          this.map.removeLayer(this.aoaLayer);
+          this.aoaLayerColorblind.addTo(this.map);
+        }
+        if (this.samplePolygonsLayer != null) {
+          this.samplePolygonsLayer.setStyle({
+            color: "#FF4452",
+          });
+        }
+      }
+    },
     /**
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
@@ -950,6 +1262,7 @@ export default {
       this.map.getPane("basemap").style.zIndex = 10;
       // To keep sure the tiles are not able to grab this line gets added.
       this.map.getPane("basemap").style.pointerEvents = "none";
+
       // First the osm layer gets initialized.
       const osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
       const osmAttr =
@@ -959,6 +1272,11 @@ export default {
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
       const earthAttr =
         "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community";
+      // Colorblind layer basemap
+      const colorblindUrl =
+        "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ";
+      const colorblindAttr =
+        '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors';
 
       this.tileLayer = L.tileLayer(osmUrl, {
         attribution: osmAttr,
@@ -970,13 +1288,19 @@ export default {
         pane: "basemap", // Both layers are added to the basemap-pane.
       });
 
+      this.colorblindLayer = L.tileLayer(colorblindUrl, {
+        attribution: colorblindAttr,
+        subdomains: "abcd",
+      });
+
+      const basemaps = {
+        "Open Street Map": this.tileLayer,
+        "Colorblind map": this.colorblindLayer,
+      };
+      const overlayMaps = { "World Imagery": this.earthLayer };
+
       // At last a layer control must be added to switch between multiple basemaps.
-      L.control
-        .layers(
-          { "Open Street Map": this.tileLayer },
-          { "World Imagery": this.earthLayer }
-        )
-        .addTo(this.map);
+      L.control.layers(basemaps, overlayMaps).addTo(this.map);
     },
     /**
      * This function triggers the downlad process of the results of the calculations.
@@ -1016,10 +1340,13 @@ export default {
         });
       } else if (layerId == "aoa") {
         this.aoaLayer.setOpacity(this.aoaTransparency / 100);
+        this.aoaLayerColorblind.setOpacity(this.aoaTransparency / 100);
       } else if (layerId == "di") {
         this.diLayer.setOpacity(this.diTransparency / 100);
+        this.diLayerColorblind.setOpacity(this.diTransparency / 100);
       } else if (layerId == "pred") {
         this.predLayer.setOpacity(this.predTransparency / 100);
+        this.predLayerColorblind.setOpacity(this.predTransparency / 100);
       } else if (layerId == "samplePolygons") {
         this.samplePolygonsLayer.setStyle({
           fillOpacity: this.samplePolygonsTransparency / 100,
@@ -1049,6 +1376,7 @@ export default {
       if (id == "aoi") {
         if (!this.checkLayerGetsFoundWithMessage(this.aoiLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
+
         if (this.aoiCheckbox == true) {
           this.aoiLayer.addTo(this.map);
           this.map.fitBounds(this.aoiLayer.getBounds());
@@ -1059,28 +1387,55 @@ export default {
         if (!this.checkLayerGetsFoundWithMessage(this.diLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
         if (this.diCheckbox == true) {
-          this.diLayer.addTo(this.map);
-          this.map.fitBounds(this.diLayer.getBounds());
+          if (this.colorblindMode == false) {
+            this.diLayer.addTo(this.map);
+            this.map.fitBounds(this.diLayer.getBounds());
+          } else if (this.colorblindMode == true) {
+            this.diLayerColorblind.addTo(this.map);
+            this.map.fitBounds(this.diLayerColorblind.getBounds());
+          }
         } else if (this.diCheckbox == false) {
-          this.map.removeLayer(this.diLayer);
+          if (this.colorblindMode == false) {
+            this.map.removeLayer(this.diLayer);
+          } else if (this.colorblindMode == true) {
+            this.map.removeLayer(this.diLayerColorblind);
+          }
         }
       } else if (id == "pred") {
         if (!this.checkLayerGetsFoundWithMessage(this.predLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
         if (this.predCheckbox == true) {
-          this.predLayer.addTo(this.map);
-          this.map.fitBounds(this.predLayer.getBounds());
+          if (this.colorblindMode == false) {
+            this.predLayer.addTo(this.map);
+            this.map.fitBounds(this.predLayer.getBounds());
+          } else if (this.colorblindMode == true) {
+            this.predLayerColorblind.addTo(this.map);
+            this.map.fitBounds(this.predLayerColorblind.getBounds());
+          }
         } else if (this.predCheckbox == false) {
-          this.map.removeLayer(this.predLayer);
+          if (this.colorblindMode == false) {
+            this.map.removeLayer(this.predLayer);
+          } else if (this.colorblindMode == true) {
+            this.map.removeLayer(this.predLayerColorblind);
+          }
         }
       } else if (id == "aoa") {
         if (!this.checkLayerGetsFoundWithMessage(this.aoaLayer))
           throw "ERROR - Dieser Layer exisitiert nicht!";
         if (this.aoaCheckbox == true) {
-          this.aoaLayer.addTo(this.map);
-          this.map.fitBounds(this.aoaLayer.getBounds());
+          if (this.colorblindMode == false) {
+            this.aoaLayer.addTo(this.map);
+            this.map.fitBounds(this.aoaLayer.getBounds());
+          } else if (this.colorblindMode == true) {
+            this.aoaLayerColorblind.addTo(this.map);
+            this.map.fitBounds(this.aoaLayerColorblind.getBounds());
+          }
         } else if (this.aoaCheckbox == false) {
-          this.map.removeLayer(this.aoaLayer);
+          if (this.colorblindMode == false) {
+            this.map.removeLayer(this.aoaLayer);
+          } else if (this.colorblindMode == true) {
+            this.map.removeLayer(this.aoaLayerColorblind);
+          }
         }
       } else if (id == "samplePolygons") {
         if (!this.checkLayerGetsFoundWithMessage(this.samplePolygonsLayer))
@@ -1199,15 +1554,16 @@ export default {
       }
 
       if (responseDi) {
-        const georasterDi = await parseGeoraster(responseDi.data);
+        this.georasterDi = await parseGeoraster(responseDi.data);
 
-        const minDi = georasterDi.mins[0];
-        const rangeDi = georasterDi.ranges[0];
+        const minDi = this.georasterDi.mins[0];
+        const rangeDi = this.georasterDi.ranges[0];
 
         const scaleViridis = chroma.scale("Viridis");
+        const colorblindScaleDi = chroma.scale(["yellow", "navy"]).mode("lch");
 
         this.diLayer = new GeoRasterLayer({
-          georaster: georasterDi,
+          georaster: this.georasterDi,
           opacity: this.diTransparency,
           pixelValuesToColorFn: function (pixelValues) {
             const [pixelValue] = pixelValues; // there's just one band in this raster
@@ -1215,9 +1571,21 @@ export default {
             if (pixelValue === 0) return null;
             // scale to 0 - 1 used by chroma
             const scaledPixelValue = (pixelValue - minDi) / rangeDi;
-
             const color = scaleViridis(scaledPixelValue).hex();
-
+            return color;
+          },
+          resolution: 256,
+        });
+        this.diLayerColorblind = new GeoRasterLayer({
+          georaster: this.georasterDi,
+          opacity: this.diTransparency,
+          pixelValuesToColorFn: function (pixelValues) {
+            const [pixelValue] = pixelValues; // there's just one band in this raster
+            // if there's zero wind, don't return a color
+            if (pixelValue === 0) return null;
+            // scale to 0 - 1 used by chroma
+            const scaledPixelValue = (pixelValue - minDi) / rangeDi;
+            const color = colorblindScaleDi(scaledPixelValue).hex();
             return color;
           },
           resolution: 256,
@@ -1225,10 +1593,10 @@ export default {
       }
 
       if (responseAoa) {
-        const georasterAoa = await parseGeoraster(responseAoa.data);
+        this.georasterAoa = await parseGeoraster(responseAoa.data);
 
         this.aoaLayer = new GeoRasterLayer({
-          georaster: georasterAoa,
+          georaster: this.georasterAoa,
           opacity: this.aoaTransparency,
           pixelValuesToColorFn: function (pixelValues) {
             const pixelValue = pixelValues[0];
@@ -1240,16 +1608,36 @@ export default {
           },
           resolution: 256,
         });
+        this.aoaLayerColorblind = new GeoRasterLayer({
+          georaster: this.georasterAoa,
+          opacity: this.aoaTransparency,
+          pixelValuesToColorFn: function (pixelValues) {
+            const pixelValue = pixelValues[0];
+            // if there's zero wind, don't return a color
+            if (pixelValue === 1) {
+              return null;
+            }
+            return "#21A7E6";
+          },
+          resolution: 256,
+        });
       }
       // Needs to be colored:
       if (responsePred) {
-        const georasterPred = await parseGeoraster(responsePred.data);
+        this.georasterPred = await parseGeoraster(responsePred.data);
 
         this.predLayer = new GeoRasterLayer({
-          georaster: georasterPred,
+          georaster: this.georasterPred,
           opacity: this.predTransparency,
           pixelValuesToColorFn: (pixelValues) =>
             this.predClassificationColors[pixelValues[0] - 1] || null,
+          resolution: 256,
+        });
+        this.predLayerColorblind = new GeoRasterLayer({
+          georaster: this.georasterPred,
+          opacity: this.predTransparency,
+          pixelValuesToColorFn: (pixelValues) =>
+            this.colorblindScalePred[pixelValues[0] - 1] || null,
           resolution: 256,
         });
       }
@@ -1279,6 +1667,10 @@ export default {
       // Generate classification colors with chromajs
       this.predClassificationColors = chroma
         .scale("Spectral")
+        .colors(this.resultJson[0].length);
+
+      this.colorblindScalePred = chroma
+        .scale("RdYlBu")
         .colors(this.resultJson[0].length);
     },
   },

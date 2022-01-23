@@ -48,13 +48,25 @@
       v-on:submit="onSubmitForm"
     >
       <div class="d-flex w-100 mb-3">
-        <div style="flex: 1"><span class="text-h5">Create job</span></div>
+        <div style="flex: 1">
+          <span class="text-h5">Create job</span>
+        </div>
         <div>
           <v-btn to="/">Cancel</v-btn>
           &nbsp;
           <v-btn type="submit" color="primary">Start</v-btn>
         </div>
       </div>
+
+      <v-row class="mb-1">
+        <v-col>
+          <v-switch
+            v-model="colorblindMode"
+            label="Switch to Color Blind Mode (Trichromacy)"
+            v-on:change="switchMode"
+          ></v-switch>
+        </v-col>
+      </v-row>
 
       <div class="mt-2 mb-3">
         <v-text-field
@@ -72,8 +84,10 @@
         <span class="text-h6">Area of Interest (AOI)</span>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
-          </template>
+            <v-icon class="pb-3" small v-on="on"
+              >mdi-help-circle</v-icon
+            ></template
+          >
           <span
             >The Area of Interest describes the area<br />
             the trained model should be tested on. A<br />
@@ -577,11 +591,14 @@ export default {
       map: null,
       tileLayer: null,
       drawControl: null,
+      drawControlColorblind: null,
       rectangleLayer: null,
       drawnItem: null,
       // size in meters^2
       aoiSize: 0,
       selectedML: "rf",
+      // Colorblind mode
+      colorblindMode: false,
     };
   },
   validations() {
@@ -621,11 +638,54 @@ export default {
     };
   },
   methods: {
+    switchMode: function () {
+      if (this.colorblindMode === false) {
+        this.tileLayer = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(this.map);
+
+        this.map.removeControl(this.drawControlColorblind);
+
+        this.map.addControl(this.drawControl);
+
+        if (this.rectangleLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
+      } else if (this.colorblindMode === true) {
+        this.tileLayer = L.tileLayer(
+          "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          {
+            attribution:
+              '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+          }
+        ).addTo(this.map);
+
+        this.map.removeControl(this.drawControl);
+
+        this.map.addControl(this.drawControlColorblind);
+
+        if (this.rectangleLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#FF4452",
+          });
+        }
+      }
+    },
     /**
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
     initMap: function () {
-      this.map = L.map("map-container").setView([51.966, 7.633], 10);
+      this.map = L.map("map-container", { layers: this.tileLayer }).setView(
+        [51.966, 7.633],
+        10
+      );
+
       this.tileLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -636,6 +696,30 @@ export default {
 
       this.rectangleLayer = new L.FeatureGroup().addTo(this.map);
 
+      // Initialization of draw control for colorblind mode
+      this.drawControlColorblind = new L.Control.Draw({
+        position: "topleft",
+        draw: {
+          polyline: false,
+          polygon: false,
+          rectangle: {
+            showArea: true,
+            metric: ["km"],
+            shapeOptions: {
+              color: "#FF4452",
+            },
+          },
+          circle: false,
+          marker: false,
+          circlemarker: false,
+        },
+        edit: {
+          featureGroup: this.rectangleLayer,
+          remove: false,
+          edit: false,
+        },
+      });
+
       this.drawControl = new L.Control.Draw({
         position: "topleft",
         draw: {
@@ -643,7 +727,7 @@ export default {
           polygon: false,
           rectangle: {
             showArea: false,
-            metric: "km", // SHOULD CONTAIN A LIMIT BUT I DONT KNOW HOW
+            metric: "km", 
           },
           circle: false,
           marker: false,
@@ -786,7 +870,13 @@ export default {
       if (!this.map || !this.drawControl) {
         return;
       }
-      new L.Draw.Rectangle(this.map).enable();
+      if (this.colorblindMode == false) {
+        new L.Draw.Rectangle(this.map).enable();
+      } else if (this.colorblindMode == true) {
+        new L.Draw.Rectangle(this.map, {
+          shapeOptions: { color: "#FF4452" },
+        }).enable();
+      }
     },
   },
   mounted() {
