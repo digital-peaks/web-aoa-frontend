@@ -2,7 +2,7 @@
   <div class="container text-start pt-10">
     <h1>About</h1>
     <v-row justify="center">
-      <h5>What kind of website is this?</h5>
+      <h5 class="pt-5">What kind of website is this?</h5>
       <p>
         This web application aims to implement the AOA method according to Meyer
         & Pebesma (2021). For this purpose the LU/LC classification was used.
@@ -44,9 +44,8 @@
       </p>
     </v-row>
 
-    <br />
-
     <v-btn
+      class="pt-10"
       elevation="0"
       color="white"
       href="https://github.com/digital-peaks"
