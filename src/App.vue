@@ -3,18 +3,26 @@
     <div style="d-flex">
       <v-app-bar elevation="4" color="grey darken-4" class="px-0" dark>
         <div class="me-3">
-          <router-link to="/"><LogoIcon width="44" /></router-link>
+          <router-link :to="token ? '/' : 'login'"
+            ><LogoIcon width="44"
+          /></router-link>
         </div>
         <v-toolbar-title>Web-AOA</v-toolbar-title>
-        <div v-if="token" class="d-none d-md-flex align-items-center">
-          <v-btn to="/" dark text class="ms-8"> My Jobs </v-btn>
-          <v-btn to="/inputDemo" dark text class="ms-3"> Demo </v-btn>
+        <div class="d-none d-md-flex align-items-center">
+          <template v-if="token">
+            <v-btn to="/" dark text class="ms-8"> My Jobs </v-btn>
+            <v-btn to="/inputDemo" dark text class="ms-3"> Demo </v-btn>
+          </template>
+          <template v-else>
+            <v-btn to="/login" dark text class="ms-8"> Login </v-btn>
+          </template>
           <v-btn to="/about" dark text class="ms-3"> About </v-btn>
           <v-btn to="/impressum" dark text class="ms-3"> Impressum </v-btn>
         </div>
         <v-spacer></v-spacer>
-        <div v-if="token" class="d-flex d-md-none align-items-center">
-          <v-menu offset-y>
+        <div class="d-flex d-md-none align-items-center">
+        <!-- set z-index, because of Leafleat Map -->
+        <v-menu offset-y z-index="1000">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 icon
@@ -27,9 +35,19 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item link to="/">
+              <template v-if="token">
+                 <v-list-item link to="/">
                 <v-list-item-title> My Jobs </v-list-item-title>
               </v-list-item>
+               <v-list-item link to="/inputDemo">
+                <v-list-item-title> Demo </v-list-item-title>
+              </v-list-item>
+              </template>
+              <template v-else>
+                  <v-list-item link to="/login">
+                <v-list-item-title> Login </v-list-item-title>
+              </v-list-item>
+              </template>
               <v-list-item link to="/about">
                 <v-list-item-title> About </v-list-item-title>
               </v-list-item>
@@ -85,7 +103,7 @@ export default {
   methods: {
     redirectToLogin() {
       this.$store.dispatch("setToken", "");
-      if (this.$route.path !== "/login") {
+      if (!["/login", "/impressum", "/about"].includes(this.$route.path)) {
         this.$router.push("/login");
       }
     },
