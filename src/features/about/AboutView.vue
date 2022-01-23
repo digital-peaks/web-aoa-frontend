@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-start">
+  <div class="container text-start pt-10">
     <h1>About</h1>
     <v-row justify="center">
       <h5>What kind of website is this?</h5>
