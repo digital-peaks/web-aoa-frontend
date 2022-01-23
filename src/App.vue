@@ -48,6 +48,7 @@
                 <v-list-item-title> Login </v-list-item-title>
               </v-list-item>
               </template>
+
               <v-list-item link to="/about">
                 <v-list-item-title> About </v-list-item-title>
               </v-list-item>
