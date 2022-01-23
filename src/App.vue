@@ -30,6 +30,9 @@
               <v-list-item link to="/">
                 <v-list-item-title> My Jobs </v-list-item-title>
               </v-list-item>
+              <v-list-item link to="/inputDemo">
+                <v-list-item-title> Demo </v-list-item-title>
+              </v-list-item>
               <v-list-item link to="/about">
                 <v-list-item-title> About </v-list-item-title>
               </v-list-item>
