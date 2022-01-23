@@ -44,9 +44,8 @@
       </p>
     </v-row>
 
-    <br />
-
     <v-btn
+      class="pt-10"
       elevation="0"
       color="white"
       href="https://github.com/digital-peaks"
