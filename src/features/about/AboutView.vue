@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-start">
+  <div class="container text-start pt-10">
     <h1>About</h1>
     <v-row justify="center">
       <h5>What kind of website is this?</h5>
@@ -56,3 +56,11 @@
     </v-btn>
   </div>
 </template>
+
+<style scoped>
+.v-btn:not(.v-btn--round).v-size--default {
+  height: 36px;
+  min-width: 64px;
+  padding: 0 3px;
+}
+</style>
