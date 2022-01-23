@@ -1,20 +1,50 @@
 <template>
   <v-app>
     <div style="d-flex">
-      <v-app-bar elevation="4" color="grey darken-4" class="px-1" dark>
+      <v-app-bar elevation="4" color="grey darken-4" class="px-0" dark>
         <div class="me-3">
-          <router-link to="/"><LogoIcon width="55" /></router-link>
+          <router-link to="/"><LogoIcon width="44" /></router-link>
         </div>
         <v-toolbar-title>Web-AOA</v-toolbar-title>
-        <template v-if="token">
+        <div v-if="token" class="d-none d-md-flex align-items-center">
           <v-btn to="/" dark text class="ms-8"> My Jobs </v-btn>
+          <v-btn to="/inputDemo" dark text class="ms-3"> Demo </v-btn>
           <v-btn to="/about" dark text class="ms-3"> About </v-btn>
           <v-btn to="/impressum" dark text class="ms-3"> Impressum </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon large>mdi-account-circle</v-icon>
-          </v-btn>
-        </template>
+        </div>
+        <v-spacer></v-spacer>
+        <div v-if="token" class="d-flex d-md-none align-items-center">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                dark
+                class="ms-8 p-1 menu-button"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon large>mdi-menu</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item link to="/">
+                <v-list-item-title> My Jobs </v-list-item-title>
+              </v-list-item>
+              <v-list-item link to="/inputDemo">
+                <v-list-item-title> Demo </v-list-item-title>
+              </v-list-item>
+              <v-list-item link to="/about">
+                <v-list-item-title> About </v-list-item-title>
+              </v-list-item>
+              <v-list-item link to="/impressum">
+                <v-list-item-title> Impressum </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+        <v-btn icon>
+          <v-icon large>mdi-account-circle</v-icon>
+        </v-btn>
       </v-app-bar>
     </div>
     <template v-if="loading">
@@ -107,5 +137,8 @@ body {
 .input-group.floating .form-floating select {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+}
+.menu-button::before {
+  background-color: transparent !important;
 }
 </style>

@@ -89,9 +89,9 @@
             ></template
           >
           <span
-            >The Area of Interest describes the area the trained model should
-            <br />
-            be tested on. A rectangle has to be drawn in the given map.</span
+            >The Area of Interest describes the area<br />
+            the trained model should be tested on. A<br />
+            rectangle has to be drawn in the given map.</span
           >
         </v-tooltip>
       </div>
@@ -108,8 +108,20 @@
           >
             Not selected...
           </div>
+
           <div v-if="aoiSize > 0" class="me-3" style="min-width: 120px">
             {{ (aoiSize / 1000 / 1000).toFixed(3) }} km<sup>2</sup>
+            <div
+              v-if="aoiSize / 1000 / 1000 > 400"
+              class="me-3"
+              style="min-width: 120px"
+            >
+              <span class="red--text">
+                should be smaller than 400. <br />
+                Otherwise Calculation can <br />
+                take a very long time.
+              </span>
+            </div>
           </div>
           <v-btn color="primary" v-on:click="drawItem">
             Select on map
@@ -124,12 +136,13 @@
           <template v-slot:activator="{ on }">
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
-          <span
-            >A <b>timeframe</b> for Sentinel-2 data that should be used can be
-            edited. As default value the past six month will be used. <br />
-            Also a <b>resolution</b> for the used imagery can be choosen as well
-            as the <b>cloud coverage</b>.</span
-          >
+          <span>
+            A timeframe for Sentinel-2 data that should <br />
+            be used can be edited. As default value the<br />
+            past six month will be used. Also a resolution<br />
+            for the used imagery can be choosen as well as <br />
+            the cloud coverage.
+          </span>
         </v-tooltip>
       </div>
 
@@ -161,7 +174,7 @@
           <v-col cols="6">
             <v-select
               filled
-              :items="['10', '20', '60']"
+              :items="['10', '20', '50', '100', '200', '400']"
               label="Resolution"
               v-model="formData.resolution"
               suffix="meter"
@@ -219,20 +232,76 @@
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span
-              >In case no existing model should be used, <br />
-              points or polygons to train a model are required.</span
+              >In case no existing model should <br />
+              be used, polygons to train <br />
+              a model are required.</span
             >
           </v-tooltip>
         </div>
 
-        <v-row>
-          <v-col cols="6">
+        <hide-at
+          :breakpoints="{ small: 1263, medium: 1264 }"
+          breakpoint="smallAndBelow"
+        >
+          <v-row>
+            <v-col cols="4">
+              <v-file-input
+                filled
+                label="Sample Polygons"
+                accept=".json,.geojson,.gpkg"
+                persistent-hint
+                hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
+                show-size
+                truncate-length="25"
+                v-model="samplesFile"
+                :error-messages="
+                  v$.samplesFile.$error ? ['This field is required'] : []
+                "
+              ></v-file-input>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="Class field"
+                persistent-hint
+                hint="Field which classifies the polygons"
+                v-model="formData.samples_class"
+                :error-messages="
+                  v$.formData.samples_class.$error
+                    ? ['This field is required']
+                    : []
+                "
+              />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                filled
+                type="string"
+                label="Object ID "
+                persistent-hint
+                hint="Describes the attribute that represent the key of the sample polygons"
+                v-model="formData.obj_id"
+                :error-messages="
+                  v$.formData.obj_id.$error ? ['This field is required'] : []
+                "
+              />
+            </v-col>
+          </v-row>
+        </hide-at>
+
+        <hide-at
+          :breakpoints="{ small: 1263, medium: 1264 }"
+          breakpoint="mediumAndAbove"
+        >
+          <div>
             <v-file-input
+              class="pb-2"
               filled
               label="Sample Polygons"
               accept=".json,.geojson,.gpkg"
               persistent-hint
-              hint=".json,.geojson,.gpkg (max. 10 MB)"
+              hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
               show-size
               truncate-length="25"
               v-model="samplesFile"
@@ -240,9 +309,9 @@
                 v$.samplesFile.$error ? ['This field is required'] : []
               "
             ></v-file-input>
-          </v-col>
-          <v-col cols="6">
+
             <v-text-field
+              class="pb-2"
               filled
               type="string"
               label="Class field"
@@ -255,8 +324,20 @@
                   : []
               "
             />
-          </v-col>
-        </v-row>
+            <v-text-field
+              class="pb-2"
+              filled
+              type="string"
+              label="Object ID "
+              persistent-hint
+              hint="Describes the attribute that represent the key of the sample polygons"
+              v-model="formData.obj_id"
+              :error-messages="
+                v$.formData.obj_id.$error ? ['This field is required'] : []
+              "
+            />
+          </div>
+        </hide-at>
       </template>
 
       <template v-if="formData.use_pretrained_model === true">
@@ -267,8 +348,9 @@
               <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
             </template>
             <span
-              >Optional: A computional model can be<br />
-              used to classify Sentinel-2 imagery.</span
+              >Optional: A computional model <br />
+              can be used to classify <br />
+              Sentinel-2 imagery.</span
             >
           </v-tooltip>
         </div>
@@ -291,15 +373,6 @@
           </v-col>
         </v-row>
       </template>
-
-      <v-row class="mb-1">
-        <v-col cols="6">
-          <v-switch
-            v-model="formData.use_pretrained_model"
-            label="Use existing model"
-          ></v-switch
-        ></v-col>
-      </v-row>
 
       <template v-if="formData.use_pretrained_model === false">
         <div class="mt-3 mb-2">
@@ -360,7 +433,7 @@
         </template>
 
         <template v-if="selectedML === 'svmradial'">
-          <v-row class="mb-3">
+          <v-row>
             <v-col cols="4">
               <v-text-field
                 filled
@@ -403,6 +476,15 @@
         </template>
       </template>
 
+      <v-row class="mb-1 mt-0">
+        <v-col cols="6">
+          <v-switch
+            v-model="formData.use_pretrained_model"
+            label="Use existing model"
+          ></v-switch
+        ></v-col>
+      </v-row>
+
       <div class="mt-3 mb-2">
         <span class="text-h6">Sampling Strategy</span>
         <v-tooltip right>
@@ -410,8 +492,9 @@
             <v-icon class="pb-3" small v-on="on">mdi-help-circle</v-icon>
           </template>
           <span
-            >A sampling strategy to find suggested points for additional
-            measuring.</span
+            >A sampling strategy to be employed<br />
+            to find locations, where additional <br />
+            training datsets might be useful.</span
           >
         </v-tooltip>
       </div>
@@ -459,11 +542,15 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import subMonths from "date-fns/subMonths";
 import format from "date-fns/format";
 import * as API from "@/common/api";
+import { hideAt } from "vue-breakpoints";
 
 export default {
   name: "InputView",
   setup() {
     return { v$: useVuelidate() };
+  },
+  components: {
+    hideAt,
   },
   data() {
     return {
@@ -478,6 +565,7 @@ export default {
         samples_class: "class",
         sampling_strategy: "regular",
         use_pretrained_model: false,
+        obj_id: "PID",
         random_forrest: {
           n_tree: 800,
           cross_validation_folds: 5,
@@ -529,6 +617,7 @@ export default {
         use_pretrained_model: { required },
         sampling_strategy: { required },
         resolution: requiredIf(() => !this.formData.use_lookup),
+        obj_id: { required },
         support_vector_machine: {
           sigma: {
             decimal,
@@ -637,8 +726,8 @@ export default {
           polyline: false,
           polygon: false,
           rectangle: {
-            showArea: true,
-            metric: ["km"],
+            showArea: false,
+            metric: "km", 
           },
           circle: false,
           marker: false,
@@ -661,9 +750,10 @@ export default {
           this.rectangleLayer.removeLayer(this.drawnItem);
         }
         this.drawnItem = e.layer;
-
+        console.log(this.drawnItem);
         // Get the first element
         const [rectangle] = this.drawnItem.getLatLngs();
+        console.log(rectangle);
 
         // Prepare coordinates for AOI GeoJSON
         const coordinates = [];
@@ -715,6 +805,7 @@ export default {
         samples_class: this.formData.samples_class,
         sampling_strategy: this.formData.sampling_strategy,
         use_pretrained_model: this.formData.use_pretrained_model,
+        obj_id: this.formData.obj_id,
       };
 
       // create job object for the api
