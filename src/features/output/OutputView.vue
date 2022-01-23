@@ -25,7 +25,7 @@
           </span>
         </v-tooltip>
       </div>
-      
+
       <v-row class="ml-1">
         <v-col cols="12">
           <v-switch
@@ -159,113 +159,113 @@
                 <p style="font-size: 10px">Transparency</p>
 
                 <template v-if="colorblindMode == false">
-                    <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
-                  </template>
-                  <template v-if="colorblindMode == true">
-                    <ColorLegend
-                      :scale="[
-                        '#ffff00',
-                        '#ffaf00',
-                        '#ff5634',
-                        '#e9005d',
-                        '#9a0079',
-                        '#000080',
-                      ]"
-                      :steps="6"
-                      :fixed="1"
+                  <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                </template>
+                <template v-if="colorblindMode == true">
+                  <ColorLegend
+                    :scale="[
+                      '#ffff00',
+                      '#ffaf00',
+                      '#ff5634',
+                      '#e9005d',
+                      '#9a0079',
+                      '#000080',
+                    ]"
+                    :steps="6"
+                    :fixed="1"
+                  />
+                </template>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="di"
+                        v-on:click="switchLayer('di')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="diCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('di')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span>
+                  </v-tooltip>
+                </div>
+              </td>
+            </tr>
+          </template>
+          <template v-if="diLayer === null">
+            <v-tooltip left color="error">
+              <template v-slot:activator="{ on }">
+                <tr id="not_last_td" v-on="on">
+                  <td id="td_elements_with_slider" style="color: #a7a7a7">
+                    Dissimilarity Index
+                    <vue-slider
+                      :disabled="true"
+                      v-model="diTransparency"
+                      v-on:change="changeOpacity('di')"
+                      :tooltip-formatter="sliderPercentage"
                     />
-                  </template>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-simple-checkbox
-                          id="di"
-                          v-on:click="switchLayer('di')"
-                          color="primary"
-                          v-on="on"
-                          v-bind="attrs"
-                          v-model="diCheckbox"
-                          v-ripple
-                        ></v-simple-checkbox>
-                      </template>
-                      <span>Show/Hide</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="zoomToLayer('di')"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Zoom to layer</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="
-                            downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
-                          "
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Download</span>
-                    </v-tooltip>
-                  </div>
-                </td>
-              </tr>
-            </template>
-            <template v-if="diLayer === null">
-              <v-tooltip left color="error">
-                <template v-slot:activator="{ on }">
-                  <tr id="not_last_td" v-on="on">
-                    <td id="td_elements_with_slider" style="color: #a7a7a7">
-                      Dissimilarity Index
-                      <vue-slider
-                        :disabled="true"
-                        v-model="diTransparency"
-                        v-on:change="changeOpacity('di')"
-                        :tooltip-formatter="sliderPercentage"
+                    <p style="font-size: 10px">Transparency</p>
+                    <template v-if="colorblindMode == false">
+                      <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
+                    </template>
+                    <template v-if="colorblindMode == true">
+                      <ColorLegend
+                        :scale="[
+                          '#ffff00',
+                          '#ffaf00',
+                          '#ff5634',
+                          '#e9005d',
+                          '#9a0079',
+                          '#000080',
+                        ]"
+                        :steps="6"
+                        :fixed="1"
                       />
-                      <p style="font-size: 10px">Transparency</p>
-                      <template v-if="colorblindMode == false">
-                        <ColorLegend scale="Viridis" :steps="6" :fixed="1" />
-                      </template>
-                      <template v-if="colorblindMode == true">
-                        <ColorLegend
-                          :scale="[
-                            '#ffff00',
-                            '#ffaf00',
-                            '#ff5634',
-                            '#e9005d',
-                            '#9a0079',
-                            '#000080',
-                          ]"
-                          :steps="6"
-                          :fixed="1"
-                        />
-                      </template>
-                    </td>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <v-simple-checkbox
-                          id="di"
-                          color="primary"
-                          v-model="diCheckbox"
-                          v-ripple
-                          disabled
-                        ></v-simple-checkbox>
+                    </template>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-simple-checkbox
+                        id="di"
+                        color="primary"
+                        v-model="diCheckbox"
+                        v-ripple
+                        disabled
+                      ></v-simple-checkbox>
 
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
@@ -317,90 +317,41 @@
                 />
                 <p style="font-size: 10px">Transparency</p>
 
-                  <div class="d-flex flex-column">
-                    <template v-if="colorblindMode == false">
+                <div class="d-flex flex-column">
+                  <template v-if="colorblindMode == false">
+                    <div
+                      v-for="(value, index) in predClassificationColors"
+                      :key="value"
+                      class="d-flex align-items-center mb-1"
+                    >
                       <div
-                        v-for="(value, index) in predClassificationColors"
-                        :key="value"
-                        class="d-flex align-items-center mb-1"
-                      >
-                        <div
-                          :style="{
-                            width: '20px',
-                            height: '20px',
-                            backgroundColor: value,
-                            boxShadow: '0 0 1px #333',
-                          }"
-                        ></div>
-                        <div class="ml-3">{{ resultJson[0][index] }}</div>
-                      </div>
-                    </template>
-                    <template v-if="colorblindMode == true">
+                        :style="{
+                          width: '20px',
+                          height: '20px',
+                          backgroundColor: value,
+                          boxShadow: '0 0 1px #333',
+                        }"
+                      ></div>
+                      <div class="ml-3">{{ resultJson[0][index] }}</div>
+                    </div>
+                  </template>
+                  <template v-if="colorblindMode == true">
+                    <div
+                      v-for="(value, index) in colorblindScalePred"
+                      :key="value"
+                      class="d-flex align-items-center mb-1"
+                    >
                       <div
-                        v-for="(value, index) in colorblindScalePred"
-                        :key="value"
-                        class="d-flex align-items-center mb-1"
-                      >
-                        <div
-                          :style="{
-                            width: '20px',
-                            height: '20px',
-                            backgroundColor: value,
-                            boxShadow: '0 0 1px #333',
-                          }"
-                        ></div>
-                        <div class="ml-3">{{ resultJson[0][index] }}</div>
-                      </div>
-                    </template>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-simple-checkbox
-                          id="pred"
-                          v-on:click="switchLayer('pred')"
-                          color="primary"
-                          v-on="on"
-                          v-bind="attrs"
-                          v-model="predCheckbox"
-                          v-ripple
-                        ></v-simple-checkbox>
-                      </template>
-                      <span>Show/Hide</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="zoomToLayer('pred')"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Zoom to layer</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="
-                            downloadItem('pred.tif', 'pred', 'image/tiff')
-                          "
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Download</span>
-                    </v-tooltip>
-                  </div>
+                        :style="{
+                          width: '20px',
+                          height: '20px',
+                          backgroundColor: value,
+                          boxShadow: '0 0 1px #333',
+                        }"
+                      ></div>
+                      <div class="ml-3">{{ resultJson[0][index] }}</div>
+                    </div>
+                  </template>
                 </div>
               </td>
               <td>
@@ -526,212 +477,107 @@
                 />
                 <p style="font-size: 10px">Transparency</p>
 
-                  <template v-if="colorblindMode == false">
-                    <ColorLegend
-                      :scale="['#cf1f8f', '#ffffff']"
-                      :steps="2"
-                      :fixed="0"
-                    />
-                  </template>
-                  <template v-if="colorblindMode == true">
-                    <ColorLegend
-                      :scale="['#21A7E6', '#ffffff']"
-                      :steps="2"
-                      :fixed="0"
-                    />
-                  </template>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-simple-checkbox
-                          id="aoa"
-                          v-on:click="switchLayer('aoa')"
-                          color="primary"
-                          v-on="on"
-                          v-bind="attrs"
-                          v-model="aoaCheckbox"
-                          v-ripple
-                        ></v-simple-checkbox>
-                      </template>
-                      <span>Show/Hide</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="zoomToLayer('aoa')"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Zoom to layer</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="
-                            downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
-                          "
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Download</span>
-                    </v-tooltip>
-                  </div>
-                </td>
-              </tr>
-            </template>
-            <template v-if="aoaLayer === null">
-              <v-tooltip left color="error">
-                <template v-slot:activator="{ on }">
-                  <tr id="not_last_td" v-on="on">
-                    <td id="td_elements_with_slider" style="color: #a7a7a7">
-                      Area of Applicability (AOA)
-                      <vue-slider
-                        disabled
-                        v-model="aoaTransparency"
-                        v-on:change="changeOpacity('aoa')"
-                        :tooltip-formatter="sliderPercentage"
-                      />
-                      <p style="font-size: 10px">Transparency</p>
-
-                      <template v-if="colorblindMode == false">
-                        <ColorLegend
-                          :scale="['#cf1f8f', '#ffffff']"
-                          :steps="2"
-                          :fixed="0"
-                        />
-                      </template>
-                      <template v-if="colorblindMode == true">
-                        <ColorLegend
-                          :scale="['#21A7E6', '#ffffff']"
-                          :steps="2"
-                          :fixed="0"
-                        />
-                      </template>
-                    </td>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <v-simple-checkbox
-                          id="aoa"
-                          color="primary"
-                          v-model="aoaCheckbox"
-                          v-ripple
-                          disabled
-                        ></v-simple-checkbox>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                              class="ms-2"
-                              icon
-                              disabled
-                              v-on:click="zoomToLayer('aoa')"
-                              v-bind="attrs"
-                              v-on="on"
-                            >
-                              <v-icon>mdi-magnify</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>Zoom to layer</span>
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                              class="ms-2"
-                              icon
-                              disabled
-                              v-on:click="
-                                downloadItem(
-                                  'aoa_aoa.tif',
-                                  'aoa_aoa',
-                                  'image/tiff'
-                                )
-                              "
-                              v-bind="attrs"
-                              v-on="on"
-                            >
-                              <v-icon>mdi-download</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>Download</span>
-                        </v-tooltip>
-                      </div>
-                    </td>
-                  </tr>
+                <template v-if="colorblindMode == false">
+                  <ColorLegend
+                    :scale="['#cf1f8f', '#ffffff']"
+                    :steps="2"
+                    :fixed="0"
+                  />
                 </template>
-                <span>This Layer is not available</span>
-              </v-tooltip>
-            </template>
-            <template v-if="samplePolygonsLayer != null">
-              <tr id="last_td">
-                <td id="td_elements_with_slider">
-                  Sample Polygons
-                  <vue-slider
-                    v-model="samplePolygonsTransparency"
-                    v-on:change="changeOpacity('samplePolygons')"
-                    :tooltip-formatter="sliderPercentage"
+                <template v-if="colorblindMode == true">
+                  <ColorLegend
+                    :scale="['#21A7E6', '#ffffff']"
+                    :steps="2"
+                    :fixed="0"
                   />
-                  <p style="font-size: 10px">Transparency</p>
-                  <vue-slider
-                    v-model="samplePolygonsLineThickness"
-                    v-on:change="changeLineThickness('samplePolygons')"
-                    :data="[0, 1, 2, 3, 4, 5]"
-                    :marks="true"
-                    :hide-label="true"
-                  />
-                  <p style="font-size: 10px">Line thickness</p>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-simple-checkbox
-                          id="samplePolygons"
-                          v-on:click="switchLayer('samplePolygons')"
-                          color="primary"
-                          v-on="on"
-                          v-bind="attrs"
-                          v-model="samplePolygonsCheckbox"
-                          v-ripple
-                        ></v-simple-checkbox>
-                      </template>
-                      <span>Show/Hide</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="ms-2"
-                          icon
-                          v-on:click="zoomToLayer('samplePolygons')"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Zoom to layer</span>
-                    </v-tooltip>
-                  </div>
-                </td>
-              </tr>
-            </template>
-            <template v-if="samplePolygonsLayer === null">
-              <v-tooltip left color="error">
-                <template v-slot:activator="{ on }">
-                  <tr id="last_td" v-on="on">
-                    <td id="td_elements_with_slider" style="color: #a7a7a7">
-                      Sample Polygons
-                      <vue-slider
+                </template>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-simple-checkbox
+                        id="aoa"
+                        v-on:click="switchLayer('aoa')"
+                        color="primary"
+                        v-on="on"
+                        v-bind="attrs"
+                        v-model="aoaCheckbox"
+                        v-ripple
+                      ></v-simple-checkbox>
+                    </template>
+                    <span>Show/Hide</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="zoomToLayer('aoa')"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Zoom to layer</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ms-2"
+                        icon
+                        v-on:click="
+                          downloadItem('aoa_aoa.tif', 'aoa_aoa', 'image/tiff')
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Download</span>
+                  </v-tooltip>
+                </div>
+              </td>
+            </tr>
+          </template>
+          <template v-if="aoaLayer === null">
+            <v-tooltip left color="error">
+              <template v-slot:activator="{ on }">
+                <tr id="not_last_td" v-on="on">
+                  <td id="td_elements_with_slider" style="color: #a7a7a7">
+                    Area of Applicability (AOA)
+                    <vue-slider
+                      disabled
+                      v-model="aoaTransparency"
+                      v-on:change="changeOpacity('aoa')"
+                      :tooltip-formatter="sliderPercentage"
+                    />
+                    <p style="font-size: 10px">Transparency</p>
+
+                    <template v-if="colorblindMode == false">
+                      <ColorLegend
+                        :scale="['#cf1f8f', '#ffffff']"
+                        :steps="2"
+                        :fixed="0"
+                      />
+                    </template>
+                    <template v-if="colorblindMode == true">
+                      <ColorLegend
+                        :scale="['#21A7E6', '#ffffff']"
+                        :steps="2"
+                        :fixed="0"
+                      />
+                    </template>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <v-simple-checkbox
+                        id="aoa"
+                        color="primary"
+                        v-model="aoaCheckbox"
+                        v-ripple
                         disabled
                       ></v-simple-checkbox>
                       <v-tooltip bottom>
