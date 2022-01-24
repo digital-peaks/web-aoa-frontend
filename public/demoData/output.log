@@ -1,0 +1,193 @@
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> source("/app/r/aoa_script.R")
+[1] "--> working directory set"
+ERROR: Loading required package: ggplot2
+ERROR: Loading required package: lattice
+ERROR: Please note that rgdal will be retired by the end of 2023,
+plan transition to sf/stars/terra functions using GDAL and PROJ
+at your earliest convenience.
+
+rgdal: version: 1.5-28, (SVN revision 1158)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 3.4.0, released 2021/11/04
+Path to GDAL shared files: /usr/share/gdal
+GDAL binary built with GEOS: TRUE 
+Loaded PROJ runtime: Rel. 8.2.0, November 1st, 2021, [PJ_VERSION: 820]
+Path to PROJ shared files: /root/.local/share/proj:/usr/share/proj
+PROJ CDN enabled: FALSE
+Linking to sp version:1.4-6
+To mute warnings of possible GDAL/OSR exportToProj4() degradation,
+use options("rgdal_show_exportToProj4_warnings"="none") before loading sp or rgdal.
+ERROR: Linking to GEOS 3.10.1, GDAL 3.4.0, PROJ 8.2.0
+ERROR: 
+Attaching package: ‘gdalcubes’
+
+ERROR: The following objects are masked from ‘package:raster’:
+
+    animate, crop, extent, nbands
+
+ERROR: The following object is masked from ‘package:sp’:
+
+    dimensions
+
+ERROR: 
+Attaching package: ‘kernlab’
+
+ERROR: The following object is masked from ‘package:gdalcubes’:
+
+    size
+
+ERROR: The following objects are masked from ‘package:raster’:
+
+    buffer, rotated
+
+ERROR: The following object is masked from ‘package:ggplot2’:
+
+    alpha
+
+[1] "--> libraries imported"
+[1] "--> working directory passed testing"
+Test passed 🥇
+[1] "--> Get job id from args: 61ead294d8b15b633cefa148"
+[1] "--> Job path: /app/jobs/61ead294d8b15b633cefa148"
+[1] "--> parameters passed testing"
+Test passed 🥳
+[1] "--> parameters read"
+[1] "--> sample file passed testing"
+Test passed 🥳
+Reading layer `samplePolygons' from data source 
+  `/app/jobs/61ead294d8b15b633cefa148/samples.geojson' using driver `GeoJSON'
+Simple feature collection with 43 features and 2 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 7.633533 ymin: 51.95162 xmax: 7.700154 ymax: 52.00181
+Geodetic CRS:  WGS 84
+[1] "--> samples passed testing"
+Test passed 🥇
+[1] "--> new model will be trained"
+[1] "--> aoi file passed testing"
+Test passed 🥳
+Reading layer `aoi' from data source 
+  `/app/jobs/61ead294d8b15b633cefa148/aoi.geojson' using driver `GeoJSON'
+Simple feature collection with 1 feature and 1 field
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 7.464648 ymin: 51.8714 xmax: 7.683119 ymax: 52.00517
+Geodetic CRS:  WGS 84
+[1] "--> AOI and AFT set"
+[1] "--> optimal resolution passed testing"
+Test passed 🎉
+[1] "--> cloudcover set"
+[1] "--> timeframe set"
+[1] "--> response set"
+[1] "--> sampling strategy set"
+[1] "--> key attribute set"
+[1] "--> assets set"
+Test passed 🌈
+[1] "--> stac initialized"
+[1] "--> basic processing setup done"
+[1] "--> stac items for AOI retrieved"
+Test passed 😸
+[1] "Warning!"
+[1] "--> image collection for AOI created"
+Test passed 😀
+Test passed 😀
+[1] "--> target crs retrieved"
+[1] "--> AOI tranformed to target crs"
+[1] "--> AOI bbox tranformed to target crs"
+ERROR: ## Size of the cube in x direction does not align with dx, extent will be enlarged by 3.175513 at both sides.
+## Size of the cube in y direction does not align with dy, extent will be enlarged by 3.999722 at both sides.
+Test passed 🥇
+[1] "--> cloud mask created"
+[1] "--> gdalcubes threads set to 4"
+Test passed 😸
+[1] "--> AOI raster cube created"
+[1] "--> classification image written"
+[1] "--> stac items for AFT retrieved"
+Test passed 🥇
+[1] "Warning!"
+Test passed 🥇
+[1] "--> image collection for AFT created"
+[1] "--> target crs retrieved"
+Test passed 😸
+[1] "--> AFT tranformed to target crs"
+[1] "--> AFT bbox tranformed to target crs"
+ERROR: ## Size of the cube in x direction does not align with dx, extent will be enlarged by 0.464285 at both sides.
+## Size of the cube in y direction does not align with dy, extent will be enlarged by 1.749026 at both sides.
+[1] "--> AFT cube view created"
+Test passed 🥇
+[1] "--> cloud mask created"
+[1] "--> gdalcubes threads set to 4"
+Test passed 🎊
+[1] "--> AFT raster cube created"
+[1] "--> training image written"
+[1] "--> raster data retrieval done"
+[1] "--> training stac created"
+[1] "--> band names assigned"
+Test passed 🥇
+[1] "--> classification stac created"
+[1] "--> band names assigned"
+Test passed 😀
+[1] "--> training data extracted from raster"
+[1] "--> response assigned to training data"
+Test passed 😀
+[1] "--> predictors set"
+[1] "--> response set"
+[1] "--> support vector machine will be trained"
+[1] "--> model trained"
+Test passed 😀
+[1] "--> model exported"
+[1] "--> classification done"
+Test passed 😸
+[1] "--> AOA calculation done done"
+Test passed 🎉
+[1] "--> geostatistical processing done"
+[1] "--> aoa image written"
+[1] "--> di image written"
+[1] "--> prediction image written"
+[1] "--> outputs passed testing"
+Test passed 🥇
+[1] "--> AOA mask created"
+[1] "--> suggested locations for extra training polygons created"
+Writing layer `suggestion' to data source 
+  `/app/jobs/61ead294d8b15b633cefa148/suggestion.geojson' using driver `GeoJSON'
+Writing 46 features with 2 fields and geometry type Point.
+[1] "--> suggested locations for extra training polygons written"
+Test passed 🌈
+[1] "--> processing done"
+[1] "--> processing time: 4.13314440521929 Minutes"
+ERROR: Warning messages:
+1: In stac_image_collection(items_aoi$features, asset_names = assets,  :
+  STAC asset with name 'SCL' does not include eo:bands metadata and will be considered as a single band source
+2: In stac_image_collection(items_poly$features, asset_names = assets,  :ERROR: 
+  STAC asset with name 'SCL' does not include eo:bands metadata and will be considered as a single band source
+3: In .local(x, y, ...) :
+  Transforming SpatialPolygons to the crs of the Raster
+4: In .gd_SetCategoryNames(object, ...) : Failed to set category names
+5: In proj4string(obj) :ERROR: 
+  CRS object has comment, which is lost in output; in tests, see
+https://cran.r-project.org/web/packages/sp/vignettes/CRS_warnings.html
+6: st_crs<- : replacing crs does not reproject data; use st_transform for that 
+> 
+> 
+EXIT with code=0, signal=null
+Code: 0
+SUCCESS
