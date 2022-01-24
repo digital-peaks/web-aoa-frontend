@@ -1,6 +1,6 @@
 # Web AOA Frontend
 
-This web application aims to implement the AOA method according to Meyer & Pebesma (2021).
+This web application aims to implement the AOA method according to Meyer & Pebesma (2021) and provide the user an easy-to-use interface.
 
 # Configuration
 
