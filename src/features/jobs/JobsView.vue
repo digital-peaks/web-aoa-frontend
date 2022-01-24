@@ -32,7 +32,7 @@
                 <time-ago :date="job.created" />
               </v-list-item-action>
               <v-list-item-action class="ml-5">
-                <v-tooltip right>
+                <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <div
                       v-on="on"
@@ -44,17 +44,30 @@
                       }"
                     ></div>
                   </template>
-                  <span
-                    >The Area of Interest describes the area<br />
-                    the trained model should be tested on. A<br />
-                    rectangle has to be drawn in the given map.</span
+                  <template v-if="job.status === 'running'">
+                    <span>Job is running</span></template
+                  >
+                  <template v-if="job.status === 'error'">
+                    <span>Error: Job failed</span></template
+                  >
+                  <template v-if="job.status === 'success'">
+                    <span>Job was successful</span></template
                   >
                 </v-tooltip>
               </v-list-item-action>
               <v-list-item-action class="ml-1">
-                <v-btn icon v-on:click.prevent="openDialogDelete(job.id)">
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      icon
+                      v-on:click.prevent="openDialogDelete(job.id)"
+                      v-on="on"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Delete<br />this job</span>
+                </v-tooltip>
               </v-list-item-action>
             </v-list-item>
             <v-divider
