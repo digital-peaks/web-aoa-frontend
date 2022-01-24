@@ -32,14 +32,24 @@
                 <time-ago :date="job.created" />
               </v-list-item-action>
               <v-list-item-action class="ml-5">
-                <div
-                  class="status-indicator"
-                  v-bind:class="{
-                    running: job.status === 'running',
-                    error: job.status === 'error',
-                    success: job.status === 'success',
-                  }"
-                ></div>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <div
+                      v-on="on"
+                      class="status-indicator"
+                      v-bind:class="{
+                        running: job.status === 'running',
+                        error: job.status === 'error',
+                        success: job.status === 'success',
+                      }"
+                    ></div>
+                  </template>
+                  <span
+                    >The Area of Interest describes the area<br />
+                    the trained model should be tested on. A<br />
+                    rectangle has to be drawn in the given map.</span
+                  >
+                </v-tooltip>
               </v-list-item-action>
               <v-list-item-action class="ml-1">
                 <v-btn icon v-on:click.prevent="openDialogDelete(job.id)">
