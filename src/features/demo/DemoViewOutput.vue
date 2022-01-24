@@ -29,6 +29,25 @@
         </v-tooltip>
       </div>
 
+      <div class="pt-6 pl-4">
+        <span>
+          This switch provides the user a colorblind-friendly version of our
+          website. It is specialized for the tpye of colorblindness, that is the
+          most common world-wide. Affected people are not able or have
+          difficulties to differentiate between red and green.
+        </span>
+      </div>
+
+      <v-row class="ml-1">
+        <v-col cols="12">
+          <v-switch
+            v-model="colorblindMode"
+            label="Switch to Color Blind Mode (Trichromacy)"
+            v-on:change="switchMode"
+          ></v-switch
+        ></v-col>
+      </v-row>
+
       <hide-at
         :breakpoints="{ small: 1263, medium: 1264 }"
         breakpoint="smallAndBelow"

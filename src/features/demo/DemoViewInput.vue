@@ -10,11 +10,29 @@
         </div>
       </div>
 
+      <span class="mt-4">
+        This switch provides the user a colorblind-friendly version of our
+        website. It is specialized for the tpye of colorblindness, that is the
+        most common world-wide. Affected people are not able or have
+        difficulties to differentiate between red and green.
+      </span>
+
+      <v-row class="mb-1">
+        <v-col>
+          <v-switch
+            v-model="colorblindMode"
+            label="Switch to Color Blind Mode (Trichromacy)"
+            v-on:change="switchMode"
+          ></v-switch>
+        </v-col>
+      </v-row>
+
       <span class="my-4">
-        On this page you can create a job for the AOA (Area of Applicability)
-        calculation. Multiple parameters are required and some are optional.<br />
-        First of all, your have to name the job as want want it to be seen in
-        the job-overview:
+        On this page the user is able to create a job for the AOA (Area of
+        Applicability) calculation. Multiple parameters are required and some
+        are optional.<br />
+        First of all, the job has to be named as it should be seen in the
+        job-overview:
       </span>
 
       <div class="mt-2">
@@ -22,11 +40,10 @@
       </div>
 
       <span class="my-3">
-        Afterwards you have to choose your AOI (Area of Interest). Just press
-        the button on the right <i>SELECT ON MAP</i> to start drawing of the
-        map. You are allowed to draw only one rectangle to describe this area.
-        But you can draw another one by pushing the small button on the left of
-        the map:
+        Afterwards the AOI (Area of Interest) has to be choosen. Just press the
+        button on the right <i>SELECT ON MAP</i> to start drawing of the map.
+        Only one rectangle is allowed to draw to describe this area. But another
+        one can be drawn by pushing the small button on the left of the map:
       </span>
 
       <div class="mt-3 mb-2">
@@ -54,8 +71,8 @@
       </v-row>
 
       <span class="my-3"
-        >Here you can specify the timeframe, the resolution of the output images
-        and the allowed cloud cover:</span
+        >Here the timeframe can be specified, the resolution of the output
+        images and the allowed cloud cover:</span
       >
 
       <div class="mt-3 mb-2">
@@ -121,10 +138,10 @@
       </template>
 
       <span class="mt-3 ml-0"
-        >In case you do not want to specify the resolution manually you can use
-        the <i>use-lookup-table</i> option to select the resolution dynamically.
-        In some cases the processing time can be reduced by choosing the
-        resolution dynamically:</span
+        >In case the user does not want to specify the resolution manually the
+        <i>use-lookup-table</i> option can be used to select the resolution
+        dynamically. In some cases the processing time can be reduced by
+        choosing the resolution dynamically:</span
       >
 
       <v-row class="mb-1">
@@ -320,16 +337,6 @@
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
-import {
-  integer,
-  or,
-  decimal,
-  required,
-  minValue,
-  maxValue,
-  requiredIf,
-} from "@vuelidate/validators";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-draw";
@@ -337,9 +344,6 @@ import "leaflet-draw/dist/leaflet.draw.css";
 
 export default {
   name: "InputView",
-  setup() {
-    return { v$: useVuelidate() };
-  },
   data() {
     return {
       formData: {
@@ -375,44 +379,49 @@ export default {
       // size in meters^2
       // aoiSize: 0,
       selectedML: "svmradial",
-    };
-  },
-  validations() {
-    return {
-      formData: {
-        name: { required },
-        cloud_cover: {
-          required,
-          minValue: minValue(0),
-          maxValue: maxValue(100),
-        },
-        samples_class: {
-          required: requiredIf(() => !this.formData.use_pretrained_model),
-        },
-        area_of_interest: { required },
-        use_pretrained_model: { required },
-        sampling_strategy: { required },
-        resolution: requiredIf(() => !this.formData.use_lookup),
-        support_vector_machine: {
-          sigma: {
-            decimal,
-            minValue: minValue(0),
-          },
-          c: {
-            valid: or(integer, decimal),
-            minValue: minValue(0),
-          },
-        },
-      },
-      samplesFile: {
-        required: requiredIf(() => !this.formData.use_pretrained_model),
-      },
-      modelFile: {
-        required: requiredIf(() => this.formData.use_pretrained_model),
-      },
+      // Colorblind mode:
+      colorblindMode: false,
     };
   },
   methods: {
+    /**
+     * This function switches the frontend to a colorblind version. The basemap changes as well as the aoi rectangle.
+     */
+    switchMode: function () {
+      if (this.colorblindMode === false) {
+        this.tileLayer = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(this.map);
+
+        this.map.addControl(this.drawControl);
+
+        if (this.rectangleLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#3388ff",
+          });
+        }
+      } else if (this.colorblindMode === true) {
+        this.tileLayer = L.tileLayer(
+          "https://tile.jawg.io/e05fd39a-c48d-4fe7-865e-75b940afcb34/{z}/{x}/{y}{r}.png?access-token=f8JszPWTpbAxBEKElUVA7DJcC7Rrzg8hm36s98r2dV7SFWWvoP6v0E9BTxGttjZZ",
+          {
+            attribution:
+              '<a href="https://www.jawg.io" target="_blank">&copy; Jawg</a> - <a href="https://www.openstreetmap.org" target="_blank">&copy; OpenStreetMap</a>&nbsp;contributors',
+          }
+        ).addTo(this.map);
+
+        this.map.addControl(this.drawControl);
+
+        if (this.rectangleLayer != null) {
+          this.rectangleLayer.setStyle({
+            color: "#FF4452",
+          });
+        }
+      }
+    },
     /**
      * This function initializes the leaflet map with an osm tile layer and focused on Münster.
      */
