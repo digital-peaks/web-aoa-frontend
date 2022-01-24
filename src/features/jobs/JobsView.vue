@@ -48,7 +48,7 @@
               </v-list-item-action>
             </v-list-item>
             <v-divider
-              v-if="index < Object.keys(jobs).length"
+              v-if="index < Object.keys(jobs).length - 1"
               :key="'A' + job.id"
               class="m-0"
             ></v-divider>
