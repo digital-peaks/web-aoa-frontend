@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 text-h5">
+      <div id="job_number" class="m-3 mb-2 text-h5">
         Demo
 
         <v-tooltip bottom>
@@ -1591,7 +1591,7 @@ export default {
         resolution: 256,
       });
       this.diLayerColorblind = new GeoRasterLayer({
-        georaster: this.georasterDi,
+        georaster: georasterDi,
         opacity: this.diTransparency,
         pixelValuesToColorFn: function (pixelValues) {
           const [pixelValue] = pixelValues; // there's just one band in this raster
@@ -1621,7 +1621,7 @@ export default {
         resolution: 256,
       });
       this.aoaLayerColorblind = new GeoRasterLayer({
-        georaster: this.georasterAoa,
+        georaster: georasterAoa,
         opacity: this.aoaTransparency,
         pixelValuesToColorFn: function (pixelValues) {
           const pixelValue = pixelValues[0];
@@ -1644,7 +1644,7 @@ export default {
         resolution: 256,
       });
       this.predLayerColorblind = new GeoRasterLayer({
-        georaster: this.georasterPred,
+        georaster: georasterPred,
         opacity: this.predTransparency,
         pixelValuesToColorFn: (pixelValues) =>
           this.colorblindScalePred[pixelValues[0] - 1] || null,
