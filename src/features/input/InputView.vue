@@ -638,6 +638,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * This function switches the frontend to a colorblind version. The basemap changes as well as the aoi rectangle.
+     */
     switchMode: function () {
       if (this.colorblindMode === false) {
         this.tileLayer = L.tileLayer(
@@ -727,7 +730,7 @@ export default {
           polygon: false,
           rectangle: {
             showArea: false,
-            metric: "km", 
+            metric: "km",
           },
           circle: false,
           marker: false,
