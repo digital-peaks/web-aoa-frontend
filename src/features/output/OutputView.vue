@@ -689,7 +689,7 @@
                             downloadItem(
                               'suggestion.geojson',
                               'suggestion',
-                              'image/tiff'
+                              'application/json'
                             )
                           "
                           v-bind="attrs"
@@ -745,7 +745,7 @@
                                 downloadItem(
                                   'suggestion.geojson',
                                   'suggestion',
-                                  'image/tiff'
+                                  'application/json'
                                 )
                               "
                               v-bind="attrs"
