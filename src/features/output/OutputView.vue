@@ -1,30 +1,36 @@
 <template>
   <div class="d-flex flex-column flex-lg-row wrapper" style="flex: 1">
     <div class="flex-column layer-column">
-      <div id="job_number" class="m-3 mb-2 text-h5">
-        {{ job.name || "-" }}
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              class="float-right"
-              outlined
-              v-on="on"
-              style="padding-left: 10px; padding-right: 7px"
-              v-on:click="downloadItem('output.log', 'output.log', 'text/html')"
-            >
-              Protocol
-              <v-icon>mdi-download</v-icon>
-            </v-btn>
-          </template>
-          <span>
-            Here you can download <br />
-            a log file, written <br />
-            by the R-code while <br />
-            the calculations are <br />
-            running.
-          </span>
-        </v-tooltip>
-      </div>
+      <v-row class="d-flex">
+        <v-col id="job_number" class="m-3 mb-2 text-h5">
+          {{ job.name || "-" }}
+        </v-col>
+        <v-col class="m-4" style="max-width: 150px">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn
+                class="float-right"
+                outlined
+                v-on="on"
+                style="padding-left: 10px; padding-right: 7px"
+                v-on:click="
+                  downloadItem('output.log', 'output.log', 'text/html')
+                "
+              >
+                Protocol
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </template>
+            <span>
+              Here you can download <br />
+              a log file, written <br />
+              by the R-code while <br />
+              the calculations are <br />
+              running.
+            </span>
+          </v-tooltip>
+        </v-col>
+      </v-row>
 
       <v-row class="ml-1">
         <v-col cols="12">
@@ -772,7 +778,7 @@
                           downloadItem(
                             'suggestion.geojson',
                             'suggestion',
-                            'image/tiff'
+                            'application/json'
                           )
                         "
                         v-bind="attrs"
@@ -828,7 +834,7 @@
                               downloadItem(
                                 'suggestion.geojson',
                                 'suggestion',
-                                'image/tiff'
+                                'application/json'
                               )
                             "
                             v-bind="attrs"
