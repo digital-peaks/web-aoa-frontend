@@ -5,7 +5,7 @@
         <v-col id="job_number" class="m-3 mb-2 text-h5">
           {{ job.name || "-" }}
         </v-col>
-        <v-col class="m-4" style="max-width: 150px">
+        <v-col class="m-4 mt-3" style="max-width: 150px">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn
