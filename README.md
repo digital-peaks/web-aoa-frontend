@@ -1,5 +1,7 @@
 # Web AOA Frontend
 
+This web application aims to implement the AOA method according to Meyer & Pebesma (2021) and provide the user an easy-to-use interface.
+
 # Configuration
 
 ## Configuration
@@ -54,3 +56,14 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# Used technologies
+
+* [Vue.js](https://github.com/vuejs/vue)
+* [Vuetify](https://github.com/vuetifyjs/vuetify)
+* [Leaflet](https://github.com/Leaflet/Leaflet)
+* [georaster-layer-for-leaflet](https://github.com/GeoTIFF/georaster-layer-for-leaflet)
+
+# License 
+
+[MIT](https://github.com/digital-peaks/web-aoa-frontend/blob/main/LICENSE)
