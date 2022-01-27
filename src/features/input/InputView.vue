@@ -584,110 +584,6 @@ export default {
     };
   },
   methods: {
-    checkCharactersInFileName: function () {
-      console.log("a");
-      let fileName = this.samplesFile.name;
-      let patterns = [
-        "ä",
-        "ö",
-        "ü",
-        "_",
-        "-",
-        "ß",
-        ":",
-        ";",
-        ",",
-        "~",
-        "§",
-        "$",
-        "!",
-        "?",
-        "*",
-        "+",
-        "^",
-        "°",
-        "@",
-        "€",
-        "[",
-        "]",
-        "{",
-        "(",
-        ")",
-        "}",
-        "%",
-      ];
-
-      for (let i = 0; i < patterns.length; i++) {
-        if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
-      }
-
-      console.log(
-        this.samplesFile.name.includes(
-          "ä",
-          "ö",
-          "ü",
-          "_",
-          "-",
-          "ß",
-          ":",
-          ";",
-          ",",
-          "~",
-          "§",
-          "$",
-          "!",
-          "?",
-          "*",
-          "+",
-          "^",
-          "°",
-          "@",
-          "€",
-          "[",
-          "]",
-          "{",
-          "(",
-          ")",
-          "}",
-          "%"
-        )
-      );
-
-      if (
-        fileName.includes(
-          "ä",
-          "ö",
-          "ü",
-          "_",
-          "-",
-          "ß",
-          ":",
-          ";",
-          ",",
-          "~",
-          "§",
-          "$",
-          "!",
-          "?",
-          "*",
-          "+",
-          "^",
-          "°",
-          "@",
-          "€",
-          "[",
-          "]",
-          "{",
-          "(",
-          ")",
-          "}",
-          "%"
-        ) == true
-      ) {
-        this.alertSamplePolygons = true;
-        console.log(this.alertSamplePolygons);
-      }
-    },
     /**
      * This function switches the frontend to a colorblind version. The basemap changes as well as the aoi rectangle.
      */
@@ -834,6 +730,45 @@ export default {
         // Do whatever else you need to. (save to db, add to map etc)
         this.rectangleLayer.addLayer(this.drawnItem);
       });
+    },
+    /**
+     * This function checks whether the uploaded samplePolygons file got a valid name.
+     */
+    checkCharactersInFileName: function () {
+      let fileName = this.samplesFile.name;
+      let patterns = [
+        "ä",
+        "ö",
+        "ü",
+        "_",
+        "-",
+        "ß",
+        ":",
+        ";",
+        ",",
+        "~",
+        "§",
+        "$",
+        "!",
+        "?",
+        "*",
+        "+",
+        "^",
+        "°",
+        "@",
+        "€",
+        "[",
+        "]",
+        "{",
+        "(",
+        ")",
+        "}",
+        "%",
+      ];
+
+      for (let i = 0; i < patterns.length; i++) {
+        if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
+      }
     },
     /**
      * Checks the form and send it to the API.
