@@ -34,6 +34,6 @@ describe("LogoIcon", () => {
         height: "200",
       },
     });
-    expect(wrapper.html().toMatchSnapshot());
+    expect(wrapper.contains("svg")).toBe(true);
   });
 });
