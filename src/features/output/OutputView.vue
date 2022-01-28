@@ -847,6 +847,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
+
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
