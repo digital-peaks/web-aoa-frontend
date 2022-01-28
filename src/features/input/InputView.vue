@@ -239,105 +239,54 @@
           </v-tooltip>
         </div>
 
-        <hide-at
-          :breakpoints="{ small: 1263, medium: 1264 }"
-          breakpoint="smallAndBelow"
-        >
-          <v-row>
-            <v-col cols="4">
-              <v-file-input
-                filled
-                label="Sample Polygons"
-                accept=".json,.geojson,.gpkg"
-                persistent-hint
-                hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
-                show-size
-                truncate-length="25"
-                v-model="samplesFile"
-                :error-messages="
-                  v$.samplesFile.$error ? ['This field is required'] : []
-                "
-              ></v-file-input>
-            </v-col>
-            <v-col cols="4">
-              <v-text-field
-                filled
-                type="string"
-                label="Class field"
-                persistent-hint
-                hint="Field which classifies the polygons"
-                v-model="formData.samples_class"
-                :error-messages="
-                  v$.formData.samples_class.$error
-                    ? ['This field is required']
-                    : []
-                "
-              />
-            </v-col>
-            <v-col cols="4">
-              <v-text-field
-                filled
-                type="string"
-                label="Object ID "
-                persistent-hint
-                hint="Describes the attribute that represent the key of the sample polygons"
-                v-model="formData.obj_id"
-                :error-messages="
-                  v$.formData.obj_id.$error ? ['This field is required'] : []
-                "
-              />
-            </v-col>
-          </v-row>
-        </hide-at>
+        <div>
+          <v-file-input
+            class="pb-2"
+            filled
+            label="Sample Polygons"
+            accept=".json,.geojson,.gpkg"
+            persistent-hint
+            hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
+            show-size
+            truncate-length="25"
+            v-model="samplesFile"
+            v-on:change="checkCharactersInFileName"
+            :error-messages="
+              v$.samplesFile.$error ? ['This field is required'] : []
+            "
+          ></v-file-input>
 
-        <hide-at
-          :breakpoints="{ small: 1263, medium: 1264 }"
-          breakpoint="mediumAndAbove"
-        >
-          <div>
-            <v-file-input
-              class="pb-2"
-              filled
-              label="Sample Polygons"
-              accept=".json,.geojson,.gpkg"
-              persistent-hint
-              hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
-              show-size
-              truncate-length="25"
-              v-model="samplesFile"
-              :error-messages="
-                v$.samplesFile.$error ? ['This field is required'] : []
-              "
-            ></v-file-input>
+          <template v-if="alertSamplePolygons == true">
+            <v-alert dense outlined type="error">
+              Please avoid umlauts and special characters
+            </v-alert>
+          </template>
 
-            <v-text-field
-              class="pb-2"
-              filled
-              type="string"
-              label="Class field"
-              persistent-hint
-              hint="Field which classifies the polygons"
-              v-model="formData.samples_class"
-              :error-messages="
-                v$.formData.samples_class.$error
-                  ? ['This field is required']
-                  : []
-              "
-            />
-            <v-text-field
-              class="pb-2"
-              filled
-              type="string"
-              label="Object ID "
-              persistent-hint
-              hint="Describes the attribute that represent the key of the sample polygons"
-              v-model="formData.obj_id"
-              :error-messages="
-                v$.formData.obj_id.$error ? ['This field is required'] : []
-              "
-            />
-          </div>
-        </hide-at>
+          <v-text-field
+            class="pb-2"
+            filled
+            type="string"
+            label="Class field"
+            persistent-hint
+            hint="Field which classifies the polygons"
+            v-model="formData.samples_class"
+            :error-messages="
+              v$.formData.samples_class.$error ? ['This field is required'] : []
+            "
+          />
+          <v-text-field
+            class="pb-2"
+            filled
+            type="string"
+            label="Object ID "
+            persistent-hint
+            hint="Describes the attribute that represent the key of the sample polygons"
+            v-model="formData.obj_id"
+            :error-messages="
+              v$.formData.obj_id.$error ? ['This field is required'] : []
+            "
+          />
+        </div>
       </template>
 
       <template v-if="formData.use_pretrained_model === true">
@@ -542,15 +491,11 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import subMonths from "date-fns/subMonths";
 import format from "date-fns/format";
 import * as API from "@/common/api";
-import { hideAt } from "vue-breakpoints";
 
 export default {
   name: "InputView",
   setup() {
     return { v$: useVuelidate() };
-  },
-  components: {
-    hideAt,
   },
   data() {
     return {
@@ -599,6 +544,7 @@ export default {
       selectedML: "rf",
       // Colorblind mode
       colorblindMode: false,
+      alertSamplePolygons: false,
     };
   },
   validations() {
@@ -784,6 +730,45 @@ export default {
         // Do whatever else you need to. (save to db, add to map etc)
         this.rectangleLayer.addLayer(this.drawnItem);
       });
+    },
+    /**
+     * This function checks whether the uploaded samplePolygons file got a valid name.
+     */
+    checkCharactersInFileName: function () {
+      let fileName = this.samplesFile.name;
+      let patterns = [
+        "ä",
+        "ö",
+        "ü",
+        "_",
+        "-",
+        "ß",
+        ":",
+        ";",
+        ",",
+        "~",
+        "§",
+        "$",
+        "!",
+        "?",
+        "*",
+        "+",
+        "^",
+        "°",
+        "@",
+        "€",
+        "[",
+        "]",
+        "{",
+        "(",
+        ")",
+        "}",
+        "%",
+      ];
+
+      for (let i = 0; i < patterns.length; i++) {
+        if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
+      }
     },
     /**
      * Checks the form and send it to the API.
