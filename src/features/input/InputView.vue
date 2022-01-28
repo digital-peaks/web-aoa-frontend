@@ -699,10 +699,8 @@ export default {
           this.rectangleLayer.removeLayer(this.drawnItem);
         }
         this.drawnItem = e.layer;
-        console.log(this.drawnItem);
         // Get the first element
         const [rectangle] = this.drawnItem.getLatLngs();
-        console.log(rectangle);
 
         // Prepare coordinates for AOI GeoJSON
         const coordinates = [];
