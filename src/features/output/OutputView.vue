@@ -934,20 +934,60 @@
       </v-simple-table>
       <v-divider> </v-divider>
       <template v-if="kappaIndex === null">
-        <v-tooltip left color="error">
-          <template v-slot:activator="{ on }">
-            <v-row justify="center" v-on="on">
-              <v-expansion-panels flat accordion disabled class="pb-7">
-                <v-expansion-panel>
-                  <v-expansion-panel-header class="pl-4" style="font-size: 14px"
-                    >Details</v-expansion-panel-header
+        <v-row justify="center">
+          <v-expansion-panels flat accordion class="pb-7">
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pl-4" style="font-size: 14px"
+                >Details</v-expansion-panel-header
+              >
+              <v-expansion-panel-content
+                ><v-tooltip left color="error">
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on">
+                      <div class="mb-1" style="font-size: 14px">
+                        Accuracy: <i>/</i>
+                      </div>
+                      <div class="mb-1" style="font-size: 14px">
+                        Kappa Index: <i>/</i>
+                      </div>
+                      <v-btn
+                        primary
+                        class="float-left mt-3 mr-2 mb-2"
+                        style="padding-left: 10px; padding-right: 7px"
+                        disabled
+                      >
+                        Model
+                        <v-icon>mdi-download</v-icon>
+                      </v-btn>
+                    </div>
+                  </template>
+                  <span>These informations are not available</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      v-on="on"
+                      dark
+                      class="float-left mt-3 mb-2"
+                      style="padding-left: 10px; padding-right: 7px"
+                      v-on:click="
+                        downloadItem(
+                          'job_param.json',
+                          'job_param.json',
+                          'application/json'
+                        )
+                      "
+                    >
+                      Job parameters
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn></template
                   >
-                  <v-expansion-panel-content> </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels> </v-row
-          ></template>
-          <span>These informations are not available</span>
-        </v-tooltip>
+                  <span>Download the job parameters</span>
+                </v-tooltip>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-row>
       </template>
       <template v-if="kappaIndex != null">
         <v-expansion-panels flat accordion class="pb-7">
