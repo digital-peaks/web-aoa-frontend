@@ -117,7 +117,7 @@
               style="min-width: 120px"
             >
               <span class="red--text">
-                Area should be smaller than 400. <br />
+                Area should be smaller than 400 km<sup>2</sup>. <br />
                 Otherwise Calculation can <br />
                 take a very long time.
               </span>
@@ -324,7 +324,7 @@
       </template>
 
       <template v-if="formData.use_pretrained_model === false">
-        <div class="mt-3 mb-2">
+        <div class="mt-6 mb-2">
           <span class="text-h6">Algorithm</span
           ><v-tooltip right>
             <template v-slot:activator="{ on }">
@@ -382,7 +382,7 @@
         </template>
 
         <template v-if="selectedML === 'svmradial'">
-          <v-row>
+          <v-row class="mb-3">
             <v-col cols="4">
               <v-text-field
                 filled
