@@ -117,7 +117,7 @@
               style="min-width: 120px"
             >
               <span class="red--text">
-                Area should be smaller than 400 km^2. <br />
+                Area should be smaller than 400 km<sup>2</sup>. <br />
                 Otherwise Calculation can <br />
                 take a very long time.
               </span>
