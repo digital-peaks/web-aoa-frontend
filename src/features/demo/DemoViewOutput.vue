@@ -1221,7 +1221,7 @@ export default {
     aoaTransparency: 100,
     // Everything needed to visualize the samplePolygons.geojson.
     samplePolygonsCheckbox: false,
-    samplePolygonsJson: `${process.env.BASE_URL}demoData/demo_samples.geojson`,
+    samplePolygonsJson: `${process.env.BASE_URL}demoData/demoSamples.geojson`,
     samplePolygonsLayer: null,
     samplePolygonsTransparency: 50,
     samplePolygonsLineThickness: 1,
