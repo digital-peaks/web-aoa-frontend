@@ -326,6 +326,7 @@
               :error-messages="
                 v$.modelFile.$error ? ['This field is required'] : []
               "
+              v-on:change="test"
             ></v-file-input>
           </v-col>
         </v-row>
@@ -600,6 +601,9 @@ export default {
     };
   },
   methods: {
+    test: function () {
+      console.log(this.modelFile);
+    },
     /**
      * This function switches the frontend to a colorblind version. The basemap changes as well as the aoi rectangle.
      */
@@ -843,11 +847,14 @@ export default {
 
       if (job.use_pretrained_model) {
         // Set model file
-        data.model = this.modelFile;
+        data.model = await this.modelFile;
+        if (data.modelFile.size / 1024 / 1024 > 10) return;
         data.job.samples_class = "";
       } else {
         // Set samples file
-        data.samples = this.samplesFile;
+
+        data.samples = await this.samplesFile;
+        if (data.samples.size / 1024 / 1024 > 10) return;
       }
 
       try {
