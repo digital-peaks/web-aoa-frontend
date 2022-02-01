@@ -54,7 +54,9 @@
         <div>
           <v-btn to="/">Cancel</v-btn>
           &nbsp;
-          <v-btn type="submit" color="primary">Start</v-btn>
+          <v-btn type="submit" color="primary" :loading="isSavingJob"
+            >Start</v-btn
+          >
         </div>
       </div>
 
@@ -246,6 +248,7 @@
             label="Sample Polygons"
             accept=".json,.geojson,.gpkg"
             persistent-hint
+            :rules="rules"
             hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
             show-size
             truncate-length="25"
@@ -311,6 +314,7 @@
               label="Select model"
               accept=".rds"
               persistent-hint
+              :rules="rules"
               hint=".rds (max. 10 MB)"
               show-size
               truncate-length="25"
@@ -318,6 +322,7 @@
               :error-messages="
                 v$.modelFile.$error ? ['This field is required'] : []
               "
+              v-on:change="test"
             ></v-file-input>
           </v-col>
         </v-row>
@@ -499,6 +504,8 @@ export default {
   },
   data() {
     return {
+      // show a loading process, when uploading job data
+      isSavingJob: false,
       formData: {
         name: "",
         area_of_interest: null,
@@ -525,6 +532,12 @@ export default {
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
       maxTimestamp: format(new Date(), "yyyy-MM-dd"),
       // file previews:
+      rules: [
+        (value) =>
+          !value ||
+          value.size < 10485760 ||
+          "File size should be less than 10 MB!",
+      ],
       samplesFile: null,
       modelFile: null,
       // Error Dialog:
@@ -733,39 +746,43 @@ export default {
      * This function checks whether the uploaded samplePolygons file got a valid name.
      */
     checkCharactersInFileName: function () {
-      let fileName = this.samplesFile.name;
-      let patterns = [
-        "ä",
-        "ö",
-        "ü",
-        "_",
-        "-",
-        "ß",
-        ":",
-        ";",
-        ",",
-        "~",
-        "§",
-        "$",
-        "!",
-        "?",
-        "*",
-        "+",
-        "^",
-        "°",
-        "@",
-        "€",
-        "[",
-        "]",
-        "{",
-        "(",
-        ")",
-        "}",
-        "%",
-      ];
+      try {
+        let fileName = this.samplesFile.name;
+        let patterns = [
+          "ä",
+          "ö",
+          "ü",
+          "_",
+          "-",
+          "ß",
+          ":",
+          ";",
+          ",",
+          "~",
+          "§",
+          "$",
+          "!",
+          "?",
+          "*",
+          "+",
+          "^",
+          "°",
+          "@",
+          "€",
+          "[",
+          "]",
+          "{",
+          "(",
+          ")",
+          "}",
+          "%",
+        ];
 
-      for (let i = 0; i < patterns.length; i++) {
-        if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
+        for (let i = 0; i < patterns.length; i++) {
+          if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
+        }
+      } catch (err) {
+        this.alertSamplePolygons = false;
       }
     },
     /**
@@ -823,13 +840,17 @@ export default {
 
       if (job.use_pretrained_model) {
         // Set model file
-        data.model = this.modelFile;
+        data.model = await this.modelFile;
+        if (data.modelFile.size / 1024 / 1024 > 10) return;
         data.job.samples_class = "";
       } else {
         // Set samples file
-        data.samples = this.samplesFile;
+
+        data.samples = await this.samplesFile;
+        if (data.samples.size / 1024 / 1024 > 10) return;
       }
 
+      this.isSavingJob = true;
       try {
         await API.createJob(data);
         // Go to the job overview
@@ -846,8 +867,16 @@ export default {
             ...err.response.data,
             body: job,
           };
+        } else {
+          this.dialogError = true;
+          this.errorMessage = {
+            type: "createJob",
+            timestamp: new Date(),
+            body: job,
+          };
         }
       }
+      this.isSavingJob = false;
     },
     /**
      * Enables to draw a Rectangle on Leaflet.
