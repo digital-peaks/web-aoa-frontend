@@ -832,13 +832,12 @@
                       >
                     </template>
                     <span
-                      >To allow the user an optimisation <br />
-                      of the result suggestions for <br />
-                      additional training sites are <br />
-                      provided. They are placed in areas<br />
-                      where model is not currently <br />
-                      applicable according to a user <br />
-                      defined sampling strategy.</span
+                      >Sample Polygons are geometries <br />
+                      provided by the user which define <br />
+                      the areas from which training <br />
+                      datasets should be extracted. <br />
+                      They also include the response <br />
+                      values for the classification.</span
                     >
                   </v-tooltip>
                 </div>
@@ -925,13 +924,12 @@
                           >
                         </template>
                         <span
-                          >To allow the user an optimisation <br />
-                          of the result suggestions for <br />
-                          additional training sites are <br />
-                          provided. They are placed in areas<br />
-                          where model is not currently <br />
-                          applicable according to a user <br />
-                          defined sampling strategy.</span
+                          >Sample Polygons are geometries <br />
+                          provided by the user which define <br />
+                          the areas from which training <br />
+                          datasets should be extracted. <br />
+                          They also include the response <br />
+                          values for the classification.</span
                         >
                       </v-tooltip>
                     </div>
@@ -1006,7 +1004,27 @@
           </template>
           <template v-if="suggestionLayer != null">
             <tr id="not_last_td" style="height: 60px">
-              <td class="pt-4">Suggested locations for training polygons</td>
+              <td class="pt-4">
+                <div>
+                  Suggested locations for training polygons
+                  <v-tooltip right z-index="1000">
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >To allow the user an optimization <br />
+                      of the result suggestions for <br />
+                      additional training sites are <br />
+                      provided. They are placed in areas<br />
+                      where model is not currently <br />
+                      applicable according to a user <br />
+                      defined sampling strategy.</span
+                    >
+                  </v-tooltip>
+                </div>
+              </td>
               <td class="pt-4">
                 <div class="d-flex align-items-center">
                   <v-tooltip bottom z-index="1000">
@@ -1066,7 +1084,25 @@
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td style="color: #a7a7a7">
-                    Suggested locations for training polygons
+                    <div>
+                      Suggested locations for training polygons
+                      <v-tooltip right z-index="1000">
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >To allow the user an optimization <br />
+                          of the result suggestions for <br />
+                          additional training sites are <br />
+                          provided. They are placed in areas<br />
+                          where model is not currently <br />
+                          applicable according to a user <br />
+                          defined sampling strategy.</span
+                        >
+                      </v-tooltip>
+                    </div>
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
