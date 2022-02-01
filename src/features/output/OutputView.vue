@@ -6,7 +6,7 @@
           {{ job.name || "-" }}
         </v-col>
         <v-col class="m-4 mt-3" style="max-width: 150px">
-          <v-tooltip bottom>
+          <v-tooltip bottom z-index="1000">
             <template v-slot:activator="{ on }">
               <v-btn
                 class="float-right"
@@ -47,7 +47,31 @@
           <template v-if="aoiLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Area of Interest (AOI)
+                <div>
+                  Area of Interest (AOI)
+                  <v-tooltip right z-index="1000">
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Area of Interest <br />
+                      is the user defined <br />
+                      area for which a classifi-<br />
+                      cation is to be performed. <br />
+                      Sample Polygons: The Sample <br />
+                      Polygons are the user <br />
+                      supplied sampling datasets <br />
+                      containing the response <br />
+                      values. If the user <br />
+                      supplies a pretrained <br />
+                      model, no sampling <br />
+                      polygons need to be <br />
+                      uploaded.
+                    </span>
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="aoiTransparency"
                   v-on:change="changeOpacity('aoi')"
@@ -66,7 +90,7 @@
               </td>
               <td class="check justify-center align-start">
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="aoi"
@@ -80,7 +104,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -94,7 +118,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -115,11 +139,30 @@
             </tr>
           </template>
           <template v-if="aoiLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Area of Interest (AOI)
+                    <div>
+                      Area of Interest (AOI)
+                      <v-tooltip right z-index="1000">
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Area of Interest is the user <br />
+                          defined area for which a classification <br />
+                          is to be performed. Sample Polygons: <br />
+                          The Sample Polygons are the user <br />
+                          supplied sampling datasets containing <br />
+                          the response values. If the user <br />
+                          supplies a pretrained model, no <br />
+                          sampling polygons need to be uploaded.
+                        </span>
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="aoiTransparency"
@@ -147,7 +190,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -162,7 +205,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -193,7 +236,26 @@
           <template v-if="diLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Dissimilarity Index
+                <div>
+                  Dissimilarity Index
+                  <v-tooltip right z-index="1000">
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Dissimilarity Index can be <br />
+                      understood as a measure of <br />
+                      similarity between the training <br />
+                      area and the area of interest. <br />
+                      Values close to 0 suggest a <br />
+                      high similarity whereas <br />
+                      values close to 1 suggest <br />
+                      a high dissimilarity.</span
+                    >
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="diTransparency"
                   v-on:change="changeOpacity('di')"
@@ -221,7 +283,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="di"
@@ -235,7 +297,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -249,7 +311,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -270,11 +332,29 @@
             </tr>
           </template>
           <template v-if="diLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Dissimilarity Index
+                    <div>
+                      Dissimilarity Index
+                      <v-tooltip right z-index="1000">
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Dissimilarity Index can be <br />
+                          understood as a measure of similarity <br />
+                          between the training area and the <br />
+                          area of interest. Values close to 0 <br />
+                          suggest a high similarity whereas <br />
+                          values close to 1 suggest a high <br />
+                          dissimilarity.</span
+                        >
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       :disabled="true"
                       v-model="diTransparency"
@@ -310,7 +390,7 @@
                         disabled
                       ></v-simple-checkbox>
 
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -325,7 +405,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -352,7 +432,25 @@
           <template v-if="predLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Prediction / Classification
+                <div>
+                  Prediction / Classification
+                  <v-tooltip right z-index="1000">
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Prediction is <br />
+                      actual classifi-<br />
+                      cation, done by the <br />
+                      model based on <br />
+                      Sentinel-2A imagery <br />
+                      and the given <br />
+                      response values.
+                    </span>
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="predTransparency"
                   v-on:change="changeOpacity('pred')"
@@ -399,7 +497,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="pred"
@@ -413,7 +511,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -427,7 +525,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -448,11 +546,27 @@
             </tr>
           </template>
           <template v-if="predLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Prediction / Classification
+                    <div>
+                      Prediction / Classification
+                      <v-tooltip right z-index="1000">
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Prediction is actual <br />
+                          classification, done by the <br />
+                          model based on Sentinel-2A <br />
+                          imagery and the given <br />
+                          response values.
+                        </span>
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="predTransparency"
@@ -470,7 +584,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -485,7 +599,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -512,7 +626,27 @@
           <template v-if="aoaLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Area of Applicability (AOA)
+                <div>
+                  Area of Applicability (AOA)
+                  <v-tooltip right z-index="1000">
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Area of Applica-<br />
+                      bility can be interpreted <br />
+                      as the Area where a <br />
+                      trained model is expected<br />
+                      to make reliable predictions. <br />
+                      The value 1 indicates that <br />
+                      the model is applicable <br />
+                      whereas the value 0 zero <br />
+                      indicates a non-applicability.
+                    </span>
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="aoaTransparency"
                   v-on:change="changeOpacity('aoa')"
@@ -537,7 +671,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="aoa"
@@ -551,7 +685,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -565,7 +699,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -586,11 +720,31 @@
             </tr>
           </template>
           <template v-if="aoaLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip z-index="1000" left color="error">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Area of Applicability (AOA)
+                    <div>
+                      Area of Applicability (AOA)
+                      <v-tooltip right z-index="1000">
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Area of Applica-<br />
+                          bility can be interpreted <br />
+                          as the Area where a <br />
+                          trained model is expected<br />
+                          to make reliable predictions. <br />
+                          The value 1 indicates that <br />
+                          the model is applicable <br />
+                          whereas the value 0 zero <br />
+                          indicates a non-applicability.
+                        </span>
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="aoaTransparency"
@@ -623,7 +777,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -638,7 +792,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -669,7 +823,25 @@
           <template v-if="samplePolygonsLayer != null">
             <tr id="last_td">
               <td id="td_elements_with_slider">
-                Sample Polygons
+                <div>
+                  Sample Polygons
+                  <v-tooltip right z-index="1000">
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >To allow the user an optimisation <br />
+                      of the result suggestions for <br />
+                      additional training sites are <br />
+                      provided. They are placed in areas<br />
+                      where model is not currently <br />
+                      applicable according to a user <br />
+                      defined sampling strategy.</span
+                    >
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="samplePolygonsTransparency"
                   v-on:change="changeOpacity('samplePolygons')"
@@ -687,7 +859,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="samplePolygons"
@@ -701,7 +873,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -715,7 +887,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -740,11 +912,29 @@
             </tr>
           </template>
           <template v-if="samplePolygonsLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Sample Polygons
+                    <div>
+                      Sample Polygons
+                      <v-tooltip right z-index="1000">
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >To allow the user an optimisation <br />
+                          of the result suggestions for <br />
+                          additional training sites are <br />
+                          provided. They are placed in areas<br />
+                          where model is not currently <br />
+                          applicable according to a user <br />
+                          defined sampling strategy.</span
+                        >
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="samplePolygonsTransparency"
@@ -771,7 +961,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -786,7 +976,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -819,7 +1009,7 @@
               <td class="pt-4">Suggested locations for training polygons</td>
               <td class="pt-4">
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="suggestion"
@@ -833,7 +1023,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -847,7 +1037,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -872,7 +1062,7 @@
             </tr>
           </template>
           <template v-if="suggestionLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td style="color: #a7a7a7">
@@ -887,7 +1077,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -902,7 +1092,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -941,7 +1131,7 @@
                 >Details</v-expansion-panel-header
               >
               <v-expansion-panel-content
-                ><v-tooltip left color="error">
+                ><v-tooltip left color="error" z-index="1000">
                   <template v-slot:activator="{ on }">
                     <div v-on="on">
                       <div class="mb-1" style="font-size: 14px">
@@ -963,7 +1153,7 @@
                   </template>
                   <span>These informations are not available</span>
                 </v-tooltip>
-                <v-tooltip bottom>
+                <v-tooltip bottom z-index="1000">
                   <template v-slot:activator="{ on }">
                     <v-btn
                       v-on="on"
@@ -1002,7 +1192,7 @@
               <div class="mb-1" style="font-size: 14px">
                 Kappa Index: {{ kappaIndex }}
               </div>
-              <v-tooltip bottom>
+              <v-tooltip bottom z-index="1000">
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"
@@ -1023,7 +1213,7 @@
                 </template>
                 <span>Download the trained model</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom z-index="1000">
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"

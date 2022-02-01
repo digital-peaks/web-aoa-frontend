@@ -472,6 +472,26 @@
                       </template>
                       <span>Zoom to layer</span>
                     </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem(
+                              'demoData/samples.geojson',
+                              'samplePolygons',
+                              'application/json'
+                            )
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
                   </div>
                 </td>
               </tr>
@@ -529,7 +549,7 @@
                             downloadItem(
                               'demoData/suggestion.geojson',
                               'suggestion',
-                              'image/tiff'
+                              'application/json'
                             )
                           "
                           v-bind="attrs"
@@ -751,7 +771,11 @@
                             class="ms-2"
                             icon
                             v-on:click="
-                              downloadItem('aoa_di.tif', 'aoa_di', 'image/tiff')
+                              downloadItem(
+                                'demoData/aoa_di.tif',
+                                'aoa_di',
+                                'image/tiff'
+                              )
                             "
                             v-bind="attrs"
                             v-on="on"
@@ -855,7 +879,11 @@
                             class="ms-2"
                             icon
                             v-on:click="
-                              downloadItem('pred.tif', 'pred', 'image/tiff')
+                              downloadItem(
+                                'demoData/pred.tif',
+                                'pred',
+                                'image/tiff'
+                              )
                             "
                             v-bind="attrs"
                             v-on="on"
@@ -939,7 +967,7 @@
                             icon
                             v-on:click="
                               downloadItem(
-                                'aoa_aoa.tif',
+                                'demoData/aoa_aoa.tif',
                                 'aoa_aoa',
                                 'image/tiff'
                               )
@@ -1008,6 +1036,26 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="
+                              downloadItem(
+                                'demoData/demoSamples.geojson',
+                                'samplePolygons',
+                                'application/json'
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-download</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Download</span>
+                      </v-tooltip>
                     </div>
                   </td>
                 </tr>
@@ -1059,9 +1107,9 @@
                             icon
                             v-on:click="
                               downloadItem(
-                                'suggestion.geojson',
+                                'demoData/suggestion.geojson',
                                 'suggestion',
-                                'image/tiff'
+                                'application/json'
                               )
                             "
                             v-bind="attrs"
@@ -1106,7 +1154,7 @@
                       style="padding-left: 10px; padding-right: 7px"
                       v-on:click="
                         downloadItem(
-                          'model.rds',
+                          'demoData/model.rds',
                           'model.rds',
                           'application/octet-stream'
                         )
@@ -1127,7 +1175,7 @@
                       style="padding-left: 10px; padding-right: 7px"
                       v-on:click="
                         downloadItem(
-                          'job_param.json',
+                          'demoData/job_param.json',
                           'job_param.json',
                           'application/json'
                         )
@@ -1221,7 +1269,7 @@ export default {
     aoaTransparency: 100,
     // Everything needed to visualize the samplePolygons.geojson.
     samplePolygonsCheckbox: false,
-    samplePolygonsJson: `${process.env.BASE_URL}demoData/demo_samples.geojson`,
+    samplePolygonsJson: `${process.env.BASE_URL}demoData/demoSamples.geojson`,
     samplePolygonsLayer: null,
     samplePolygonsTransparency: 50,
     samplePolygonsLineThickness: 1,
