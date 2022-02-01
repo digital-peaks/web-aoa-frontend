@@ -867,6 +867,13 @@ export default {
             ...err.response.data,
             body: job,
           };
+        } else {
+          this.dialogError = true;
+          this.errorMessage = {
+            type: "createJob",
+            timestamp: new Date(),
+            body: job,
+          };
         }
       }
       this.isSavingJob = false;
