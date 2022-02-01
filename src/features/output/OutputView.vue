@@ -6,7 +6,7 @@
           {{ job.name || "-" }}
         </v-col>
         <v-col class="m-4 mt-3" style="max-width: 150px">
-          <v-tooltip bottom>
+          <v-tooltip bottom z-index="1000">
             <template v-slot:activator="{ on }">
               <v-btn
                 class="float-right"
@@ -49,7 +49,7 @@
               <td id="td_elements_with_slider">
                 <div>
                   Area of Interest (AOI)
-                  <v-tooltip right>
+                  <v-tooltip right z-index="1000">
                     <template v-slot:activator="{ on }">
                       <v-icon class="pb-3" small v-on="on"
                         >mdi-help-circle</v-icon
@@ -90,7 +90,7 @@
               </td>
               <td class="check justify-center align-start">
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="aoi"
@@ -104,7 +104,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -118,7 +118,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -139,13 +139,13 @@
             </tr>
           </template>
           <template v-if="aoiLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
                     <div>
                       Area of Interest (AOI)
-                      <v-tooltip right>
+                      <v-tooltip right z-index="1000">
                         <template v-slot:activator="{ on }">
                           <v-icon class="pb-3" small v-on="on"
                             >mdi-help-circle</v-icon
@@ -190,7 +190,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -205,7 +205,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -238,7 +238,7 @@
               <td id="td_elements_with_slider">
                 <div>
                   Dissimilarity Index
-                  <v-tooltip right>
+                  <v-tooltip right z-index="1000">
                     <template v-slot:activator="{ on }">
                       <v-icon class="pb-3" small v-on="on"
                         >mdi-help-circle</v-icon
@@ -283,7 +283,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="di"
@@ -297,7 +297,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -311,7 +311,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -332,13 +332,13 @@
             </tr>
           </template>
           <template v-if="diLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
                     <div>
                       Dissimilarity Index
-                      <v-tooltip right>
+                      <v-tooltip right z-index="1000">
                         <template v-slot:activator="{ on }">
                           <v-icon class="pb-3" small v-on="on"
                             >mdi-help-circle</v-icon
@@ -390,7 +390,7 @@
                         disabled
                       ></v-simple-checkbox>
 
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -405,7 +405,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -434,7 +434,7 @@
               <td id="td_elements_with_slider">
                 <div>
                   Prediction / Classification
-                  <v-tooltip right>
+                  <v-tooltip right z-index="1000">
                     <template v-slot:activator="{ on }">
                       <v-icon class="pb-3" small v-on="on"
                         >mdi-help-circle</v-icon
@@ -497,7 +497,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="pred"
@@ -511,7 +511,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -525,7 +525,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -546,13 +546,13 @@
             </tr>
           </template>
           <template v-if="predLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
                     <div>
                       Prediction / Classification
-                      <v-tooltip right>
+                      <v-tooltip right z-index="1000">
                         <template v-slot:activator="{ on }">
                           <v-icon class="pb-3" small v-on="on"
                             >mdi-help-circle</v-icon
@@ -584,7 +584,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -599,7 +599,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -628,20 +628,22 @@
               <td id="td_elements_with_slider">
                 <div>
                   Area of Applicability (AOA)
-                  <v-tooltip right>
+                  <v-tooltip right z-index="1000">
                     <template v-slot:activator="{ on }">
                       <v-icon class="pb-3" small v-on="on"
                         >mdi-help-circle</v-icon
                       >
                     </template>
                     <span
-                      >The Area of Applicability can <br />
-                      be interpreted as the Area where <br />
-                      a trained model is expected to <br />
-                      make reliable predictions. The <br />
-                      value 1 indicates that the model <br />
-                      is applicable whereas the value <br />
-                      0 zero indicates a non-applicability.
+                      >The Area of Applica-<br />
+                      bility can be interpreted <br />
+                      as the Area where a <br />
+                      trained model is expected<br />
+                      to make reliable predictions. <br />
+                      The value 1 indicates that <br />
+                      the model is applicable <br />
+                      whereas the value 0 zero <br />
+                      indicates a non-applicability.
                     </span>
                   </v-tooltip>
                 </div>
@@ -669,7 +671,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="aoa"
@@ -683,7 +685,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -697,7 +699,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -718,26 +720,28 @@
             </tr>
           </template>
           <template v-if="aoaLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip z-index="1000" left color="error">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
                     <div>
                       Area of Applicability (AOA)
-                      <v-tooltip right>
+                      <v-tooltip right z-index="1000">
                         <template v-slot:activator="{ on }">
                           <v-icon class="pb-3" small v-on="on"
                             >mdi-help-circle</v-icon
                           >
                         </template>
                         <span
-                          >The Area of Applicability can <br />
-                          be interpreted as the Area where <br />
-                          a trained model is expected to <br />
-                          make reliable predictions. The <br />
-                          value 1 indicates that the model <br />
-                          is applicable whereas the value <br />
-                          0 zero indicates a non-applicability.
+                          >The Area of Applica-<br />
+                          bility can be interpreted <br />
+                          as the Area where a <br />
+                          trained model is expected<br />
+                          to make reliable predictions. <br />
+                          The value 1 indicates that <br />
+                          the model is applicable <br />
+                          whereas the value 0 zero <br />
+                          indicates a non-applicability.
                         </span>
                       </v-tooltip>
                     </div>
@@ -773,7 +777,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -788,7 +792,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -821,7 +825,7 @@
               <td id="td_elements_with_slider">
                 <div>
                   Sample Polygons
-                  <v-tooltip right>
+                  <v-tooltip right z-index="1000">
                     <template v-slot:activator="{ on }">
                       <v-icon class="pb-3" small v-on="on"
                         >mdi-help-circle</v-icon
@@ -855,7 +859,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="samplePolygons"
@@ -869,7 +873,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -883,7 +887,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -908,13 +912,13 @@
             </tr>
           </template>
           <template v-if="samplePolygonsLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
                     <div>
                       Sample Polygons
-                      <v-tooltip right>
+                      <v-tooltip right z-index="1000">
                         <template v-slot:activator="{ on }">
                           <v-icon class="pb-3" small v-on="on"
                             >mdi-help-circle</v-icon
@@ -957,7 +961,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -972,7 +976,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -1005,7 +1009,7 @@
               <td class="pt-4">Suggested locations for training polygons</td>
               <td class="pt-4">
                 <div class="d-flex align-items-center">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-simple-checkbox
                         id="suggestion"
@@ -1019,7 +1023,7 @@
                     </template>
                     <span>Show/Hide</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -1033,7 +1037,7 @@
                     </template>
                     <span>Zoom to layer</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
+                  <v-tooltip bottom z-index="1000">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         class="ms-2"
@@ -1058,7 +1062,7 @@
             </tr>
           </template>
           <template v-if="suggestionLayer === null">
-            <v-tooltip left color="error">
+            <v-tooltip left color="error" z-index="1000">
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td style="color: #a7a7a7">
@@ -1073,7 +1077,7 @@
                         v-ripple
                         disabled
                       ></v-simple-checkbox>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -1088,7 +1092,7 @@
                         </template>
                         <span>Zoom to layer</span>
                       </v-tooltip>
-                      <v-tooltip bottom>
+                      <v-tooltip bottom z-index="1000">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             class="ms-2"
@@ -1127,7 +1131,7 @@
                 >Details</v-expansion-panel-header
               >
               <v-expansion-panel-content
-                ><v-tooltip left color="error">
+                ><v-tooltip left color="error" z-index="1000">
                   <template v-slot:activator="{ on }">
                     <div v-on="on">
                       <div class="mb-1" style="font-size: 14px">
@@ -1149,7 +1153,7 @@
                   </template>
                   <span>These informations are not available</span>
                 </v-tooltip>
-                <v-tooltip bottom>
+                <v-tooltip bottom z-index="1000">
                   <template v-slot:activator="{ on }">
                     <v-btn
                       v-on="on"
@@ -1188,7 +1192,7 @@
               <div class="mb-1" style="font-size: 14px">
                 Kappa Index: {{ kappaIndex }}
               </div>
-              <v-tooltip bottom>
+              <v-tooltip bottom z-index="1000">
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"
@@ -1209,7 +1213,7 @@
                 </template>
                 <span>Download the trained model</span>
               </v-tooltip>
-              <v-tooltip bottom>
+              <v-tooltip bottom z-index="1000">
                 <template v-slot:activator="{ on }">
                   <v-btn
                     v-on="on"
