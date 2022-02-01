@@ -56,6 +56,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "AboutView",
+};
+</script>
+
 <style scoped>
 .v-btn:not(.v-btn--round).v-size--default {
   height: 36px;
