@@ -54,7 +54,9 @@
         <div>
           <v-btn to="/">Cancel</v-btn>
           &nbsp;
-          <v-btn type="submit" color="primary">Start</v-btn>
+          <v-btn type="submit" color="primary" :loading="isSavingJob">
+            Start
+          </v-btn>
         </div>
       </div>
 
@@ -499,6 +501,8 @@ export default {
   },
   data() {
     return {
+      // show a loading process, when uploading job data
+      isSavingJob: false,
       formData: {
         name: "",
         area_of_interest: null,
@@ -830,6 +834,7 @@ export default {
         data.samples = this.samplesFile;
       }
 
+      this.isSavingJob = true;
       try {
         await API.createJob(data);
         // Go to the job overview
@@ -848,6 +853,7 @@ export default {
           };
         }
       }
+      this.isSavingJob = false;
     },
     /**
      * Enables to draw a Rectangle on Leaflet.
