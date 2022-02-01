@@ -110,6 +110,26 @@
                       </template>
                       <span>Zoom to layer</span>
                     </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="ms-2"
+                          icon
+                          v-on:click="
+                            downloadItem(
+                              'demoData/demo_aoi.geojson',
+                              'suggestion',
+                              'application/json'
+                            )
+                          "
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Download</span>
+                    </v-tooltip>
                   </div>
                 </td>
               </tr>
@@ -695,6 +715,26 @@
                           </v-btn>
                         </template>
                         <span>Zoom to layer</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ms-2"
+                            icon
+                            v-on:click="
+                              downloadItem(
+                                'demoData/demo_aoi.geojson',
+                                'suggestion',
+                                'application/json'
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-download</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Download</span>
                       </v-tooltip>
                     </div>
                   </td>
