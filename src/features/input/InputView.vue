@@ -322,7 +322,6 @@
               :error-messages="
                 v$.modelFile.$error ? ['This field is required'] : []
               "
-              v-on:change="test"
             ></v-file-input>
           </v-col>
         </v-row>
@@ -841,13 +840,10 @@ export default {
       if (job.use_pretrained_model) {
         // Set model file
         data.model = await this.modelFile;
-        if (data.modelFile.size / 1024 / 1024 > 10) return;
         data.job.samples_class = "";
       } else {
         // Set samples file
-
         data.samples = await this.samplesFile;
-        if (data.samples.size / 1024 / 1024 > 10) return;
       }
 
       this.isSavingJob = true;
