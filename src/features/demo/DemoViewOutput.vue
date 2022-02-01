@@ -479,7 +479,7 @@
                           icon
                           v-on:click="
                             downloadItem(
-                              'demoData/samples.geojson',
+                              'demoData/demoSamples.geojson',
                               'samplePolygons',
                               'application/json'
                             )
