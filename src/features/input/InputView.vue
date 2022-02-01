@@ -844,9 +844,9 @@ export default {
 
       try {
         await API.createJob(data);
+        this.overlay = !this.overlay;
         // Go to the job overview
         this.$router.push("/");
-        this.overlay = !this.overlay;
       } catch (err) {
         console.error(err);
 
