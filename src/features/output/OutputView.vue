@@ -56,14 +56,19 @@
                       >
                     </template>
                     <span
-                      >The Area of Interest is the user <br />
-                      defined area for which a classification <br />
-                      is to be performed. Sample Polygons: <br />
-                      The Sample Polygons are the user <br />
-                      supplied sampling datasets containing <br />
-                      the response values. If the user <br />
-                      supplies a pretrained model, no <br />
-                      sampling polygons need to be uploaded.
+                      >The Area of Interest <br />
+                      is the user defined <br />
+                      area for which a classifi-<br />
+                      cation is to be performed. <br />
+                      Sample Polygons: The Sample <br />
+                      Polygons are the user <br />
+                      supplied sampling datasets <br />
+                      containing the response <br />
+                      values. If the user <br />
+                      supplies a pretrained <br />
+                      model, no sampling <br />
+                      polygons need to be <br />
+                      uploaded.
                     </span>
                   </v-tooltip>
                 </div>
@@ -241,12 +246,13 @@
                     </template>
                     <span
                       >The Dissimilarity Index can be <br />
-                      understood as a measure of similarity <br />
-                      between the training area and the <br />
-                      area of interest. Values close to 0 <br />
-                      suggest a high similarity whereas <br />
-                      values close to 1 suggest a high <br />
-                      dissimilarity.</span
+                      understood as a measure of <br />
+                      similarity between the training <br />
+                      area and the area of interest. <br />
+                      Values close to 0 suggest a <br />
+                      high similarity whereas <br />
+                      values close to 1 suggest <br />
+                      a high dissimilarity.</span
                     >
                   </v-tooltip>
                 </div>
@@ -435,10 +441,12 @@
                       >
                     </template>
                     <span
-                      >The Prediction is actual <br />
-                      classification, done by the <br />
-                      model based on Sentinel-2A <br />
-                      imagery and the given <br />
+                      >The Prediction is <br />
+                      actual classifi-<br />
+                      cation, done by the <br />
+                      model based on <br />
+                      Sentinel-2A imagery <br />
+                      and the given <br />
                       response values.
                     </span>
                   </v-tooltip>
