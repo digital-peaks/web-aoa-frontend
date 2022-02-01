@@ -47,7 +47,26 @@
           <template v-if="aoiLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Area of Interest (AOI)
+                <div>
+                  Area of Interest (AOI)
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Area of Interest is the user <br />
+                      defined area for which a classification <br />
+                      is to be performed. Sample Polygons: <br />
+                      The Sample Polygons are the user <br />
+                      supplied sampling datasets containing <br />
+                      the response values. If the user <br />
+                      supplies a pretrained model, no <br />
+                      sampling polygons need to be uploaded.
+                    </span>
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="aoiTransparency"
                   v-on:change="changeOpacity('aoi')"
@@ -119,7 +138,26 @@
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Area of Interest (AOI)
+                    <div>
+                      Area of Interest (AOI)
+                      <v-tooltip right>
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Area of Interest is the user <br />
+                          defined area for which a classification <br />
+                          is to be performed. Sample Polygons: <br />
+                          The Sample Polygons are the user <br />
+                          supplied sampling datasets containing <br />
+                          the response values. If the user <br />
+                          supplies a pretrained model, no <br />
+                          sampling polygons need to be uploaded.
+                        </span>
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="aoiTransparency"
@@ -193,7 +231,25 @@
           <template v-if="diLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Dissimilarity Index
+                <div>
+                  Dissimilarity Index
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Dissimilarity Index can be <br />
+                      understood as a measure of similarity <br />
+                      between the training area and the <br />
+                      area of interest. Values close to 0 <br />
+                      suggest a high similarity whereas <br />
+                      values close to 1 suggest a high <br />
+                      dissimilarity.</span
+                    >
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="diTransparency"
                   v-on:change="changeOpacity('di')"
@@ -274,7 +330,25 @@
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Dissimilarity Index
+                    <div>
+                      Dissimilarity Index
+                      <v-tooltip right>
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Dissimilarity Index can be <br />
+                          understood as a measure of similarity <br />
+                          between the training area and the <br />
+                          area of interest. Values close to 0 <br />
+                          suggest a high similarity whereas <br />
+                          values close to 1 suggest a high <br />
+                          dissimilarity.</span
+                        >
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       :disabled="true"
                       v-model="diTransparency"
@@ -352,7 +426,23 @@
           <template v-if="predLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Prediction / Classification
+                <div>
+                  Prediction / Classification
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Prediction is actual <br />
+                      classification, done by the <br />
+                      model based on Sentinel-2A <br />
+                      imagery and the given <br />
+                      response values.
+                    </span>
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="predTransparency"
                   v-on:change="changeOpacity('pred')"
@@ -452,7 +542,23 @@
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Prediction / Classification
+                    <div>
+                      Prediction / Classification
+                      <v-tooltip right>
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Prediction is actual <br />
+                          classification, done by the <br />
+                          model based on Sentinel-2A <br />
+                          imagery and the given <br />
+                          response values.
+                        </span>
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="predTransparency"
@@ -512,7 +618,25 @@
           <template v-if="aoaLayer != null">
             <tr id="not_last_td">
               <td id="td_elements_with_slider">
-                Area of Applicability (AOA)
+                <div>
+                  Area of Applicability (AOA)
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >The Area of Applicability can <br />
+                      be interpreted as the Area where <br />
+                      a trained model is expected to <br />
+                      make reliable predictions. The <br />
+                      value 1 indicates that the model <br />
+                      is applicable whereas the value <br />
+                      0 zero indicates a non-applicability.
+                    </span>
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="aoaTransparency"
                   v-on:change="changeOpacity('aoa')"
@@ -590,7 +714,25 @@
               <template v-slot:activator="{ on }">
                 <tr id="not_last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Area of Applicability (AOA)
+                    <div>
+                      Area of Applicability (AOA)
+                      <v-tooltip right>
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >The Area of Applicability can <br />
+                          be interpreted as the Area where <br />
+                          a trained model is expected to <br />
+                          make reliable predictions. The <br />
+                          value 1 indicates that the model <br />
+                          is applicable whereas the value <br />
+                          0 zero indicates a non-applicability.
+                        </span>
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="aoaTransparency"
@@ -669,7 +811,25 @@
           <template v-if="samplePolygonsLayer != null">
             <tr id="last_td">
               <td id="td_elements_with_slider">
-                Sample Polygons
+                <div>
+                  Sample Polygons
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon class="pb-3" small v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </template>
+                    <span
+                      >To allow the user an optimisation <br />
+                      of the result suggestions for <br />
+                      additional training sites are <br />
+                      provided. They are placed in areas<br />
+                      where model is not currently <br />
+                      applicable according to a user <br />
+                      defined sampling strategy.</span
+                    >
+                  </v-tooltip>
+                </div>
                 <vue-slider
                   v-model="samplePolygonsTransparency"
                   v-on:change="changeOpacity('samplePolygons')"
@@ -744,7 +904,25 @@
               <template v-slot:activator="{ on }">
                 <tr id="last_td" v-on="on">
                   <td id="td_elements_with_slider" style="color: #a7a7a7">
-                    Sample Polygons
+                    <div>
+                      Sample Polygons
+                      <v-tooltip right>
+                        <template v-slot:activator="{ on }">
+                          <v-icon class="pb-3" small v-on="on"
+                            >mdi-help-circle</v-icon
+                          >
+                        </template>
+                        <span
+                          >To allow the user an optimisation <br />
+                          of the result suggestions for <br />
+                          additional training sites are <br />
+                          provided. They are placed in areas<br />
+                          where model is not currently <br />
+                          applicable according to a user <br />
+                          defined sampling strategy.</span
+                        >
+                      </v-tooltip>
+                    </div>
                     <vue-slider
                       disabled
                       v-model="samplePolygonsTransparency"
