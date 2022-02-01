@@ -58,6 +58,12 @@
         </div>
       </div>
 
+      <div class="test-center">
+        <v-overlay :value="overlay">
+          <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+      </div>
+
       <v-row class="mb-1">
         <v-col>
           <v-switch
@@ -545,6 +551,8 @@ export default {
       // Colorblind mode
       colorblindMode: false,
       alertSamplePolygons: false,
+      // loading overlay:
+      overlay: false,
     };
   },
   validations() {
@@ -733,39 +741,43 @@ export default {
      * This function checks whether the uploaded samplePolygons file got a valid name.
      */
     checkCharactersInFileName: function () {
-      let fileName = this.samplesFile.name;
-      let patterns = [
-        "ä",
-        "ö",
-        "ü",
-        "_",
-        "-",
-        "ß",
-        ":",
-        ";",
-        ",",
-        "~",
-        "§",
-        "$",
-        "!",
-        "?",
-        "*",
-        "+",
-        "^",
-        "°",
-        "@",
-        "€",
-        "[",
-        "]",
-        "{",
-        "(",
-        ")",
-        "}",
-        "%",
-      ];
+      try {
+        let fileName = this.samplesFile.name;
+        let patterns = [
+          "ä",
+          "ö",
+          "ü",
+          "_",
+          "-",
+          "ß",
+          ":",
+          ";",
+          ",",
+          "~",
+          "§",
+          "$",
+          "!",
+          "?",
+          "*",
+          "+",
+          "^",
+          "°",
+          "@",
+          "€",
+          "[",
+          "]",
+          "{",
+          "(",
+          ")",
+          "}",
+          "%",
+        ];
 
-      for (let i = 0; i < patterns.length; i++) {
-        if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
+        for (let i = 0; i < patterns.length; i++) {
+          if (fileName.includes(patterns[i])) this.alertSamplePolygons = true;
+        }
+      } catch (err) {
+        this.alertSamplePolygons = false;
       }
     },
     /**
@@ -834,6 +846,7 @@ export default {
         await API.createJob(data);
         // Go to the job overview
         this.$router.push("/");
+        this.overlay = !this.overlay;
       } catch (err) {
         console.error(err);
 
