@@ -843,8 +843,8 @@ export default {
       }
 
       try {
-        await API.createJob(data);
         this.overlay = !this.overlay;
+        await API.createJob(data);
         // Go to the job overview
         this.$router.push("/");
       } catch (err) {
