@@ -252,6 +252,7 @@
             label="Sample Polygons"
             accept=".json,.geojson,.gpkg"
             persistent-hint
+            :rules="rules"
             hint=".json,.geojson,.gpkg (max. 10 MB, EPSG: 4326 required)"
             show-size
             truncate-length="25"
@@ -317,6 +318,7 @@
               label="Select model"
               accept=".rds"
               persistent-hint
+              :rules="rules"
               hint=".rds (max. 10 MB)"
               show-size
               truncate-length="25"
@@ -531,6 +533,12 @@ export default {
       minTimestamp: format(new Date("2017-03-09T00:00:00.000Z"), "yyyy-MM-dd"),
       maxTimestamp: format(new Date(), "yyyy-MM-dd"),
       // file previews:
+      rules: [
+        (value) =>
+          !value ||
+          value.size < 10485760 ||
+          "File size should be less than 10 MB!",
+      ],
       samplesFile: null,
       modelFile: null,
       // Error Dialog:
