@@ -54,14 +54,10 @@
         <div>
           <v-btn to="/">Cancel</v-btn>
           &nbsp;
-          <v-btn type="submit" color="primary">Start</v-btn>
+          <v-btn type="submit" color="primary" :loading="isSavingJob"
+            >Start</v-btn
+          >
         </div>
-      </div>
-
-      <div class="test-center">
-        <v-overlay :value="overlay">
-          <v-progress-circular indeterminate size="64"></v-progress-circular>
-        </v-overlay>
       </div>
 
       <v-row class="mb-1">
@@ -508,6 +504,8 @@ export default {
   },
   data() {
     return {
+      // show a loading process, when uploading job data
+      isSavingJob: false,
       formData: {
         name: "",
         area_of_interest: null,
@@ -560,8 +558,6 @@ export default {
       // Colorblind mode
       colorblindMode: false,
       alertSamplePolygons: false,
-      // loading overlay:
-      overlay: false,
     };
   },
   validations() {
@@ -601,9 +597,6 @@ export default {
     };
   },
   methods: {
-    test: function () {
-      console.log(this.modelFile);
-    },
     /**
      * This function switches the frontend to a colorblind version. The basemap changes as well as the aoi rectangle.
      */
@@ -857,8 +850,8 @@ export default {
         if (data.samples.size / 1024 / 1024 > 10) return;
       }
 
+      this.isSavingJob = true;
       try {
-        this.overlay = !this.overlay;
         await API.createJob(data);
         // Go to the job overview
         this.$router.push("/");
@@ -876,6 +869,7 @@ export default {
           };
         }
       }
+      this.isSavingJob = false;
     },
     /**
      * Enables to draw a Rectangle on Leaflet.
