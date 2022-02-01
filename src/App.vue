@@ -21,8 +21,8 @@
         </div>
         <v-spacer></v-spacer>
         <div class="d-flex d-md-none align-items-center">
-        <!-- set z-index, because of Leafleat Map -->
-        <v-menu offset-y z-index="1000">
+          <!-- set z-index, because of Leafleat Map -->
+          <v-menu offset-y z-index="1000">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 icon
@@ -34,19 +34,19 @@
                 <v-icon large>mdi-menu</v-icon>
               </v-btn>
             </template>
-            <v-list>
+            <v-list nav>
               <template v-if="token">
-                 <v-list-item link to="/">
-                <v-list-item-title> My Jobs </v-list-item-title>
-              </v-list-item>
-               <v-list-item link to="/inputDemo">
-                <v-list-item-title> Demo </v-list-item-title>
-              </v-list-item>
+                <v-list-item link to="/">
+                  <v-list-item-title> My Jobs </v-list-item-title>
+                </v-list-item>
+                <v-list-item link to="/inputDemo">
+                  <v-list-item-title> Demo </v-list-item-title>
+                </v-list-item>
               </template>
               <template v-else>
-                  <v-list-item link to="/login">
-                <v-list-item-title> Login </v-list-item-title>
-              </v-list-item>
+                <v-list-item link to="/login">
+                  <v-list-item-title> Login </v-list-item-title>
+                </v-list-item>
               </template>
 
               <v-list-item link to="/about">
@@ -58,9 +58,33 @@
             </v-list>
           </v-menu>
         </div>
-        <v-btn icon>
-          <v-icon large>mdi-account-circle</v-icon>
-        </v-btn>
+        <template v-if="token">
+          <v-menu offset-y z-index="1000">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon large>mdi-account-circle</v-icon>
+              </v-btn>
+            </template>
+
+            <v-list nav>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="text-h6">
+                    {{ user.name }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{ user.email }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+
+              <v-list-item @click="doLogout">
+                <v-list-item-title> Log Out </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
       </v-app-bar>
     </div>
     <template v-if="loading">
@@ -107,6 +131,10 @@ export default {
       if (!["/login", "/impressum", "/about"].includes(this.$route.path)) {
         this.$router.push("/login");
       }
+    },
+    doLogout() {
+      this.$store.dispatch("logout");
+      this.$router.push("/login");
     },
   },
   async mounted() {

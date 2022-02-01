@@ -69,6 +69,15 @@ export default new Vuex.Store({
       context.commit("setToken", token);
     },
     /**
+     * Logout current user.
+     * @param context
+     */
+    async logout(context) {
+      window.localStorage.removeItem(STORAGE_USER_TOKEN_KEY);
+      API.clearBearerToken();
+      context.commit("setToken", "");
+    },
+    /**
      * Set user.
      * @param context
      * @param {User} user
