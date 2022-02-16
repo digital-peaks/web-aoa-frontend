@@ -12,16 +12,15 @@
 
       <span class="mt-4">
         This switch provides the user a colorblind-friendly version of our
-        website. It is specialized for the tpye of colorblindness, that is the
-        most common world-wide. Affected people are not able or have
-        difficulties to differentiate between red and green.
+        website. It is specialized for one type of colorblindness, that
+        describes the absence of blue retinal receptors.
       </span>
 
       <v-row class="mb-1">
         <v-col>
           <v-switch
             v-model="colorblindMode"
-            label="Switch to Color Blind Mode (Trichromacy)"
+            label="Switch to Color Blind Mode (Tritanopia)"
             v-on:change="switchMode"
           ></v-switch>
         </v-col>

@@ -64,7 +64,7 @@
         <v-col>
           <v-switch
             v-model="colorblindMode"
-            label="Switch to Color Blind Mode (Trichromacy)"
+            label="Switch to Color Blind Mode (Tritanopia)"
             v-on:change="switchMode"
           ></v-switch>
         </v-col>
